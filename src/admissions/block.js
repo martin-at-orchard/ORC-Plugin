@@ -1,7 +1,8 @@
 /**
- * BLOCK: orc-programs
+ * BLOCK: orc-admissions
  *
- *  Block for displaying Orchard Recovery Center Programs
+ * Registering a basic block with Gutenberg.
+ * Simple block, renders and saves the same content without any interactivity.
  */
 
 //  Import CSS.
@@ -11,14 +12,23 @@ import './style.scss';
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 
-registerBlockType( 'orc/programs', {
-	title: __( 'Programs' ),       // Block title.
-	icon: 'list-view',             // Block icon from Dashicons.
-	category: 'orc-blocks',        // Block category.
+/**
+ * Register: aa Gutenberg Block.
+ * 
+ * Takes:
+ *    Block name usually namespace/block
+ *    Object for configuring the block
+ *
+ * @link https://wordpress.org/gutenberg/handbook/block-api/
+ */
+registerBlockType( 'orc/admissions', {
+	title: __( 'Admissions' ),       // Block title.
+	icon: 'tickets-alt',             // Block icon from Dashicons.
+	category: 'orc-blocks',          // Block category.
 	keywords: [
 		__( 'ORC' ),
 		__( 'Orchard Recovery Center' ),
-		__( 'Programs' ),
+		__( 'Admissions' ),
 	],
 
 	supports: {
@@ -35,21 +45,12 @@ registerBlockType( 'orc/programs', {
 		return (
 			<div className={ props.className }>
 				<label>
-					Display Programs
+					Display Admissions
 				</label>
 			</div>
 		);
 	},
 
-	/**
-	 * Blocks save function
-	 * 
-	 * This one returns null since we are using a render function in php
-	 *
-	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-	 *
-	 * @returns null Using render function
-	 */
 	save: () => {
 		return null;
 	},

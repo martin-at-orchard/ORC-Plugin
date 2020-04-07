@@ -11,3 +11,4 @@
 
 import './staff/block.js';
 import './programs/block.js';
+import './admissions/block.js';
