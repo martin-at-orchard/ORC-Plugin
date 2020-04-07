@@ -1,5 +1,7 @@
 {
-    "autoload": {
-        "psr-4": {"ORC\\": "src/"}
+	"autoload": {
+        "classmap": [
+            "src"
+        ]
     }
 }

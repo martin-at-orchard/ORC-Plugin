@@ -25,15 +25,17 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'cgb/block-orc', {
-	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'orc - CGB Block' ), // Block title.
-	icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+registerBlockType( 'orc/blocks', {
+	// Block name.
+	// Block names must be string that contains a namespace prefix. Example: PLUGIN/BLOCK.
+	// props.className will be class="wp-block-PLUGIN-BLOCK"
+	title: __( 'ORC Blocks' ), // Block title.
+	icon: 'shield',            // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+	category: 'orc-blocks',    // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [
-		__( 'orc — CGB Block' ),
-		__( 'CGB Example' ),
-		__( 'create-guten-block' ),
+		__( 'ORC' ),
+		__( 'Blocks' ),
+		__( 'Orchard Recovery Center' ),
 	],
 
 	/**
@@ -96,4 +98,5 @@ registerBlockType( 'cgb/block-orc', {
 			</div>
 		);
 	},
+
 } );
