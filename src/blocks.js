@@ -10,3 +10,4 @@
  */
 
 import './staff/block.js';
+import './programs/block.js';
