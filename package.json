@@ -1,6 +1,6 @@
 {
-  "name": "orc-cgb-guten-block",
-  "version": "1.0.0",
+  "name": "orc-block",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "start": "cgb-scripts start",

@@ -1,11 +1,11 @@
-<?php
+<?php // phpcs:ignore
 /**
  * Plugin Name: Orchard Recovery Center Blocks/CPT Plugin
  * Plugin URI: https://github.com/martin-at-orchard/orc-plugin
  * Description: Gutenberg plugin created via create-guten-block that contains all the custom code for the Orchard Recovery Center Website
  * Author: Martin Wedepohl
  * Author URI: https://wedepohlengineering.com/
- * Version: 0.1.1
+ * Version: 0.1.2
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -13,8 +13,6 @@
  */
 
 namespace ORC;
-
-use ORC\Blocks;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -108,7 +106,7 @@ class Plugin {
 			array(
 				array(
 					'slug'  => self::BLOCKS_NAME,
-					'title' => __( 'ORC Blocks', self::TEXT_DOMAIN ),
+					'title' => __( 'ORC Blocks', self::TEXT_DOMAIN ), // phpcs:ignore
 				),
 			)
 		);
@@ -120,6 +118,14 @@ class Plugin {
 new Plugin();
 
 /**
+ * Plugin classes.
+ */
+
+new Debug();
+$shorcodes = new Shortcodes();
+$shorcodes->initialize();
+
+/**
  * Block Initializer.
  */
-new Block();
+new Staff();
