@@ -5,16 +5,11 @@
  * which makes it higher in priority.
  */
 
-.wp-block-orc-programs {
+.wp-block-orc-tours {
   background: $red;
   border: 0.2rem solid $black;
   color: $black;
   margin: 0 auto;
   max-width: 740px;
   padding: 2rem;
-}
-
-/* Remove padding from an SVG image if used */
-.post-type-orc-programs span.components-responsive-wrapper span {
-	padding: 0 !important;
 }
