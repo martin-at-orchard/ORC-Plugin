@@ -15,3 +15,4 @@ import './admissions/block.js';
 import './testimonials/block.js';
 import './tours/block.js';
 import './media_coverage/block.js';
+import './videos/block.js';

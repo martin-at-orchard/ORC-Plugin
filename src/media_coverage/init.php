@@ -140,7 +140,7 @@ class Media_Coverage {
 			'show_in_nav_menus'   => false,
 			'show_in_rest'        => true,
 			'menu_position'       => 200,
-			'menu_icon'           => 'dashicons-video-alt',
+			'menu_icon'           => 'dashicons-admin-media',
 			'rewrite'             => array( 'slug' => 'media-coverage' ),
 			'supports'            => $supports,
 		);

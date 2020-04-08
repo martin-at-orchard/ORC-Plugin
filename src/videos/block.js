@@ -1,5 +1,5 @@
 /**
- * BLOCK: media-coverage
+ * BLOCK: videos
  *
  * Block for displaying Orchard Recovery Center Media Coverage
  */
@@ -11,13 +11,13 @@ import './style.scss';
 const { __ }                = wp.i18n;
 const { registerBlockType } = wp.blocks;
 
-registerBlockType( 'orc/media-coverage', {
-	title:     __( 'ORC Media Coverage' ),
-	icon:     'admin-media',
+registerBlockType( 'orc/videos', {
+	title:     __( 'ORC Videos' ),
+	icon:     'video-alt',
 	category: 'orc-blocks',
 	keywords: [
 		__( 'ORC' ),
-		__( 'Media Coverage' ),
+		__( 'Videos' ),
 		__( 'Orchard Recovery Center' ),
 	],
 
@@ -35,7 +35,7 @@ registerBlockType( 'orc/media-coverage', {
 		return (
 			<div className={ props.className }>
 				<label>
-					Display Media Coverage
+					Display Videos
 				</label>
 			</div>
 		);
