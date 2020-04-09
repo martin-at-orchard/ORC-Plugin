@@ -65,6 +65,28 @@ class Videos {
 	 */
 	public function render( $attributes ) {
 
+		if ( isset( $attributes['width'] ) && isset( $attributes['height'] ) ) {
+			$iframe_style  = 'style="';
+			$iframe_style .= 'max-width: ' . $attributes['width'] . 'px; width: ' . $attributes['width'] . 'px;';
+			$iframe_style .= 'max-height: ' . $attributes['height'] . 'px; height: ' . $attributes['height'] . 'px;';
+		} else {
+			$iframe_style = '';
+		}
+
+		if ( isset( $attributes['align'] ) ) {
+			if ( 'center' === $attributes['align'] ) {
+				$iframe_style .= 'margin-left: auto;margin-right: auto;';
+			} elseif ( 'left' === $attributes['align'] ) {
+				$iframe_style .= 'margin-left: 0;margin-right: auto;';
+			} elseif ( 'right' === $attributes['align'] ) {
+				$iframe_style .= 'margin-left: auto;margin-right: 0;';
+			}
+		}
+
+		if ( '' !== $iframe_style ) {
+			$iframe_style .= '"';
+		}
+
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
 			'post_status'    => array( 'publish' ),
@@ -78,7 +100,9 @@ class Videos {
 		foreach ( $posts as $post ) {
 			$link = esc_attr( get_post_meta( $post->ID, 'orc-video-link', true ) );
 			echo '<h2>' . esc_attr( $post->post_title ) . '</h2>';
-			echo '<p>' . esc_attr( $link ) . '</p>';
+			echo '<div class="wp-block-orc-videos">';
+			echo '<iframe ' . $iframe_style . ' src="https://youtube.com/embed/' . $link . '" frameborder="0"></iframe>'; // phpcs:ignore
+			echo '</div>';
 			echo '<hr>';
 		}
 		return \ob_get_clean();
