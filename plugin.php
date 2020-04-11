@@ -27,12 +27,13 @@ require __DIR__ . '/vendor/autoload.php';
  */
 class Plugin {
 
-	const NAME                  = 'orc';
-	const BLOCKS_NAME           = 'orc-blocks';
-	const TEXT_DOMAIN           = 'orc-plugin';
-	const FRONTEND_STYLE_HANDLE = 'orc-plugin-style';
-	const BACKEND_STYLE_HANDLE  = 'orc-plugin-editor-style';
-	const BACKEND_SCRIPT_HANDLE = 'orc-plugin-script';
+	const NAME                   = 'orc';
+	const BLOCKS_NAME            = 'orc-blocks';
+	const TEXT_DOMAIN            = 'orc-plugin';
+	const FRONTEND_STYLE_HANDLE  = 'orc-plugin-style';
+	const BACKEND_STYLE_HANDLE   = 'orc-plugin-editor-style';
+	const BACKEND_SCRIPT_HANDLE  = 'orc-plugin-script';
+	const FRONTEND_SCRIPT_HANDLE = 'orc-frontend-script';
 
 	/**
 	 * Class constructor
@@ -41,6 +42,7 @@ class Plugin {
 
 		add_action( 'init', array( $this, 'enqueue' ) );
 		add_filter( 'block_categories', array( $this, 'block_category' ), 10, 2 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend' ) );
 
 	}
 
@@ -87,6 +89,24 @@ class Plugin {
 				'pluginDirUrl'  => plugin_dir_url( __DIR__ ),
 				// Add more data here that you want to access from `cgbGlobal` object.
 			)
+		);
+
+	}
+
+	/**
+	 * Enqueue all the frontend styles and scripts used by the plugin.
+	 */
+	public function enqueue_frontend() {
+
+		$frontend_js = '/' . self::NAME . '/dist/frontend.js';
+
+		// Register scripts for the backend of the website.
+		wp_enqueue_script(
+			self::FRONTEND_SCRIPT_HANDLE,
+			plugins_url( $frontend_js, dirname( __FILE__ ) ),
+			array(),
+			filemtime( plugin_dir_path( __DIR__ ) . $frontend_js ),
+			true
 		);
 
 	}

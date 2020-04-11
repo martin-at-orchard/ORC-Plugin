@@ -5,10 +5,64 @@
  */
 
 .wp-block-orc-programs  {
-  background: $green;
-  border: 0.2rem solid $black;
-  color: $black;
-  margin: 0 auto;
-  max-width: 740px;
-  padding: 2rem;
+	// display: grid;
+	// grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+
+	.program {
+		z-index: 1000;
+		flex-basis: 100%;
+		margin: 1em;
+		padding: 1em;
+		text-align: center;
+		border: 1px solid #cccccc;
+
+		img {
+			width: 100px;
+			margin: 0 auto;
+		}
+
+		input[type=button] {
+			font-size: 1rem;
+			background: #e6e6e6;
+		}
+
+		input[type=button]:hover {
+			background: #ccc;
+			box-shadow: 5px 5px 5px 2px #ccc;
+		}
+
+	}
+
+	.program:hover {
+		cursor: pointer;
+		box-shadow: 10px 10px 10px 2px #ccc;
+	}
+
+	@media only screen and (min-width: 600px) {
+		.program {
+			flex-basis: 42%;
+		}
+	}
+
+	@media only screen and (min-width: 900px) {
+			.program {
+			flex-basis: 28%;
+		}
+	}
+
+	@media only screen and (min-width: 1200px) {
+			.program {
+			flex-basis: 21%;
+		}
+	}
+
+	@media only screen and (min-width: 1600px) {
+		.program {
+			flex-basis: 17%;
+		}
+	}
+
 }

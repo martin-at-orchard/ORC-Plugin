@@ -52,20 +52,25 @@ class Programs {
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
 			'post_status'    => array( 'publish' ),
-			'orderby'        => 'date',
+			'orderby'        => 'post_date',
+			'order'          => 'ASC',
 			'posts_per_page' => -1,
 		);
 
 		$posts = get_posts( $args );
 
 		\ob_start();
+		echo '<div class="wp-block-orc-programs">';
 		foreach ( $posts as $post ) {
-			echo '<h2>' . esc_attr( $post->post_title ) . '</h2>';
+			echo '<div class="program" id="program-' . $post->ID . '">';     // phpcs:ignore
+			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo get_the_post_thumbnail( $post->ID );
 			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';
-			echo get_the_content( null, false, $post->ID ); // phpcs:ignore
-			echo '<hr>';
+			echo '<input type="button" value="View More" />';
+			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			echo '</div>';
 		}
+		echo '</div>';
 		return \ob_get_clean();
 
 	}
