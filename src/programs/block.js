@@ -8,7 +8,7 @@
 import './editor.scss';
 import './style.scss';
 
-const { __ } = wp.i18n; // Import __() from wp.i18n
+const { __ } = wp.i18n;                  // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 
 registerBlockType( 'orc/programs', {
@@ -22,7 +22,7 @@ registerBlockType( 'orc/programs', {
 	],
 
 	supports: {
-		align: true,            // same as ['left', 'center', 'right', 'wide', 'full']
+		align: ['center', 'full'],
 		alignWide: true,
 		anchor: true,
 		customClassName: true,
