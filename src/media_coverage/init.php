@@ -139,6 +139,7 @@ class Media_Coverage {
 			'publicly_queryable'  => true,
 			'show_in_nav_menus'   => false,
 			'show_in_rest'        => true,
+			'show_in_menu'        => Plugin::NAME,
 			'menu_position'       => 200,
 			'menu_icon'           => 'dashicons-admin-media',
 			'rewrite'             => array( 'slug' => 'media-coverage' ),

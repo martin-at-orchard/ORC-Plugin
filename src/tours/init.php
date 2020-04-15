@@ -119,6 +119,7 @@ class Tours {
 			'publicly_queryable'  => true,
 			'show_in_nav_menus'   => false,
 			'show_in_rest'        => true,
+			'show_in_menu'        => Plugin::NAME,
 			'menu_position'       => 200,
 			'menu_icon'           => 'dashicons-images-alt',
 			'rewrite'             => array( 'slug' => 'tours' ),

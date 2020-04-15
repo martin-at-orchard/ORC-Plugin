@@ -5,7 +5,7 @@
  * Description: Gutenberg plugin created via create-guten-block that contains all the custom code for the Orchard Recovery Center Website
  * Author: Martin Wedepohl
  * Author URI: https://wedepohlengineering.com/
- * Version: 0.1.12
+ * Version: 0.1.13
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -28,17 +28,29 @@ require __DIR__ . '/vendor/autoload.php';
 class Plugin {
 
 	const NAME                   = 'orc';
+	const VERSION                = '0.1.13';
 	const BLOCKS_NAME            = 'orc-blocks';
 	const TEXT_DOMAIN            = 'orc-plugin';
+	const SETTINGS_KEY           = 'orc-options';
+	const SETTINGS               = 'orc-settings';
 	const FRONTEND_STYLE_HANDLE  = 'orc-plugin-style';
 	const BACKEND_STYLE_HANDLE   = 'orc-plugin-editor-style';
 	const BACKEND_SCRIPT_HANDLE  = 'orc-plugin-script';
 	const FRONTEND_SCRIPT_HANDLE = 'orc-frontend-script';
 
 	/**
+	 * The basename for the plugin.
+	 *
+	 * @var string $basename The Basename for the plugin.
+	 */
+	public static $basename = null;
+
+	/**
 	 * Class constructor
 	 */
 	public function __construct() {
+
+		self::$basename = plugin_basename( __FILE__ );
 
 		add_action( 'init', array( $this, 'enqueue' ) );
 		add_filter( 'block_categories', array( $this, 'block_category' ), 10, 2 );
@@ -122,6 +134,7 @@ new Plugin();
  * Plugin classes.
  */
 
+new Settings( Plugin::NAME );
 new ColorPicker();
 new Debug();
 $shorcodes = new Shortcodes();
@@ -130,10 +143,10 @@ $shorcodes->initialize();
 /**
  * Block Initializer.
  */
-new Staff();
-new Programs();
 new Admissions();
+new Media_Coverage();
+new Programs();
+new Staff();
 new Testimonials();
 new Tours();
-new Media_Coverage();
 new Videos();

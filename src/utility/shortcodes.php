@@ -50,7 +50,11 @@ class Shortcodes {
 		);
 
 		if ( $atts['year'] <= 0 ) {
-			$html = 'ERROR: A year is required';
+			$html = __( 'ERROR: A year is required', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+		} elseif ( $atts['month'] < 1 || $atts['month'] > 12 ) {
+			$html = __( 'ERROR: Month must be in the range (1-12) found: ', Plugin::TEXT_DOMAIN ) . $atts['month']; // phpcs:ignore
+		} elseif ( $atts['day'] < 1 || $atts['day'] > 31 ) {
+			$html = __( 'ERROR: Day must be in the range (1-31) found: ', Plugin::TEXT_DOMAIN ) . $atts['day']; // phpcs:ignore
 		} else {
 			$now      = current_time( 'Y-m-d H:i:s' );
 			$now_date = new \DateTime( $now );

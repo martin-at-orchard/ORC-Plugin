@@ -155,6 +155,7 @@ class Videos {
 			'publicly_queryable'  => true,
 			'show_in_nav_menus'   => false,
 			'show_in_rest'        => true,
+			'show_in_menu'        => Plugin::NAME,
 			'menu_position'       => 200,
 			'menu_icon'           => 'dashicons-video-alt',
 			'rewrite'             => array( 'slug' => 'videos' ),

@@ -165,6 +165,7 @@ class Staff {
 			'publicly_queryable'  => true,
 			'show_in_nav_menus'   => false,
 			'show_in_rest'        => true,
+			'show_in_menu'        => Plugin::NAME,
 			'menu_position'       => 200,
 			'menu_icon'           => 'dashicons-groups',
 			'rewrite'             => array( 'slug' => 'staff_members' ),
