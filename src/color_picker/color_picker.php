@@ -30,7 +30,7 @@ class ColorPicker {
 
 		if ( is_admin() ) {
 
-			$scipt = '/' . Plugin::NAME . '/color_picker/color_picker.js';
+			$script = '/color_picker/color_picker.js';
 
 			// Add the color picker css file.
 			wp_enqueue_style( 'wp-color-picker' );

@@ -6,8 +6,15 @@
 import './editor.scss';
 import './style.scss';
 
-const { __ }                = wp.i18n;   // Import __() from wp.i18n
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+const { __ }                = wp.i18n;
+const { registerBlockType } = wp.blocks;
+const { InspectorControls } = wp.editor;
+const { Fragment }          = wp.element;
+const {
+	RadioControl,
+	PanelBody,
+	PanelRow 
+} = wp.components;
 
 registerBlockType( 'orc/testimonials', {
 	title: __( 'Testimonials' ),   // Block title.
@@ -29,39 +36,62 @@ registerBlockType( 'orc/testimonials', {
 
 	/**
 	 * Attributes for the block
-	 * 
-	 * christmas     - Christmas testimonial
 	 */
 	attributes: {
 		christmas: {
-			type: 'string'
+			type: 'string',
+			default: '0'
+		},
+		testimonialType: {
+			type: 'string',
+			default: '(All)'
 		}
 	},
 
 	edit: ( props ) => {
 
-		// When the christmas checkbox has changed, update.
-		function updateChristmas( ) {
-			
-			if( '1' === props.attributes.christmas ) {
-				props.setAttributes( { christmas: '0' } );
-			} else {
-				props.setAttributes( { christmas: '1' } );
-			}
-			
-		}
-
-		let checked = '1' === props.attributes.christmas ? 'checked' : ''
+		const {
+			className,
+			setAttributes
+		} = props;
+		const {
+			christmas,
+			testimonialType
+		} = props.attributes;
 
 		// Render the block in the editor.
 		return (
-			<div className={ props.className }>
-				<label>
-					<input type="checkbox" checked={ checked } value="1" onChange={ updateChristmas } />
-					Display Christmas Testimonials
-				</label>
+			<Fragment>
 
-			</div>
+				<InspectorControls style = { { marginBottom: '40px' } }>
+					<PanelBody title = { 'Testimonial type' }>
+						<PanelRow>
+							<RadioControl
+								label = 'Testimonial type'
+								selected = { christmas }
+								options = { [
+									{ label: 'Display Normal Testimonial', value: '0' },
+									{ label: 'Display Christmas Testimonial', value: '1' }
+								] }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											christmas: option,
+											testimonialType: ('0' === option) ? '(All)' : '(Christmas)'
+										})
+									}
+								}
+							/>
+						</PanelRow>
+					</PanelBody>
+				</InspectorControls>
+
+				<div className={ className }>
+					<label>
+						Display Testimonials {testimonialType}
+					</label>
+				</div>
+			</Fragment>
 		);
 	},
 

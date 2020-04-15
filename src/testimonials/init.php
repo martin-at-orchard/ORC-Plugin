@@ -62,7 +62,7 @@ class Testimonials {
 			'posts_per_page' => -1,
 		);
 
-		if ( '1' === $attributes['christmas'] ) {
+		if ( isset( $attributes['christmas'] ) && '1' === $attributes['christmas'] ) {
 			$args['meta_key']   = 'orc-testimonials-christmas'; // phpcs:ignore
 			$args['meta_value'] = 1; // phpcs:ignore
 		}

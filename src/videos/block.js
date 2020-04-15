@@ -10,6 +10,13 @@ import './style.scss';
 
 const { __ }                = wp.i18n;
 const { registerBlockType } = wp.blocks;
+const { InspectorControls } = wp.editor;
+const { Fragment }          = wp.element;
+const {
+	TextControl,
+	PanelBody,
+	PanelRow 
+} = wp.components;
 
 registerBlockType( 'orc/videos', {
 	title:     __( 'ORC Videos' ),
@@ -22,7 +29,11 @@ registerBlockType( 'orc/videos', {
 	],
 
 	supports: {
-		align: ['left', 'center', 'right'],
+		align: [
+			'left',
+			'center',
+			'right'
+		],
 		anchor: true,
 		customClassName: true,
 		html: false,
@@ -36,55 +47,76 @@ registerBlockType( 'orc/videos', {
 	 */
 	attributes: {
 		width: {
-			type: 'string'
+			type: 'string',
+			default: '426'
 		},
 		height: {
-			type: 'string'
+			type: 'string',
+			default: '240'
+		},
+		dimensions: {
+			type: 'string',
+			default: '(426 x 240)'
 		}
 	},
 
 	edit: ( props ) => {
-		// When the width has changed, update the attribute.
-		function updateWidth( e ) {
-			props.setAttributes( {
-				width: e.target.value
-			} );
-		}
 
-		// When the height has changed, update the attribute.
-		function updateHeight( e ) {
-			props.setAttributes( {
-				height: e.target.value
-			} );
-		}
-
-		let width = 320;		// Default width
-		if ( props.attributes.width ) {
-			width = props.attributes.width;
-		}
-
-		let height = 240;		// Default height
-		if ( props.attributes.height ) {
-			height = props.attributes.height;
-		}
+		const {
+			className,
+			setAttributes
+		} = props;
+		const {
+			width,
+			height,
+			dimensions
+		} = props.attributes;
 
 		// Render the block in the editor.
 		return (
-			<div className={ props.className }>
-				<label>
-					Display Videos
-				</label>
-				<br />
-				<label>
-					Video width (px): 
-				</label>
-				<input type="number" class="video-width" onChange={ updateWidth } value={ width } min="100" max="1920" step="1" />
-				<br />
-				<label>
-					Video height (px): 
-				</label>
-				<input type="number" class="video-height" onChange={ updateHeight } value={ height } min="100" max="1920" step="1" />
-			</div>
+			<Fragment>
+
+				<InspectorControls>
+					<PanelBody title = { 'Video Dimensions' }>
+						<PanelRow>
+							<TextControl
+								label = 'Video width (px)'
+								type = 'number'
+								min = '0'
+								max = '1920'
+								onChange = { ( value ) => {
+									setAttributes( {
+										width: value,
+										dimensions: '(' + value + ' x ' + height + ')'
+									} )
+								} }
+								value = { width }
+							/>
+						</PanelRow>
+						<PanelRow>
+							<TextControl
+								label = 'Video height (px)'
+								type = 'number'
+								min = '0'
+								max = '1920'
+								onChange = { ( value ) => {
+									setAttributes( {
+										height: value,
+										dimensions: '(' + width + ' x ' + value + ')'
+									} )
+								} }
+								value = { height }
+							/>
+						</PanelRow>
+					</PanelBody>
+				</InspectorControls>
+
+				<div className={ className }>
+					<label>Display Videos {dimensions}</label>
+				</div>
+
+			</Fragment>
+
 		);
 	},
 

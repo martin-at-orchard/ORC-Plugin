@@ -10,6 +10,13 @@ import './style.scss';
 
 const { __ }                = wp.i18n;
 const { registerBlockType } = wp.blocks;
+const { InspectorControls } = wp.editor;
+const { Fragment }          = wp.element;
+const {
+	SelectControl,
+	PanelBody,
+	PanelRow 
+} = wp.components;
 
 registerBlockType( 'orc/staff', {
 	title:     __( 'ORC Staff' ),
@@ -30,84 +37,85 @@ registerBlockType( 'orc/staff', {
 	},
 
 	/**
-	 * Attributes for the block
-	 * 
-	 * departments        - List of departments
-	 * selectedDepartment - Selected department
-	 * showHomePage       - Staff should be shown on home page
+	 * Attributes for the block.
 	 */
 	attributes: {
-		departments: {
-			type: 'object'
-		},
 		selectedDepartment: {
-			type: 'string'
+			type: 'string',
+			default: '0'
 		},
-		showHomePage: {
-			type: 'string'
+		departmentName: {
+			type: 'string',
+			default: 'All Staff'
 		}
 	},
 
+	/**
+	 * Backend editor.
+	 */
 	edit: ( props ) => {
 
-		// If we don't have a list of the departments get it.
-		if ( ! props.attributes.departments ) {
-			wp.apiFetch( {
-				url: '/wp-json/wp/v2/orc-departments'
-			} ).then( departments => {
-				props.setAttributes( {
-					departments: departments
-				} )
-			} );
-		}
-		
-		// No departments returned yet.
-		if ( ! props.attributes.departments ) {
-			return 'Loading ...';
-		}
+		const {
+			setAttributes,
+			className,
+		} = props;
+		const {
+			selectedDepartment,
+			departmentName
+		} = props.attributes;
 
-		// No departments have been created yet.
-		if ( props.attributes.departments && 0 === props.attributes.departments.length ) {
-			return 'No departments';
-		}
-
-		// When the departments select has changed, update the selected department.
-		function updateDepartment( e ) {
-			props.setAttributes( {
-				selectedDepartment: e.target.value
+		// Create the select box for the staff departments.
+		let departmentNames = [];
+		let options = [{
+			key: 'all',
+			label: 'All Staff',
+			value: 0
+		}];
+		departmentNames[0] = 'All Staff';
+		options.push( {
+			key: 'home',
+			label: 'Home Page Staff ONLY',
+			value: -1
+		} );
+		departmentNames[-1] = 'Home Page Staff ONLY';
+		for ( const D of departments ) {
+			options.push( {
+				key: D.key,
+				label: D.label,
+				value: D.value
 			} );
+			departmentNames[D.value] = D.label;
 		}
 
 		// Render the block in the editor.
 		return (
-			<div className={ props.className }>
-				<label>
-					Display staff in department: 
-				</label>
-				<select class="department-select" onChange={ updateDepartment } value={ props.attributes.selectedDepartment }>
-					<optgroup label="All">
-						<option value="0" key="0">
-							All Departments
-						</option>
-					</optgroup>
-					<optgroup label="Departments">
-						{
-							props.attributes.departments.map( department => {
-								return (
-									<option value={ department.id } key={ department.id }>
-										{ department.name }
-									</option>
-								)
-							} )
-						}
-					</optgroup>
-					<optgroup label="Homepage">
-						<option value="-1" key="-1">
-							Home Page Only
-						</option>
-					</optgroup>
-				</select>
-			</div>
+			<Fragment>
+
+				<InspectorControls>
+					<PanelBody title = { 'Staff Display type' }>
+						<PanelRow>
+							<SelectControl
+								label = 'Staff to display'
+								value = { selectedDepartment }
+								options = { options }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											selectedDepartment: option,
+											departmentName: departmentNames[option]
+										})
+									}
+								}
+							/>
+						</PanelRow>
+					</PanelBody>
+				</InspectorControls>
+
+				<div className={ className }>
+					<label>Display {departmentName}</label>
+				</div>
+
+			</Fragment>
 		);
 	},
 

@@ -34,9 +34,7 @@ registerBlockType( 'orc/tours', {
 		// Render the block in the editor.
 		return (
 			<div className={ props.className }>
-				<label>
-					Display Tours
-				</label>
+				<label>Display Tours</label>
 			</div>
 		);
 	},

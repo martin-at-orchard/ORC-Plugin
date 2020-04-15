@@ -44,9 +44,7 @@ registerBlockType( 'orc/admissions', {
 		// Render the block in the editor.
 		return (
 			<div className={ props.className }>
-				<label>
-					Display Admissions
-				</label>
+				<label>Display Admissions</label>
 			</div>
 		);
 	},

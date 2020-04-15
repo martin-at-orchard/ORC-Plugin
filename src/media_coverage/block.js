@@ -34,9 +34,7 @@ registerBlockType( 'orc/media-coverage', {
 		// Render the block in the editor.
 		return (
 			<div className={ props.className }>
-				<label>
-					Display Media Coverage
-				</label>
+				<label>Display Media Coverage</label>
 			</div>
 		);
 	},

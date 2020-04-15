@@ -44,8 +44,11 @@ class Staff {
 	 * Register the block on the server-side to ensure that the block
 	 * scripts and styles are enqueued when the editor loads.
 	 * Provides a render function for the front end.
+	 * In addition retrieves the list of staff departments and passes them to the JavaScritp code.
 	 */
 	public function register() {
+
+		global $wpdb;
 
 		register_block_type(
 			Plugin::NAME . '/staff',
@@ -56,6 +59,12 @@ class Staff {
 				'render_callback' => array( $this, 'render' ),
 			)
 		);
+
+		// Get the list of staff departments.
+		$results = $wpdb->get_results( "SELECT tt.term_id AS `value`, t.name AS `label`, t.slug AS `key` FROM {$wpdb->prefix}terms t INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id=tt.term_id WHERE tt.taxonomy='orc-departments' ORDER BY t.name" );
+
+		// Pass the staff departments to JavaScript.
+		wp_localize_script( Plugin::BACKEND_SCRIPT_HANDLE, 'departments', $results );
 
 	}
 

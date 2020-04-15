@@ -34,9 +34,7 @@ registerBlockType( 'orc/programs', {
 		// Render the block in the editor.
 		return (
 			<div className={ props.className }>
-				<label>
-					Display Programs
-				</label>
+				<label>Display Programs</label>
 			</div>
 		);
 	},

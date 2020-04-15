@@ -5,7 +5,7 @@
  * Description: Gutenberg plugin created via create-guten-block that contains all the custom code for the Orchard Recovery Center Website
  * Author: Martin Wedepohl
  * Author URI: https://wedepohlengineering.com/
- * Version: 0.1.10
+ * Version: 0.1.11
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
