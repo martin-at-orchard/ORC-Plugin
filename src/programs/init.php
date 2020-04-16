@@ -22,7 +22,7 @@ class Programs {
 	 */
 	public function __construct() {
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'init', array( $this, 'register' ) );
 		add_action( 'init', array( $this, 'create_posttype' ) );
 		add_action( 'add_meta_boxes_' . self::POST_TYPE, array( $this, 'meta_box' ) );
@@ -34,14 +34,16 @@ class Programs {
 	/**
 	 * Enqueue all the frontend styles and scripts used by the plugin.
 	 */
-	public function enqueue_frontend() {
+	public function enqueue() {
+
+		$script = '../dist/programs.min.js';
 
 		// Register scripts for the backend of the website.
 		wp_enqueue_script(
-			'orc-program-js',
-			plugins_url( 'programs/frontend.js', dirname( __FILE__ ) ),
+			'orc-programs',
+			plugins_url( $script, dirname( __FILE__ ) ),
 			array(),
-			filemtime( plugin_dir_path( __DIR__ ) . 'programs/frontend.js' ),
+			true === Plugin::DEVELOPMENT ? ( filemtime( plugin_dir_path( __DIR__ ) . $script ) ) : Plugin::VERSION,
 			true
 		);
 

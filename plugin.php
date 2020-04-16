@@ -5,7 +5,7 @@
  * Description: Gutenberg plugin created via create-guten-block that contains all the custom code for the Orchard Recovery Center Website
  * Author: Martin Wedepohl
  * Author URI: https://wedepohlengineering.com/
- * Version: 0.1.13
+ * Version: 0.1.14
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -27,8 +27,9 @@ require __DIR__ . '/vendor/autoload.php';
  */
 class Plugin {
 
+	const DEVELOPMENT            = true;
 	const NAME                   = 'orc';
-	const VERSION                = '0.1.13';
+	const VERSION                = '0.1.14';
 	const BLOCKS_NAME            = 'orc-blocks';
 	const TEXT_DOMAIN            = 'orc-plugin';
 	const SETTINGS_KEY           = 'orc-options';
@@ -71,7 +72,7 @@ class Plugin {
 			self::FRONTEND_STYLE_HANDLE,
 			plugins_url( $frontend_style, dirname( __FILE__ ) ),
 			is_admin() ? array( 'wp-editor' ) : null,
-			filemtime( plugin_dir_path( __DIR__ ) . $frontend_style )
+			true === self::DEVELOPMENT ? ( filemtime( plugin_dir_path( __DIR__ ) . $frontend_style ) ) : self::VERSION
 		);
 
 		// Register block editor styles for the backend of the website.
@@ -79,7 +80,7 @@ class Plugin {
 			self::BACKEND_STYLE_HANDLE,
 			plugins_url( $backend_style, dirname( __FILE__ ) ),
 			array( 'wp-edit-blocks' ),
-			filemtime( plugin_dir_path( __DIR__ ) . $backend_style )
+			true === self::DEVELOPMENT ? ( filemtime( plugin_dir_path( __DIR__ ) . $backend_style ) ) : self::VERSION
 		);
 
 		// Register scripts for the backend of the website.
@@ -87,7 +88,7 @@ class Plugin {
 			self::BACKEND_SCRIPT_HANDLE,
 			plugins_url( $backend_js, dirname( __FILE__ ) ),
 			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-			filemtime( plugin_dir_path( __DIR__ ) . $backend_js ),
+			true === self::DEVELOPMENT ? ( filemtime( plugin_dir_path( __DIR__ ) . $backend_js ) ) : self::VERSION,
 			true
 		);
 

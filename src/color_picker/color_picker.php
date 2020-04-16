@@ -30,7 +30,7 @@ class ColorPicker {
 
 		if ( is_admin() ) {
 
-			$script = '/color_picker/color_picker.js';
+			$script = '../dist/color_picker.min.js';
 
 			// Add the color picker css file.
 			wp_enqueue_style( 'wp-color-picker' );
@@ -38,9 +38,9 @@ class ColorPicker {
 			// Include our custom jQuery file with WordPress Color Picker dependency.
 			wp_enqueue_script(
 				'orc-color-picker',
-				plugins_url( 'color_picker.js', __FILE__ ),
+				plugins_url( $script, dirname( __FILE__ ) ),
 				array( 'jquery', 'wp-color-picker' ),
-				filemtime( plugin_dir_path( __DIR__ ) . $script ),
+				true === Plugin::DEVELOPMENT ? ( filemtime( plugin_dir_path( __DIR__ ) . $script ) ) : Plugin::VERSION,
 				true
 			);
 		}

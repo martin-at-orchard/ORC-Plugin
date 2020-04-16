@@ -1,25 +1,138 @@
+# Orchard Recovery Center Plugin (orc)
+
+```
+Contributors: martin-wedepohl
+Tags: ORC
+Requires at least: 4.7
+Tested up to: 5.4
+Requires PHP: 5.6
+Stable tag: 0.1.14
+```
+
+## Description
+
+orc is a gutenburg plugin containing all the blocks and custom post types used by the Orchard Recovery Website.
+
 This project was bootstrapped with [Create Guten Block](https://github.com/ahmadawais/create-guten-block).
 
-Below you will find some information on how to run scripts.
+## Installation
 
->You can find the most recent version of this guide [here](https://github.com/ahmadawais/create-guten-block).
+### Clone the git repository
 
-## 👉  `npm start`
-- Use to compile and run the block in development mode.
-- Watches for any changes and reports back any errors in your code.
+```bash
+git clone git@github.com:martin-at-orchard/ORC-Plugin.git orc
+```
 
-## 👉  `npm run build`
-- Use to build production code for your block inside `dist` folder.
-- Runs once and reports back the gzip file sizes of the produced code.
+### Configure the application
 
-## 👉  `npm run eject`
-- Use to eject your plugin out of `create-guten-block`.
-- Provides all the configurations so you can customize the project as you want.
-- It's a one-way street, `eject` and you have to maintain everything yourself.
-- You don't normally have to `eject` a project because by ejecting you lose the connection with `create-guten-block` and from there onwards you have to update and maintain all the dependencies on your own.
+```bash
+cd orc
+npm install
+composer install
+```
 
----
+## Development
 
-###### Feel free to tweet and say 👋 at me [@MrAhmadAwais](https://twitter.com/mrahmadawais/)
+### After adding a new class
 
-[![npm](https://img.shields.io/npm/v/create-guten-block.svg?style=flat-square)](https://www.npmjs.com/package/create-guten-block) [![npm](https://img.shields.io/npm/dt/create-guten-block.svg?style=flat-square&label=downloads)](https://www.npmjs.com/package/create-guten-block)  [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/ahmadawais/create-guten-block) [![Tweet for help](https://img.shields.io/twitter/follow/mrahmadawais.svg?style=social&label=Tweet%20@MrAhmadAwais)](https://twitter.com/mrahmadawais/) [![GitHub stars](https://img.shields.io/github/stars/ahmadawais/create-guten-block.svg?style=social&label=Stars)](https://github.com/ahmadawais/create-guten-block/stargazers) [![GitHub followers](https://img.shields.io/github/followers/ahmadawais.svg?style=social&label=Follow)](https://github.com/ahmadawais?tab=followers)
+```
+composer dump
+```
+
+### If adding new JavaScript for the front end or custom post types
+
+Modify the gulpfile.js to compile and minify the new script then run gulp
+
+```
+gulp js
+```
+
+### If changing/adding any blocks
+
+In plugin.php change the constant DEVELOPMENT to true
+
+```
+npm run start
+```
+
+### For production build
+
+In plugin.php change the constant DEVELOPMENT to false
+
+```
+npm run build
+```
+
+## Frequently Asked Questions (FAQ)
+
+### Where can you get support
+
+If you get stuck, or have questions you can email Martin Wedepohl martin@wedepohlengineering.com or go to https://github.com/martin-at-orchard/ORC-Plugin and open a new Issue.
+
+## Changelog
+
+### 2020-04-15 Version: 0.1.14
+* Updated ReadMe
+* Removed default blocks directory
+* Moved JavaScript from directories into common source directory
+* Use gulp to compile and minify non-block JavaScript
+
+### 2020-04-15 Version: 0.1.13
+* Added Instructions page
+* Added options settings page
+* Error checking in orc_years_since shortcode
+* Moved all custom post types under the ORC Plugin menu
+
+### 2020-04-14 Version: 0.1.12
+* Fixed phpcs error
+
+### 2020-04-14 Version: 0.1.11
+* Settings for videos, testimonials and staff moved to the blocks panel
+* Staff departments fetched in php and passed to JavaScript
+
+### 2020-04-12 Version: 0.1.10
+* Added color picker
+* Wide class moved to global
+* Programs now has color and border width
+* Render adds wide-class for full width program
+
+### 2020-04-10
+* Improvements to the programs render
+* Added frontend javascript
+
+### 2020-04-08 Version: 0.1.9
+* Videos have the ability to have width, height and alignment
+
+### 2020-04-07 Version: 0.1.8
+* Added Videos
+
+### 2020-04-07 Version: 0.1.7
+* Added Media Coverage
+
+### 2020-04-07 Version: 0.1.6
+* FIX: Only remove padding for the programs featured image
+* Added Tours
+
+### 2020-04-07 Version: 0.1.5
+* Added Testimonials
+
+### 2020-04-07 Version: 0.1.4
+* Added Admissions
+* FIX: Class error in scss
+* FIX: Typo with register block type
+
+### 2020-04-07 Version: 0.1.3
+* Added Programs
+
+### 2020-04-07 Version: 0.1.2
+* Added shortcodes class
+* Added debug class
+* Added staff block
+
+### 2020-04-06 Version: 0.1.1
+* Use namespaces
+* Use classes
+* Demo block created
+
+### 2020-04-06 Version: 0.1.0
+* Initial commit
