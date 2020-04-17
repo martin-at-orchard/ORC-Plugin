@@ -93,7 +93,9 @@ class Programs {
 		\ob_start();
 		echo '<div class="wp-block-orc-programs ' . $wide_class . '">';      // phpcs:ignore
 		foreach ( $posts as $post ) {
-			echo '<div class="program" id="program-' . $post->ID . '">';     // phpcs:ignore
+			$color = get_post_meta( $post->ID, 'orc-program-color', true );
+			$style = 'style="border-color: ' . $color . ';"';
+			echo '<div class="program" id="program-' . $post->ID . '" ' . $style . '>';     // phpcs:ignore
 			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo get_the_post_thumbnail( $post->ID );
 			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';

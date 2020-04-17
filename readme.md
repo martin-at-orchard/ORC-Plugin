@@ -71,6 +71,11 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-16 Version: 0.1.15
+* Added border to programs
+* Changed programs to use grid rather than flex
+* Formatting changes
+
 ### 2020-04-15 Version: 0.1.14
 * Updated ReadMe
 * Removed default blocks directory

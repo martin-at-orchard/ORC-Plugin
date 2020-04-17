@@ -5,62 +5,50 @@
  */
 
 .wp-block-orc-programs  {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
+	display: grid;
+	grid-template-columns: repeat( auto-fill, minmax( 350px, 1fr ) );
 
 	.program {
-		z-index: 1000;
-		flex-basis: 100%;
+		z-index: 2;
 		margin: 1em;
 		padding: 1em;
 		text-align: center;
-		border: 1px solid #cccccc;
+		border-style: solid;
+		border-width: 5px;
+		border-radius: 10px;
+		transition: all 0.5s;
+
+		h3 {
+			margin: 0.6rem auto 1.3rem;
+		}
 
 		img {
-			width: 100px;
+			width: 150px;
 			margin: 0 auto;
 		}
 
 		input[type=button] {
 			font-size: 1rem;
-			background: #e6e6e6;
+			background: #ccc;
+			margin: 0.4rem auto 1rem;
+			padding: 0.5em 1em;
+			color: black;
+			border-radius: 10px;
+			transition: all 0.5s;
 		}
 
 		input[type=button]:hover {
-			background: #ccc;
-			box-shadow: 5px 5px 5px 2px #ccc;
+			box-shadow: inset 0 0 10px 2px #888;
+			font-size: 0.95rem;
 		}
 
 	}
 
 	.program:hover {
+		position: relative;
 		cursor: pointer;
-		box-shadow: 10px 10px 10px 2px #ccc;
-	}
-
-	@media only screen and (min-width: 600px) {
-		.program {
-			flex-basis: 42%;
-		}
-	}
-
-	@media only screen and (min-width: 900px) {
-			.program {
-			flex-basis: 28%;
-		}
-	}
-
-	@media only screen and (min-width: 1200px) {
-			.program {
-			flex-basis: 21%;
-		}
-	}
-
-	@media only screen and (min-width: 1600px) {
-		.program {
-			flex-basis: 17%;
-		}
+		box-shadow: inset 0 0 10px 5px #888;
+		border: 5px solid rgba(128, 128, 128, 0.1) !important;
 	}
 
 }
