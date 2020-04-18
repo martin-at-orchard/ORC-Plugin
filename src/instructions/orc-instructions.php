@@ -75,7 +75,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</ul>
 					</li>
 					<li>
-						<?php _e( '[orc_contact type="T" icon="I" prefix="P" suffix="S"]', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+						<?php _e( '[orc_contact type="T" link="L" icon="I" prefix="P" suffix="S" class="C"]', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
 						<p><?php _e( 'Display a contact type</p>', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
 						<p><?php _e( 'Where:', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
 						<ul>
@@ -87,8 +87,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<li>fax - <?php _e('Fax Number', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
 							</ul>
 							<li><?php _e('- I is to display an icon (optional - defaults to "false")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+							<li><?php _e('- L is to display a clickable link (optional - defaults to "false")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
 							<li><?php _e('- P is prefix (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
 							<li><?php _e('- S is suffix (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+							<li><?php _e('- C is the paragraph class (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
 						</ul>
 					</li>
 				</ul>

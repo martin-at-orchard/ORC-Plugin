@@ -71,6 +71,9 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-17 Version: 0.1.18
+* Added options for paragraph class and clickable link for orc_contact shortcode
+
 ### 2020-04-17 Version: 0.1.17
 * Programs use flex instead of grid
 
