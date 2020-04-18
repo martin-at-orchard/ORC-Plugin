@@ -71,6 +71,10 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-17 Version: 0.1.16
+* Shortcode added for phone/fax/text numbers
+* Added Font Awesome Icons
+
 ### 2020-04-16 Version: 0.1.15
 * Added border to programs
 * Changed programs to use grid rather than flex

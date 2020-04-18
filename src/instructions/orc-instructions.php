@@ -74,6 +74,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<li><?php _e('- D is the day number (1-31) (optional - defaults to 1)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
 						</ul>
 					</li>
+					<li>
+						<?php _e( '[orc_contact type="T" icon="I" prefix="P" suffix="S"]', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+						<p><?php _e( 'Display a contact type</p>', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
+						<p><?php _e( 'Where:', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
+						<ul>
+							<li><?php _e('- T is the contact type (required)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+							<ul>
+								<li>phone - <?php _e('Local Phone Number', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+								<li>tollfree - <?php _e('Toll-Free Phone Number', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+								<li>text - <?php _e('SMS Text Number', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+								<li>fax - <?php _e('Fax Number', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+							</ul>
+							<li><?php _e('- I is to display an icon (optional - defaults to "false")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+							<li><?php _e('- P is prefix (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+							<li><?php _e('- S is suffix (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</li>
@@ -85,12 +102,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<h2><?php _e( 'ORC Actions', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></h2>
 				<p><?php _e( 'Actions available for use', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
 				<ul class="info">
-					<li>
-						<?php _e( 'orc_before_years_since - At the beginning of the orc_years_since shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
-					</li>
-					<li>
-						<?php _e( 'orc_after_years_since - At the end of the orc_years_since shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
-					</li>
+					<li><?php _e( 'orc_before_years_since - At the beginning of the orc_years_since shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_after_years_since - At the end of the orc_years_since shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_contact - At the beginning of the orc_contact shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_contact - At the end of the orc_contact shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
 				</ul>
 			</div>
 		</li>
@@ -103,9 +118,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<p><?php _e( 'Filters available for use', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
 				<ul class="info">
 					<li><?php _e( 'orc_validate_data, $output, $input - At the end of the validate data in the settings ($output array of validated data from $input). ', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
-					<li>
-						<?php _e( 'orc_years_since, $html - At the end of the orc_years_since shortcode ($html string)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
-					</li>
+					<li><?php _e( 'orc_years_since, $html - At the end of the orc_years_since shortcode ($html string)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_contact, $html - At the end of the orc_contact shortcode ($html string)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
 				</ul>
 			</div>
 		</li>
