@@ -16,10 +16,10 @@ class Shortcodes {
 
 	/**
 	 * Create a href link for a phone number
-	 * 
+	 *
 	 * @param string $contact The contact number.
 	 * @param string $type    The type of number (phone, sms, fax).
-	 * 
+	 *
 	 * @return string HTML link string
 	 */
 	private function create_link( $contact, $type ) {
@@ -56,11 +56,43 @@ class Shortcodes {
 	}
 
 	/**
+	 * Create a href link for a social contact
+	 *
+	 * @param string $link The social link.
+	 * @param string $type The type of social contact (facebook, instagram, twitter, youtube).
+	 *
+	 * @return string HTML link string
+	 */
+	private function create_social_link( $link, $type ) {
+
+		switch ( $type ) {
+			case 'facebook':
+				$href = '<a href="https://www.facebook.com/' . $link . '" target="_blank" title="Visit Orchard Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>';
+				break;
+			case 'instagram':
+				$href = '<a href="https://www.instagram.com/' . $link . '" target="_blank" title="Visit Orchard Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>';
+				break;
+			case 'twitter':
+				$href = '<a href="https://twitter.com/' . $link . '" target="_blank" title="Visit Orchard Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>';
+				break;
+			case 'youtube':
+				$href = '<a href="https://www.youtube.com/channel/' . $link . '" target="_blank" title="Visit Orchard YouTube"><i class="fa fa-youtube" aria-hidden="true"></i></a>';
+				break;
+			default:
+				$href = '';
+		}
+
+		return $href;
+
+	}
+
+	/**
 	 * Initialize the Shortcodes.
 	 */
 	public function initialize() {
 
 		add_shortcode( 'orc_contact', array( new Shortcodes(), 'contact' ) );
+		add_shortcode( 'orc_social', array( new Shortcodes(), 'social' ) );
 		add_shortcode( 'orc_years_since', array( new Shortcodes(), 'years_since' ) );
 
 	}
@@ -77,7 +109,7 @@ class Shortcodes {
 	 *        C is the class (optional Default='')
 	 *
 	 * @param array $atts Attributes passed in from the shortcode.
-	 * @return string Text string for the number of years or an error if the year is not supplied
+	 * @return string Text string for the contact link.
 	 */
 	public function contact( $atts ) {
 
@@ -94,7 +126,7 @@ class Shortcodes {
 				'class'  => '',
 			),
 			$atts,
-			'orc_before_contact'
+			'orc_contact'
 		);
 
 		$valid = true;
@@ -118,22 +150,24 @@ class Shortcodes {
 					case 'fax':
 						$icon = 'fax';
 						break;
+					default:
+						$html  = '<p>';
+						$html .= __( 'ERROR: Invalid contact type: ', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+						$html .= $atts['type'];
+						$html .= '</p>';
+						$valid = false;
 				}
 			} else {
 				$html  = '<p>';
 				$html .= __( 'ERROR: Invalid contact type: ', Plugin::TEXT_DOMAIN ); // phpcs:ignore
 				$html .= $atts['type'];
-				$html .= __( ' found', Plugin::TEXT_DOMAIN ); // phpcs:ignore
 				$html .= '</p>';
 				$valid = false;
 			}
 		}
 
 		if ( true === $valid ) {
-			$html = '';
-			if ( 'true' === $atts['icon'] ) {
-				$html .= '<i class="fa fa-' . $icon . '" aria-hidden="true"></i> ';
-			}
+			$html  = '';
 			$html .= $contact;
 			if ( 'true' === $atts['link'] ) {
 				$link = $this->create_link( $contact, $atts['type'] );
@@ -147,8 +181,11 @@ class Shortcodes {
 			if ( '' !== $atts['suffix'] ) {
 				$html .= ' ' . $atts['suffix'];
 			}
+			if ( 'true' === $atts['icon'] ) {
+				$html = '<i class="fa fa-' . $icon . '" aria-hidden="true"></i> ' . $html;
+			}
 			$class = ( '' === $atts['class'] ) ? '' : ' class="' . $atts['class'] . '"';
-			$html = '<p' . $class . '>' . $html . '</p>';
+			$html  = '<span' . $class . '>' . $html . '</span>';
 		}
 
 		do_action( 'orc_after_contact' );
@@ -159,7 +196,66 @@ class Shortcodes {
 
 	}
 
-/**
+	/**
+	 * Return the social link.
+	 *
+	 * Format [orc_social type="T" class="C"]
+	 * Where  T is the type of social link (required)
+	 *        C is the class (optional Default='')
+	 *
+	 * @param array $atts Attributes passed in from the shortcode.
+	 * @return string Text string for the social link.
+	 */
+	public function social( $atts ) {
+
+		do_action( 'orc_before_social' );
+
+		// Process the attributes.
+		$atts = shortcode_atts(
+			array(
+				'type'  => '',
+				'class' => '',
+			),
+			$atts,
+			'orc_social'
+		);
+
+		$valid = true;
+		$valid = true;
+		if ( '' === $atts['type'] ) {
+			$html  = '<p>';
+			$html  = __( 'ERROR: A contact type is required', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+			$html  = '</p>';
+			$valid = false;
+		} else {
+			$settings = get_option( Plugin::SETTINGS_KEY );
+			if ( isset( $settings[ $atts['type'] ] ) ) {
+				$contact = $settings[ $atts['type'] ];
+				$link    = $this->create_social_link( $contact, $atts['type'] );
+			} else {
+				$html  = '<p>';
+				$html .= __( 'ERROR: Invalid social contact type: ', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+				$html .= $atts['type'];
+				$html .= '</p>';
+				$valid = false;
+			}
+		}
+
+		if ( true === $valid ) {
+			$html  = $link;
+			$class = ( '' === $atts['class'] ) ? '' : ' class="' . $atts['class'] . '"';
+			$html  = '<span ' . $class . '>' . $html . '</span>';
+		}
+
+		do_action( 'orc_after_social' );
+
+		$html = apply_filters( 'orc_social', $html );
+
+		return $html;
+
+	}
+
+	/**
 	 * Calculate the number of years since a date.
 	 *
 	 * Format [orc_years_since year="Y" month="M" day="D"]

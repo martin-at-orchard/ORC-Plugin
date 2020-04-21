@@ -90,7 +90,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<li><?php _e('- L is to display a clickable link (optional - defaults to "false")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
 							<li><?php _e('- P is prefix (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
 							<li><?php _e('- S is suffix (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
-							<li><?php _e('- C is the paragraph class (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+							<li><?php _e('- C is the span class (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+						</ul>
+					</li>
+					<li>
+						<?php _e( '[orc_social type="T" class="C"]', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+						<p><?php _e( 'Display a social contact type</p>', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
+						<p><?php _e( 'Where:', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
+						<ul>
+							<li><?php _e('- T is the social contact type (required)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
+							<ul>
+								<li>facebook - <?php _e('Facebook Icon and Link', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+								<li>instagram - <?php _e('Instagram Icon and Link', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+								<li>twitter - <?php _e('Twitter Icon and Link', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+								<li>youtube - <?php _e('YouTube Icon and Link', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+							</ul>
+							<li><?php _e('- C is the span class (optional - defaults to "")', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>
 						</ul>
 					</li>
 				</ul>
@@ -106,8 +121,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<ul class="info">
 					<li><?php _e( 'orc_before_years_since - At the beginning of the orc_years_since shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
 					<li><?php _e( 'orc_after_years_since - At the end of the orc_years_since shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
-					<li><?php _e( 'orc_contact - At the beginning of the orc_contact shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
-					<li><?php _e( 'orc_contact - At the end of the orc_contact shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_before_contact - At the beginning of the orc_contact shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_after_contact - At the end of the orc_contact shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_before_social - At the beginning of the orc_socaial shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_after_social - At the end of the orc_social shortcode', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
 				</ul>
 			</div>
 		</li>
@@ -122,6 +139,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<li><?php _e( 'orc_validate_data, $output, $input - At the end of the validate data in the settings ($output array of validated data from $input). ', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
 					<li><?php _e( 'orc_years_since, $html - At the end of the orc_years_since shortcode ($html string)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
 					<li><?php _e( 'orc_contact, $html - At the end of the orc_contact shortcode ($html string)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
+					<li><?php _e( 'orc_social, $html - At the end of the orc_social shortcode ($html string)', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></li>
 				</ul>
 			</div>
 		</li>

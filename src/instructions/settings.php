@@ -156,6 +156,29 @@ class Settings {
 
 		$options = get_option( Plugin::SETTINGS_KEY );
 
+		$options = shortcode_atts(
+			array(
+				'local'          => '',
+				'tollfree'       => '',
+				'text'           => '',
+				'fax'            => '',
+				'facebook'       => '',
+				'instagram'      => '',
+				'twitter'        => '',
+				'youtube'        => '',
+				'main'           => '',
+				'xmas'           => '',
+				'google'         => '',
+				'facebook_app'   => '',
+				'facebook_pixel' => '',
+				'bing'           => '',
+				'linkedin'       => '',
+				'twitter_tag'    => '',
+			),
+			$options,
+			'register_settings_page'
+		);
+
 		register_setting(
 			Plugin::SETTINGS,
 			Plugin::SETTINGS_KEY,
@@ -228,6 +251,86 @@ class Settings {
 				'value'   => $options[ $id ],
 				'name'    => Plugin::SETTINGS_KEY . '[' . $id . ']',
 				'id'      => $id,
+			)
+		);
+
+		$id = 'facebook';
+		add_settings_field(
+			$id,
+			esc_html__( 'Facebook Link ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes'     => '',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'description' => 'ID is after https://facebook.com/',
+			)
+		);
+
+		$id = 'instagram';
+		add_settings_field(
+			$id,
+			esc_html__( 'Instagram Link ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes'     => '',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'description' => 'ID is after https://www.instagram.com/',
+			)
+		);
+
+		$id = 'instagram';
+		add_settings_field(
+			$id,
+			esc_html__( 'Instagram Link ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes'     => '',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'description' => 'ID is after https://www.instagram.com/',
+			)
+		);
+
+		$id = 'twitter';
+		add_settings_field(
+			$id,
+			esc_html__( 'Twitter Link ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes'     => '',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'description' => 'ID is after https://twitter.com/',
+			)
+		);
+
+		$id = 'youtube';
+		add_settings_field(
+			$id,
+			esc_html__( 'YouTube Channel ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes'     => '',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'description' => 'ID is after https://www.youtube.com/channel/',
 			)
 		);
 
@@ -350,7 +453,7 @@ class Settings {
 			)
 		);
 
-		$id = 'twitter';
+		$id = 'twitter_tag';
 		add_settings_field(
 			$id,
 			esc_html__( 'Twitter Universal Website Tag:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
@@ -385,6 +488,10 @@ class Settings {
 				case 'tollfree':
 				case 'text':
 				case 'fax':
+				case 'facebook':
+				case 'instagram':
+				case 'twitter':
+				case 'youtube':
 				case 'main':
 				case 'xmas':
 				case 'google':
@@ -392,7 +499,7 @@ class Settings {
 				case 'facebook_pixel':
 				case 'bing':
 				case 'linkedin':
-				case 'twitter':
+				case 'twitter_tag':
 					$output[ $id ] = sanitize_text_field( $value );
 					break;
 				default:
