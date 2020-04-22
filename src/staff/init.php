@@ -98,20 +98,30 @@ class Staff {
 		$posts = get_posts( $args );
 
 		\ob_start();
+		echo '<div class="wp-block-orc-staff">';
 		foreach ( $posts as $post ) {
+			$department_terms = get_the_terms( $post->ID, 'orc-departments' );
+			$staff_classes    = '';
+			if ( count( $department_terms ) > 0 ) {
+				foreach ( $department_terms as $term ) {
+					$staff_classes .= $term->slug . ' ';
+				}
+			}
+			$staff_classes  = trim( $staff_classes ); 
+			$staff_classes  = 'class="staff ' . $staff_classes . '"';
+			$staff_id       = 'id="staff-' . $post->ID . '"';
 			$position       = esc_attr( get_post_meta( $post->ID, 'orc-staff-position', true ) );
 			$qualifications = esc_attr( get_post_meta( $post->ID, 'orc-staff-qualifications', true ) );
-			$homepage       = esc_attr( get_post_meta( $post->ID, 'orc-staff-homepage', true ) );
-			$on_homepage    = ( '' === $homepage ) ? false : true;
-			echo '<h2>' . esc_attr( $post->post_title ) . '</h2>';
+			echo '<div ' . $staff_classes . ' ' . $staff_id . '>';  // phpcs:ignore
+			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo get_the_post_thumbnail( $post->ID );
-			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';
-			echo '<p>' . esc_attr( $position ) . '</p>';
-			echo '<p>' . esc_attr( $qualifications ) . '</p>';
-			echo '<p>' . esc_attr( $on_homepage ) . '</p>';
-			echo get_the_content( null, false, $post->ID ); // phpcs:ignore
-			echo '<hr>';
+			echo '<div class="position">' . esc_attr( $position ) . '</div>';
+			echo '<div class="qualifications">' . esc_attr( $qualifications ) . '</div>';
+			echo '<input type="button" value="Read More" />';
+			echo '</div> <!-- /.orc-staff -->';
 		}
+		echo '</div> <!-- /.wp-block-orc-staff -->';
 		return \ob_get_clean();
 
 	}
@@ -354,9 +364,13 @@ class Staff {
 		);
 
 		$args = array(
-			'labels'       => $labels,
-			'hierarchical' => true,
-			'show_in_rest' => true,
+			'labels'             => $labels,
+			'public'             => true,
+			'publicly_queryable' => false,
+			'show_in_nav_menus'  => false,
+			'show_in_rest'       => true,
+			'show_admin_column'  => true,
+			'hierarchical'       => true,
 		);
 
 		register_taxonomy( 'orc-departments', self::POST_TYPE, $args );

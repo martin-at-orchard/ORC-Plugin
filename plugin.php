@@ -5,7 +5,7 @@
  * Description: Gutenberg plugin created via create-guten-block that contains all the custom code for the Orchard Recovery Center Website
  * Author: Martin Wedepohl
  * Author URI: https://wedepohlengineering.com/
- * Version: 0.1.19
+ * Version: 0.1.20
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -29,7 +29,7 @@ class Plugin {
 
 	const DEVELOPMENT            = true;
 	const NAME                   = 'orc';
-	const VERSION                = '0.1.18';
+	const VERSION                = '0.1.20';
 	const BLOCKS_NAME            = 'orc-blocks';
 	const TEXT_DOMAIN            = 'orc-plugin';
 	const SETTINGS_KEY           = 'orc-options';
@@ -54,6 +54,7 @@ class Plugin {
 		self::$basename = plugin_basename( __FILE__ );
 
 		add_action( 'init', array( $this, 'enqueue' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend' ) );
 		add_filter( 'block_categories', array( $this, 'block_category' ), 10, 2 );
 
 	}
@@ -109,6 +110,24 @@ class Plugin {
 				'pluginDirUrl'  => plugin_dir_url( __DIR__ ),
 				// Add more data here that you want to access from `cgbGlobal` object.
 			)
+		);
+
+	}
+
+	/**
+	 * Enqueue all the styles and scripts used by the frontend of the website.
+	 */
+	public function enqueue_frontend() {
+
+		$frontend_js = '/' . self::NAME . '/dist/frontend.min.js';
+
+		// Register scripts for the frontend of the website.
+		wp_enqueue_script(
+			self::FRONTEND_SCRIPT_HANDLE,
+			plugins_url( $frontend_js, dirname( __FILE__ ) ),
+			array(),
+			true === self::DEVELOPMENT ? ( filemtime( plugin_dir_path( __DIR__ ) . $frontend_js ) ) : self::VERSION,
+			true
 		);
 
 	}

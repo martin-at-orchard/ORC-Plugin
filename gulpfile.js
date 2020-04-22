@@ -17,8 +17,8 @@ const { src, dest, task, series, watch, parallel } = require('gulp');
 
 // Javascript
 var jsColorPicker = 'color_picker.js';
-var jsPrograms    = 'programs.js';
-var jsFiles       = [jsColorPicker, jsPrograms];
+var jsFrontend    = 'frontend.js';
+var jsFiles       = [jsColorPicker, jsFrontend];
 var jsSrc         = 'src/js/';
 var jsDest        = 'dist/';
 

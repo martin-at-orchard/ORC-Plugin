@@ -22,31 +22,12 @@ class Programs {
 	 */
 	public function __construct() {
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'init', array( $this, 'register' ) );
 		add_action( 'init', array( $this, 'create_posttype' ) );
 		add_action( 'add_meta_boxes_' . self::POST_TYPE, array( $this, 'meta_box' ) );
 		add_action( 'save_post', array( $this, 'save_meta' ), 10, 2 );
 		add_filter( 'manage_edit-' . self::POST_TYPE . '_columns', array( $this, 'table_head' ) );
 		add_action( 'manage_' . self::POST_TYPE . '_posts_custom_column', array( $this, 'table_content' ), 10, 2 );
-	}
-
-	/**
-	 * Enqueue all the frontend styles and scripts used by the plugin.
-	 */
-	public function enqueue() {
-
-		$script = '../dist/programs.min.js';
-
-		// Register scripts for the backend of the website.
-		wp_enqueue_script(
-			'orc-programs',
-			plugins_url( $script, dirname( __FILE__ ) ),
-			array(),
-			true === Plugin::DEVELOPMENT ? ( filemtime( plugin_dir_path( __DIR__ ) . $script ) ) : Plugin::VERSION,
-			true
-		);
-
 	}
 
 	/**
@@ -96,11 +77,11 @@ class Programs {
 			$color = get_post_meta( $post->ID, 'orc-program-color', true );
 			$style = 'style="border-color: ' . $color . ';"';
 			echo '<div class="program" id="program-' . $post->ID . '" ' . $style . '>';     // phpcs:ignore
+			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo get_the_post_thumbnail( $post->ID );
 			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';
 			echo '<input type="button" value="View More" />';
-			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			echo '</div>';
 		}
 		echo '</div>';

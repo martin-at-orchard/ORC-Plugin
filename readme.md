@@ -71,6 +71,10 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-21 Version: 0.1.20
+* Improvements to the staff render function
+* Combined code for programs and staff javascript handling
+
 ### 2020-04-20 Version: 0.1.19
 * Added shortcode to get link for social links
 * Contacts shortcode returns a span rather than a paragraph
