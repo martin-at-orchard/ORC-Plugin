@@ -75,6 +75,12 @@ class Staff {
 	 */
 	public function render( $attributes ) {
 
+		$div = '<div class="wp-block-orc-staff';
+		if ( isset( $attributes['align'] ) ) {
+			$div .= ' ' . $attributes['align'] . '-align';
+		}
+		$div .= '">';
+
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
 			'post_status'    => array( 'publish' ),
@@ -98,7 +104,7 @@ class Staff {
 		$posts = get_posts( $args );
 
 		\ob_start();
-		echo '<div class="wp-block-orc-staff">';
+		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
 			$department_terms = get_the_terms( $post->ID, 'orc-departments' );
 			$staff_classes    = '';

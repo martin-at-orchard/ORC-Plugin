@@ -55,6 +55,12 @@ class Testimonials {
 	 */
 	public function render( $attributes ) {
 
+		$div = '<div class="wp-block-orc-testimonials';
+		if ( isset( $attributes['align'] ) ) {
+			$div .= ' ' . $attributes['align'] . '-align';
+		}
+		$div .= '">';
+
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
 			'post_status'    => array( 'publish' ),
@@ -70,15 +76,16 @@ class Testimonials {
 		$posts = get_posts( $args );
 
 		\ob_start();
+		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
-			$christmas             = esc_attr( get_post_meta( $post->ID, 'orc-testimonials-christmas', true ) );
-			$christmas_testimonial = ( '' === $christmas ) ? false : true;
-			echo '<h2>' . esc_attr( $post->post_title ) . '</h2>';
-			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';
-			echo '<p>' . esc_attr( $christmas_testimonial ) . '</p>';
-			echo get_the_content( null, false, $post->ID ); // phpcs:ignore
-			echo '<hr>';
+			echo '<div class="testimonial" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
+			echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
+			echo '<input type="button" value="View More" />';
+			echo '</div> <!-- /.testimonial -->';
 		}
+		echo '</div> <!-- /.wp-block-orc-testimonials -->';
 		return \ob_get_clean();
 
 	}

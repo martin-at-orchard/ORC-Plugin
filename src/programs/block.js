@@ -22,7 +22,7 @@ registerBlockType( 'orc/programs', {
 	],
 
 	supports: {
-		align: ['center', 'full'],
+		align: true,            // same as ['left', 'center', 'right', 'wide', 'full']
 		alignWide: true,
 		anchor: true,
 		customClassName: true,

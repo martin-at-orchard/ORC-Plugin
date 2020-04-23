@@ -54,12 +54,11 @@ class Programs {
 	 */
 	public function render( $attributes ) {
 
-		$wide_class = '';
+		$div = '<div class="wp-block-orc-programs';
 		if ( isset( $attributes['align'] ) ) {
-			if ( 'full' === $attributes['align'] ) {
-				$wide_class = 'wide-class';
-			}
+			$div .= ' ' . $attributes['align'] . '-align';
 		}
+		$div .= '">';
 
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
@@ -72,7 +71,7 @@ class Programs {
 		$posts = get_posts( $args );
 
 		\ob_start();
-		echo '<div class="wp-block-orc-programs ' . $wide_class . '">';      // phpcs:ignore
+		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
 			$color = get_post_meta( $post->ID, 'orc-program-color', true );
 			$style = 'style="border-color: ' . $color . ';"';
@@ -80,11 +79,11 @@ class Programs {
 			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo get_the_post_thumbnail( $post->ID );
-			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';
+			echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
 			echo '<input type="button" value="View More" />';
-			echo '</div>';
+			echo '</div> <!-- /.program -->';
 		}
-		echo '</div>';
+		echo '</div> <!-- /.wp-block-orc-programs -->';
 		return \ob_get_clean();
 
 	}

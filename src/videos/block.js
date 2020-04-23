@@ -29,11 +29,7 @@ registerBlockType( 'orc/videos', {
 	],
 
 	supports: {
-		align: [
-			'left',
-			'center',
-			'right'
-		],
+		align: true,            // same as ['left', 'center', 'right', 'wide', 'full']
 		anchor: true,
 		customClassName: true,
 		html: false,

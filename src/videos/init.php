@@ -65,27 +65,20 @@ class Videos {
 	 */
 	public function render( $attributes ) {
 
-		if ( isset( $attributes['width'] ) && isset( $attributes['height'] ) ) {
-			$iframe_style  = 'style="';
-			$iframe_style .= 'max-width: ' . $attributes['width'] . 'px; width: ' . $attributes['width'] . 'px;';
-			$iframe_style .= 'max-height: ' . $attributes['height'] . 'px; height: ' . $attributes['height'] . 'px;';
-		} else {
-			$iframe_style = '';
-		}
-
+		$div = '<div class="wp-block-orc-videos';
 		if ( isset( $attributes['align'] ) ) {
-			if ( 'center' === $attributes['align'] ) {
-				$iframe_style .= 'margin-left: auto;margin-right: auto;';
-			} elseif ( 'left' === $attributes['align'] ) {
-				$iframe_style .= 'margin-left: 0;margin-right: auto;';
-			} elseif ( 'right' === $attributes['align'] ) {
-				$iframe_style .= 'margin-left: auto;margin-right: 0;';
-			}
+			$div .= ' ' . $attributes['align'] . '-align';
 		}
+		$div .= '">';
 
-		if ( '' !== $iframe_style ) {
-			$iframe_style .= '"';
-		}
+		// Set defaults if not set.
+		$width  = isset( $attributes['width'] ) ? $attributes['width'] : 426;
+		$height = isset( $attributes['height'] ) ? $attributes['height'] : 320;
+
+		$iframe_style  = 'style="';
+		$iframe_style .= 'max-width: ' . $width . 'px; width: ' . $width . 'px;';
+		$iframe_style .= 'max-height: ' . $height . 'px; height: ' . $height . 'px;';
+		$iframe_style .= '"';
 
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
@@ -97,14 +90,15 @@ class Videos {
 		$posts = get_posts( $args );
 
 		\ob_start();
+		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
 			$link = esc_attr( get_post_meta( $post->ID, 'orc-video-link', true ) );
-			echo '<h2>' . esc_attr( $post->post_title ) . '</h2>';
-			echo '<div class="wp-block-orc-videos">';
+			echo '<div class="video" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo '<iframe ' . $iframe_style . ' src="https://youtube.com/embed/' . $link . '" frameborder="0"></iframe>'; // phpcs:ignore
-			echo '</div>';
-			echo '<hr>';
+			echo '</div> <!-- /.admission -->';
 		}
+		echo '</div> <!-- /.wp-block-orc-videos -->';
 		return \ob_get_clean();
 
 	}

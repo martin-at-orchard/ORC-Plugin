@@ -49,6 +49,12 @@ class Tours {
 	 */
 	public function render( $attributes ) {
 
+		$div = '<div class="wp-block-orc-tours';
+		if ( isset( $attributes['align'] ) ) {
+			$div .= ' ' . $attributes['align'] . '-align';
+		}
+		$div .= '">';
+
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
 			'post_status'    => array( 'publish' ),
@@ -59,13 +65,16 @@ class Tours {
 		$posts = get_posts( $args );
 
 		\ob_start();
+		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
-			echo '<h2>' . esc_attr( $post->post_title ) . '</h2>';
+			echo '<div class="tour" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo get_the_post_thumbnail( $post->ID );
-			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';
-			echo get_the_content( null, false, $post->ID ); // phpcs:ignore
-			echo '<hr>';
+			echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
+			echo '<input type="button" value="View More" />';
+			echo '</div> <!-- /.tour -->';
 		}
+		echo '</div> <!-- /.wp-block-orc-tours -->';
 		return \ob_get_clean();
 
 	}

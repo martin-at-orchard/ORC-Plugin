@@ -65,6 +65,12 @@ class Media_Coverage {
 	 */
 	public function render( $attributes ) {
 
+		$div = '<div class="wp-block-orc-media-coverage';
+		if ( isset( $attributes['align'] ) ) {
+			$div .= ' ' . $attributes['align'] . '-align';
+		}
+		$div .= '">';
+
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
 			'post_status'    => array( 'publish' ),
@@ -75,17 +81,21 @@ class Media_Coverage {
 		$posts = get_posts( $args );
 
 		\ob_start();
+		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
-			$position       = esc_attr( get_post_meta( $post->ID, 'orc-media-coverage-position', true ) );
-			$qualifications = esc_attr( get_post_meta( $post->ID, 'orc-media-coverage-qualifications', true ) );
-			echo '<h2>' . esc_attr( $post->post_title ) . '</h2>';
+			$featured = esc_attr( get_post_meta( $post->ID, 'orc-media-coverage-featured', true ) );
+			$url      = esc_attr( get_post_meta( $post->ID, 'orc-media-coverage-url', true ) );
+			echo '<div class="media-coverage" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo get_the_post_thumbnail( $post->ID );
-			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';
-			echo '<p>' . esc_attr( $position ) . '</p>';
-			echo '<p>' . esc_attr( $qualifications ) . '</p>';
-			echo get_the_content( null, false, $post->ID ); // phpcs:ignore
-			echo '<hr>';
+			echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div>';
+			echo '<div class="featured">' . esc_attr( $featured ) . '</div>';
+			echo '<div class="url">' . esc_attr( $url ) . '</div>';
+			echo '<input type="button" value="View More" />';
+			echo '</div> <!-- /.media-coverage -->';
 		}
+		echo '</div> <!-- /.wp-block-orc-media-coverage -->';
 		return \ob_get_clean();
 
 	}

@@ -71,6 +71,9 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-21 Version: 0.2.0
+* Simplified all render functions to a div with h3 and other divs containing the information from the custom post type
+
 ### 2020-04-21 Version: 0.1.20
 * Improvements to the staff render function
 * Combined code for programs and staff javascript handling

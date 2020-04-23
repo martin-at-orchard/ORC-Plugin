@@ -6,19 +6,9 @@
  */
 
 .wp-block-orc-videos  {
-  background: $green;
-  border: 0.2rem solid $black;
-  color: $black;
+  border: 1px solid black;
+  color: black;
   margin: 0 auto;
   max-width: 740px;
   padding: 2rem;
-
-	.video-width {
-		margin-left: 10px;
-	}
-
-	.video-height {
-		margin-left: 5px;
-	}
-
 }

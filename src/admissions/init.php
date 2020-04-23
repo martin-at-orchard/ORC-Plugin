@@ -43,11 +43,17 @@ class Admissions {
 	}
 
 	/**
-	 * Render function for the program custom blocks.
+	 * Render function for the admissions custom blocks.
 	 *
 	 * @param array $attributes Attributes from the block.
 	 */
 	public function render( $attributes ) {
+
+		$div = '<div class="wp-block-orc-admissions';
+		if ( isset( $attributes['align'] ) ) {
+			$div .= ' ' . $attributes['align'] . '-align';
+		}
+		$div .= '">';
 
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
@@ -59,13 +65,17 @@ class Admissions {
 		$posts = get_posts( $args );
 
 		\ob_start();
+		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
-			echo '<h2>' . esc_attr( $post->post_title ) . '</h2>';
+			echo '<div class="admission" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo get_the_post_thumbnail( $post->ID );
-			echo '<p>' . esc_attr( $post->post_excerpt ) . '</p>';
-			echo get_the_content( null, false, $post->ID ); // phpcs:ignore
-			echo '<hr>';
+			echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
+			echo '<input type="button" value="View More" />';
+			echo '</div> <!-- /.admission -->';
 		}
+		echo '</div> <!-- /.wp-block-orc-admissions -->';
 		return \ob_get_clean();
 
 	}

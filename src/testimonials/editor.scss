@@ -6,25 +6,9 @@
  */
 
 .wp-block-orc-testimonials {
-  background: $green;
-  border: 0.2rem solid $black;
-  color: $black;
+  border: 1px solid black;
+  color: black;
   margin: 0 auto;
   max-width: 740px;
   padding: 2rem;
-}
-
-.wp-block-orc-testimonials > label > input[type=checkbox] {
-	background: white;
-	border-color: black;
-	height: 20px;
-	width: 20px;
-}
-
-.wp-block-orc-testimonials > label > input[type=checkbox]:checked {
-	-webkit-appearance: button;
-}
-
-.wp-block-orc-testimonials > label > input[type=checkbox]:checked::before {
-	content: ''; 
 }
