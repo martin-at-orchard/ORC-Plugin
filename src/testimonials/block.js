@@ -11,9 +11,11 @@ const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
 const { Fragment }          = wp.element;
 const {
-	RadioControl,
+	PanelRow,
 	PanelBody,
-	PanelRow 
+	TextControl,
+	RadioControl,
+	CheckboxControl
 } = wp.components;
 
 registerBlockType( 'orc/testimonials', {
@@ -42,9 +44,29 @@ registerBlockType( 'orc/testimonials', {
 			type: 'string',
 			default: '0'
 		},
+		numPosts: {
+			type: 'string',
+			default: '0'
+		},
 		testimonialType: {
 			type: 'string',
-			default: '(All)'
+			default: '(Normal - All Posts)'
+		},
+		wantLink: {
+			type: 'boolean',
+			default: true
+		},
+		wantExcerpt: {
+			type: 'boolean',
+			default: true
+		},
+		wantButton: {
+			type: 'boolean',
+			default: true
+		},
+		buttonText: {
+			type: 'string',
+			default: 'View More'
 		}
 	},
 
@@ -56,13 +78,17 @@ registerBlockType( 'orc/testimonials', {
 		} = props;
 		const {
 			christmas,
-			testimonialType
+			numPosts,
+			testimonialType,
+			wantLink,
+			wantExcerpt,
+			wantButton,
+			buttonText
 		} = props.attributes;
 
 		// Render the block in the editor.
 		return (
 			<Fragment>
-
 				<InspectorControls style = { { marginBottom: '40px' } }>
 					<PanelBody title = { 'Testimonial type' }>
 						<PanelRow>
@@ -70,15 +96,91 @@ registerBlockType( 'orc/testimonials', {
 								label = 'Testimonial type'
 								selected = { christmas }
 								options = { [
-									{ label: 'Display Normal Testimonial', value: '0' },
-									{ label: 'Display Christmas Testimonial', value: '1' }
+									{ label: 'Display Normal Testimonials', value: '0' },
+									{ label: 'Display Christmas Testimonials', value: '1' }
 								] }
 								onChange = {
 									( option ) => {
+										let displayString =
+											('1' === option ? '(Christmas - ' : '(Normal - ') + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
 										setAttributes( {
 											christmas: option,
-											testimonialType: ('0' === option) ? '(All)' : '(Christmas)'
+											testimonialType: displayString
 										})
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<TextControl
+								label = 'Number of testimonials to display (0 - all)'
+								type  = 'number'
+								min   = '0'
+								max   = '30'
+								step  = '1'
+								value = { numPosts }
+								onChange = {
+									( option ) => {
+										let displayString =
+											('1' === christmas ? '(Christmas - ' : '(Normal - ') + (0 == option ? 'All' : option) + ' Post' + ((0 == option || option > 1) ? 's)' : ')')
+										setAttributes( {
+											numPosts: option,
+											testimonialType: displayString
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+					</PanelBody>
+					<PanelBody title = { 'Front End Display Options' }>
+						<PanelRow>
+							<CheckboxControl
+								label = "Enable link to entire post?"
+								checked = { wantLink }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantLink: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CheckboxControl
+								label = "Display excerpt?"
+								checked = { wantExcerpt }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantExcerpt: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CheckboxControl
+								label = "Enable View More button?"
+								checked = { wantButton }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantButton: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<TextControl
+								label = 'View More button text'
+								value = { buttonText }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											buttonText: option
+										} )
 									}
 								}
 							/>

@@ -71,6 +71,11 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-23 Version: 0.3.0
+* Allow selection of which items to render
+* Allow selection of the number of posts
+* Allow enabling the display of various post information
+
 ### 2020-04-21 Version: 0.2.0
 * Simplified all render functions to a div with h3 and other divs containing the information from the custom post type
 

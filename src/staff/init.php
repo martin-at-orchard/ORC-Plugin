@@ -71,37 +71,56 @@ class Staff {
 	/**
 	 * Render function for the staff custom blocks.
 	 *
+	 * Possible attributes:
+	 *   numPosts           (isset - number of posts else all)
+	 *   wantPosition       (isset - false else true)
+	 *   wantQualifications (isset - false else true)
+	 *   wantLink           (isset - false else true)
+	 *   wantExcerpt        (isset - false else true)
+	 *   wantButton         (isset - false else true)
+	 *   buttonText         (isset - text string else null string)
+	 *
 	 * @param array $attributes Attributes from the block editor.
 	 */
 	public function render( $attributes ) {
+
+		$selected_department = ( isset( $attributes['selectedDepartment'] ) ) ? $attributes['selectedDepartment'] : 0;
+		$num_posts           = ( isset( $attributes['numPosts'] ) && $attributes['numPosts'] > 0 ) ? $attributes['numPosts'] : -1;
+		$want_position       = ( isset( $attributes['wantPosition'] ) ) ? false : true;
+		$want_qualifications = ( isset( $attributes['wantQualifications'] ) ) ? false : true;
+		$want_link           = ( isset( $attributes['wantLink'] ) ) ? false : true;
+		$want_excerpt        = ( isset( $attributes['wantExcerpt'] ) ) ? false : true;
+		$want_button         = ( isset( $attributes['wantButton'] ) ) ? false : true;
+		$button_text         = ( isset( $attributes['buttonText'] ) ) ? $attributes['buttonText'] : 'View More';
+
+		$args = array(
+			'post_type'      => array( self::POST_TYPE ),
+			'post_status'    => array( 'publish' ),
+			'orderby'        => 'date',
+			'order'          => 'ASC',
+			'posts_per_page' => $num_posts,
+		);
+
+		if ( $selected_department > 0 ) {
+			$args['tax_query'] = array( // phpcs:ignore
+				array(
+					'taxonomy' => 'orc-departments',
+					'field'    => 'term_id',
+					'terms'    => $selected_department,
+				),
+			);
+		} elseif ( '-1' === $selected_department ) {
+			$args['meta_key']   = 'orc-staff-homepage'; // phpcs:ignore
+			$args['meta_value'] = 1; // phpcs:ignore
+		}
+
+		$posts = get_posts( $args );
 
 		$div = '<div class="wp-block-orc-staff';
 		if ( isset( $attributes['align'] ) ) {
 			$div .= ' ' . $attributes['align'] . '-align';
 		}
 		$div .= '">';
-
-		$args = array(
-			'post_type'      => array( self::POST_TYPE ),
-			'post_status'    => array( 'publish' ),
-			'orderby'        => 'date',
-			'posts_per_page' => -1,
-		);
-
-		if ( $attributes['selectedDepartment'] > 0 ) {
-			$args['tax_query'] = array( // phpcs:ignore
-				array(
-					'taxonomy' => 'orc-departments',
-					'field'    => 'term_id',
-					'terms'    => $attributes['selectedDepartment'],
-				),
-			);
-		} elseif ( '-1' === $attributes['selectedDepartment'] ) {
-			$args['meta_key']   = 'orc-staff-homepage'; // phpcs:ignore
-			$args['meta_value'] = 1; // phpcs:ignore
-		}
-
-		$posts = get_posts( $args );
 
 		\ob_start();
 		echo $div;      // phpcs:ignore
@@ -113,18 +132,31 @@ class Staff {
 					$staff_classes .= $term->slug . ' ';
 				}
 			}
-			$staff_classes  = trim( $staff_classes ); 
-			$staff_classes  = 'class="staff ' . $staff_classes . '"';
-			$staff_id       = 'id="staff-' . $post->ID . '"';
-			$position       = esc_attr( get_post_meta( $post->ID, 'orc-staff-position', true ) );
-			$qualifications = esc_attr( get_post_meta( $post->ID, 'orc-staff-qualifications', true ) );
+			$staff_classes = trim( $staff_classes ); 
+			$staff_classes = 'class="staff ' . $staff_classes . '"';
+			$staff_id      = 'id="staff-' . $post->ID . '"';
 			echo '<div ' . $staff_classes . ' ' . $staff_id . '>';  // phpcs:ignore
-			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			if ( $want_link ) {
+				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			}
 			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
-			echo get_the_post_thumbnail( $post->ID );
-			echo '<div class="position">' . esc_attr( $position ) . '</div>';
-			echo '<div class="qualifications">' . esc_attr( $qualifications ) . '</div>';
-			echo '<input type="button" value="Read More" />';
+			if ( has_post_thumbnail( $post->ID ) ) {
+				echo get_the_post_thumbnail( $post->ID );
+			}
+			if ( $want_excerpt ) {
+				echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
+			}
+			if ( $want_position ) {
+				$position = esc_attr( get_post_meta( $post->ID, 'orc-staff-position', true ) );
+				echo '<div class="position">' . esc_attr( $position ) . '</div>';
+			}
+			if ( $want_qualifications ) {
+				$qualifications = esc_attr( get_post_meta( $post->ID, 'orc-staff-qualifications', true ) );
+				echo '<div class="qualifications">' . esc_attr( $qualifications ) . '</div>';
+			}
+			if ( $want_button && $want_link ) {
+				echo '<input type="button" value="' . esc_attr( $button_text ) . '" />';
+			}
 			echo '</div> <!-- /.orc-staff -->';
 		}
 		echo '</div> <!-- /.wp-block-orc-staff -->';

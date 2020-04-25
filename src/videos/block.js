@@ -13,9 +13,10 @@ const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.editor;
 const { Fragment }          = wp.element;
 const {
-	TextControl,
+	PanelRow,
 	PanelBody,
-	PanelRow 
+	TextControl,
+	CheckboxControl
 } = wp.components;
 
 registerBlockType( 'orc/videos', {
@@ -42,6 +43,14 @@ registerBlockType( 'orc/videos', {
 	 * Height - Height of video
 	 */
 	attributes: {
+		displayString: {
+			type: 'string',
+			default: '(426 x 320) (All Posts)'
+		},
+		numPosts: {
+			type: 'string',
+			default: '0'
+		},
 		width: {
 			type: 'string',
 			default: '426'
@@ -49,10 +58,6 @@ registerBlockType( 'orc/videos', {
 		height: {
 			type: 'string',
 			default: '240'
-		},
-		dimensions: {
-			type: 'string',
-			default: '(426 x 240)'
 		}
 	},
 
@@ -65,7 +70,8 @@ registerBlockType( 'orc/videos', {
 		const {
 			width,
 			height,
-			dimensions
+			displayString,
+			numPosts,
 		} = props.attributes;
 
 		// Render the block in the editor.
@@ -83,7 +89,7 @@ registerBlockType( 'orc/videos', {
 								onChange = { ( value ) => {
 									setAttributes( {
 										width: value,
-										dimensions: '(' + value + ' x ' + height + ')'
+										displayString: '(' + value + ' x ' + height + ') (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
 									} )
 								} }
 								value = { width }
@@ -98,17 +104,37 @@ registerBlockType( 'orc/videos', {
 								onChange = { ( value ) => {
 									setAttributes( {
 										height: value,
-										dimensions: '(' + width + ' x ' + value + ')'
+										displayString: '(' + width + ' x ' + value + ') (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
 									} )
 								} }
 								value = { height }
 							/>
 						</PanelRow>
 					</PanelBody>
+					<PanelBody title = { 'Front End Display Options' }>
+						<PanelRow>
+							<TextControl
+								label = 'Number of videos to display (0 - all)'
+								type  = 'number'
+								min   = '0'
+								max   = '30'
+								step  = '1'
+								value = { numPosts }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											numPosts: option,
+											displayString: '(' + width + ' x ' + height + ') (' + (0 == option ? 'All' : option) + ' Post' + ((0 == option || option > 1) ? 's)' : ')')
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+					</PanelBody>
 				</InspectorControls>
 
 				<div className={ className }>
-					<label>Display Videos {dimensions}</label>
+					<label>Display Videos {displayString}</label>
 				</div>
 
 			</Fragment>

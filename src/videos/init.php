@@ -61,19 +61,22 @@ class Videos {
 	/**
 	 * Render function for the videos custom blocks.
 	 *
+	 * Possible attributes:
+	 *   numPosts    (isset - number of posts else all)
+	 *   wantExcerpt (isset - false else true)
+	 *   wantLink    (isset - false else true)
+	 *   wantButton  (isset - false else true)
+	 *   buttonText  (isset - text string else null string)
+	 *
 	 * @param array $attributes Attributes from the block editor.
 	 */
 	public function render( $attributes ) {
 
-		$div = '<div class="wp-block-orc-videos';
-		if ( isset( $attributes['align'] ) ) {
-			$div .= ' ' . $attributes['align'] . '-align';
-		}
-		$div .= '">';
+		$num_posts = ( isset( $attributes['numPosts'] ) && $attributes['numPosts'] > 0 ) ? $attributes['numPosts'] : -1;
+		$width     = isset( $attributes['width'] ) ? $attributes['width'] : 426;
+		$height    = isset( $attributes['height'] ) ? $attributes['height'] : 320;
 
 		// Set defaults if not set.
-		$width  = isset( $attributes['width'] ) ? $attributes['width'] : 426;
-		$height = isset( $attributes['height'] ) ? $attributes['height'] : 320;
 
 		$iframe_style  = 'style="';
 		$iframe_style .= 'max-width: ' . $width . 'px; width: ' . $width . 'px;';
@@ -84,10 +87,17 @@ class Videos {
 			'post_type'      => array( self::POST_TYPE ),
 			'post_status'    => array( 'publish' ),
 			'orderby'        => 'date',
-			'posts_per_page' => -1,
+			'order'          => 'ASC',
+			'posts_per_page' => $num_posts,
 		);
 
 		$posts = get_posts( $args );
+
+		$div = '<div class="wp-block-orc-videos';
+		if ( isset( $attributes['align'] ) ) {
+			$div .= ' ' . $attributes['align'] . '-align';
+		}
+		$div .= '">';
 
 		\ob_start();
 		echo $div;      // phpcs:ignore

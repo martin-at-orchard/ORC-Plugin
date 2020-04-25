@@ -45,9 +45,33 @@ class Admissions {
 	/**
 	 * Render function for the admissions custom blocks.
 	 *
+	 * Possible attributes:
+	 *   numPosts    (isset - number of posts else all)
+	 *   wantExcerpt (isset - false else true)
+	 *   wantLink    (isset - false else true)
+	 *   wantButton  (isset - false else true)
+	 *   buttonText  (isset - text string else null string)
+	 *
 	 * @param array $attributes Attributes from the block.
 	 */
 	public function render( $attributes ) {
+
+		$num_posts    = ( isset( $attributes['numPosts'] ) && $attributes['numPosts'] > 0 ) ? $attributes['numPosts'] : -1;
+		$want_link    = ( isset( $attributes['wantLink'] ) ) ? false : true;
+		$want_link    = ( isset( $attributes['wantLink'] ) ) ? false : true;
+		$want_excerpt = ( isset( $attributes['wantExcerpt'] ) ) ? false : true;
+		$want_button  = ( isset( $attributes['wantButton'] ) ) ? false : true;
+		$button_text  = ( isset( $attributes['buttonText'] ) ) ? $attributes['buttonText'] : 'View More';
+
+		$args = array(
+			'post_type'      => array( self::POST_TYPE ),
+			'post_status'    => array( 'publish' ),
+			'orderby'        => 'date',
+			'order'          => 'ASC',
+			'posts_per_page' => $num_posts,
+		);
+
+		$posts = get_posts( $args );
 
 		$div = '<div class="wp-block-orc-admissions';
 		if ( isset( $attributes['align'] ) ) {
@@ -55,24 +79,23 @@ class Admissions {
 		}
 		$div .= '">';
 
-		$args = array(
-			'post_type'      => array( self::POST_TYPE ),
-			'post_status'    => array( 'publish' ),
-			'orderby'        => 'date',
-			'posts_per_page' => -1,
-		);
-
-		$posts = get_posts( $args );
-
 		\ob_start();
 		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
 			echo '<div class="admission" id="post-' . $post->ID . '">';     // phpcs:ignore
-			echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			if ( $want_link ) {
+				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
+			}
 			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
-			echo get_the_post_thumbnail( $post->ID );
-			echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
-			echo '<input type="button" value="View More" />';
+			if ( has_post_thumbnail( $post->ID ) ) {
+				echo get_the_post_thumbnail( $post->ID );
+			}
+			if ( $want_excerpt ) {
+				echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
+			}
+			if ( $want_button && $want_link ) {
+				echo '<input type="button" value="' . esc_attr( $button_text ) . '" />';
+			}
 			echo '</div> <!-- /.admission -->';
 		}
 		echo '</div> <!-- /.wp-block-orc-admissions -->';

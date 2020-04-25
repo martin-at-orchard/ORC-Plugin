@@ -15,7 +15,9 @@ const { Fragment }          = wp.element;
 const {
 	SelectControl,
 	PanelBody,
-	PanelRow 
+	PanelRow,
+	TextControl,
+	CheckboxControl
 } = wp.components;
 
 registerBlockType( 'orc/staff', {
@@ -44,9 +46,37 @@ registerBlockType( 'orc/staff', {
 			type: 'string',
 			default: '0'
 		},
-		departmentName: {
+		displayString: {
 			type: 'string',
-			default: 'All Staff'
+			default: 'All Staff (All Posts)'
+		},
+		numPosts: {
+			type: 'string',
+			default: '0'
+		},
+		wantPosition: {
+			type: 'boolean',
+			default: true
+		},
+		wantQualifications: {
+			type: 'boolean',
+			default: true
+		},
+		wantLink: {
+			type: 'boolean',
+			default: true
+		},
+		wantExcerpt: {
+			type: 'boolean',
+			default: true
+		},
+		wantButton: {
+			type: 'boolean',
+			default: true
+		},
+		buttonText: {
+			type: 'string',
+			default: 'View More'
 		}
 	},
 
@@ -61,7 +91,14 @@ registerBlockType( 'orc/staff', {
 		} = props;
 		const {
 			selectedDepartment,
-			departmentName
+			displayString,
+			numPosts,
+			wantPosition,
+			wantQualifications,
+			wantLink,
+			wantExcerpt,
+			wantButton,
+			buttonText
 		} = props.attributes;
 
 		// Create the select box for the staff departments.
@@ -90,7 +127,6 @@ registerBlockType( 'orc/staff', {
 		// Render the block in the editor.
 		return (
 			<Fragment>
-
 				<InspectorControls>
 					<PanelBody title = { 'Staff Display type' }>
 						<PanelRow>
@@ -102,8 +138,106 @@ registerBlockType( 'orc/staff', {
 									( option ) => {
 										setAttributes( {
 											selectedDepartment: option,
-											departmentName: departmentNames[option]
+											displayString: departmentNames[option] + ' (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
 										})
+									}
+								}
+							/>
+						</PanelRow>
+					</PanelBody>
+					<PanelBody title = { 'Front End Display Options' }>
+						<PanelRow>
+							<TextControl
+								label = 'Number of staff members to display (0 - all)'
+								type  = 'number'
+								min   = '0'
+								max   = '30'
+								step  = '1'
+								value = { numPosts }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											numPosts: option,
+											displayString: departmentNames[selectedDepartment] + '(' + (0 == option ? 'All' : option) + ' Post' + ((0 == option || option > 1) ? 's)' : ')')
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CheckboxControl
+								label = "Enable position display?"
+								checked = { wantPosition }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantPosition: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CheckboxControl
+								label = "Enable qualifications display?"
+								checked = { wantQualifications }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantQualifications: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CheckboxControl
+								label = "Enable link to entire post?"
+								checked = { wantLink }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantLink: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CheckboxControl
+								label = "Display excerpt?"
+								checked = { wantExcerpt }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantExcerpt: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CheckboxControl
+								label = "Enable View More button?"
+								checked = { wantButton }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantButton: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<TextControl
+								label = 'View More button text'
+								value = { buttonText }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											buttonText: option
+										} )
 									}
 								}
 							/>
@@ -112,9 +246,8 @@ registerBlockType( 'orc/staff', {
 				</InspectorControls>
 
 				<div className={ className }>
-					<label>Display {departmentName}</label>
+					<label>Display {displayString}</label>
 				</div>
-
 			</Fragment>
 		);
 	},
