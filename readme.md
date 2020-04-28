@@ -71,6 +71,10 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-27 Version: 0.3.1
+* Testimonials are now in a blockquote
+* Fixed version for the package.json
+
 ### 2020-04-23 Version: 0.3.0
 * Allow selection of which items to render
 * Allow selection of the number of posts

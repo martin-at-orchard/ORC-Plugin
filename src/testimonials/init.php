@@ -63,13 +63,13 @@ class Testimonials {
 	 */
 	public function render( $attributes ) {
 
-		$christmas    = ( isset( $attributes['christmas'] ) && '1' === $attributes['christmas'] ) ? true : false;
-		$num_posts    = ( isset( $attributes['numPosts'] ) && $attributes['numPosts'] > 0 ) ? $attributes['numPosts'] : -1;
-		$want_link    = ( isset( $attributes['wantLink'] ) ) ? false : true;
-		$want_link    = ( isset( $attributes['wantLink'] ) ) ? false : true;
-		$want_excerpt = ( isset( $attributes['wantExcerpt'] ) ) ? false : true;
-		$want_button  = ( isset( $attributes['wantButton'] ) ) ? false : true;
-		$button_text  = ( isset( $attributes['buttonText'] ) ) ? $attributes['buttonText'] : 'View More';
+		$christmas     = ( isset( $attributes['christmas'] ) && '1' === $attributes['christmas'] ) ? true : false;
+		$num_posts     = ( isset( $attributes['numPosts'] ) && $attributes['numPosts'] > 0 ) ? $attributes['numPosts'] : -1;
+		$want_link     = ( isset( $attributes['wantLink'] ) ) ? false : true;
+		$want_excerpt  = ( isset( $attributes['wantExcerpt'] ) ) ? false : true;
+		$want_location = ( isset( $attributes['wantLocation'] ) ) ? false : true;
+		$want_button   = ( isset( $attributes['wantButton'] ) ) ? false : true;
+		$button_text   = ( isset( $attributes['buttonText'] ) ) ? $attributes['buttonText'] : 'View More';
 
 		$args = array(
 			'post_type'      => array( self::POST_TYPE ),
@@ -99,10 +99,22 @@ class Testimonials {
 			if ( $want_link ) {
 				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			}
-			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			if ( $want_excerpt ) {
-				echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
+				echo '<blockquote class="excerpt">' . esc_attr( $post->post_excerpt );
+			} else {
+				$post = get_post( $post->ID );
+				$content = $post->post_content;
+				$content = apply_filters( 'the_content', $content );
+				$content = str_replace( ']]>', ']]>', $content );
+				echo '<blockquote class="post-content">' . $content;     // phpcs:ignore
 			}
+			echo '<cite>' . esc_attr( $post->post_title ) . '<br>';
+			if ( $want_location ) {
+				$location = get_post_meta( $post->ID, 'orc-testimonial-location', true );
+				echo '<span class="location">' . esc_attr( $location ) . '</span>';
+			}
+			echo '</cite>';
+			echo '</blockquote>';
 			if ( $want_button && $want_link ) {
 				echo '<input type="button" value="' . esc_attr( $button_text ) . '" />';
 			}

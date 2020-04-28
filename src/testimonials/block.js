@@ -60,6 +60,10 @@ registerBlockType( 'orc/testimonials', {
 			type: 'boolean',
 			default: true
 		},
+		wantLocation: {
+			type: 'boolean',
+			default: true
+		},
 		wantButton: {
 			type: 'boolean',
 			default: true
@@ -82,6 +86,7 @@ registerBlockType( 'orc/testimonials', {
 			testimonialType,
 			wantLink,
 			wantExcerpt,
+			wantLocation,
 			wantButton,
 			buttonText
 		} = props.attributes;
@@ -154,6 +159,19 @@ registerBlockType( 'orc/testimonials', {
 									( option ) => {
 										setAttributes( {
 											wantExcerpt: option
+										} )
+									}
+								}
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CheckboxControl
+								label = "Enable City/Province?"
+								checked = { wantLocation }
+								onChange = {
+									( option ) => {
+										setAttributes( {
+											wantLocation: option
 										} )
 									}
 								}
