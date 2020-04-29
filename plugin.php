@@ -5,7 +5,7 @@
  * Description: Gutenberg plugin created via create-guten-block that contains all the custom code for the Orchard Recovery Center Website
  * Author: Martin Wedepohl
  * Author URI: https://wedepohlengineering.com/
- * Version: 0.3.5
+ * Version: 0.3.6
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -29,7 +29,7 @@ class Plugin {
 
 	const DEVELOPMENT            = true;
 	const NAME                   = 'orc';
-	const VERSION                = '0.3.5';
+	const VERSION                = '0.3.6';
 	const BLOCKS_NAME            = 'orc-blocks';
 	const TEXT_DOMAIN            = 'orc-plugin';
 	const SETTINGS_KEY           = 'orc-options';
@@ -172,8 +172,10 @@ $shorcodes->initialize();
  * Block Initializer.
  */
 new Admissions();
+new Contact();
 new Media_Coverage();
 new Programs();
+new Social();
 new Staff();
 new Testimonials();
 new Tours();

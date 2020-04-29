@@ -10,8 +10,10 @@
  */
 
 import './admissions/block.js';
+import './contact/block.js';
 import './media_coverage/block.js';
 import './programs/block.js';
+import './social/block.js';
 import './staff/block.js';
 import './testimonials/block.js';
 import './tours/block.js';

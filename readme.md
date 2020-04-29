@@ -71,6 +71,9 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-29 Version: 0.3.6
+* Added block for Contact and Social Links
+
 ### 2020-04-28 Version: 0.3.5
 * Replaced deprecated wp.editor with wp.blockEditor
 

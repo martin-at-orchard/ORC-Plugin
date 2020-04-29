@@ -23,7 +23,7 @@ const {
 } = wp.components
 
 registerBlockType( 'orc/staff', {
-	title:     __( 'ORC Staff' ),
+	title:     __( 'Staff' ),
 	icon:     'groups',
 	category: 'orc-blocks',
 	keywords: [
@@ -47,10 +47,6 @@ registerBlockType( 'orc/staff', {
 		selectedDepartment: {
 			type: 'string',
 			default: '0'
-		},
-		displayString: {
-			type: 'string',
-			default: 'All Staff (All Posts)'
 		},
 		numPosts: {
 			type: 'string',
@@ -89,7 +85,7 @@ registerBlockType( 'orc/staff', {
 
 		const {
 			setAttributes,
-			className,
+			className
 		} = props
 		const {
 			selectedDepartment,
