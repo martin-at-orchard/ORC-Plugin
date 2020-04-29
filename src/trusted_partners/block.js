@@ -5,20 +5,21 @@
  */
 
 //  Import CSS.
-import './editor.scss';
-import './style.scss';
+import './editor.scss'
+import './style.scss'
 
-const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
-const { InspectorControls } = wp.editor;
-const { Fragment }          = wp.element;
+import {useState} from 'react'
+
+const { __ } = wp.i18n
+const { registerBlockType } = wp.blocks
+const { InspectorControls } = wp.editor
+const { Fragment }          = wp.element
 const {
 	PanelRow,
 	PanelBody,
 	TextControl,
 	CheckboxControl
-} = wp.components;
-
+} = wp.components
 
 registerBlockType( 'orc/partners', {
 	title: __( 'Partners' ),       // Block title.
@@ -27,7 +28,7 @@ registerBlockType( 'orc/partners', {
 	keywords: [
 		__( 'ORC' ),
 		__( 'Orchard Recovery Center' ),
-		__( 'Trusted Partners' ),
+		__( 'Trusted Partners' )
 	],
 
 	supports: {
@@ -35,17 +36,13 @@ registerBlockType( 'orc/partners', {
 		alignWide: true,
 		anchor: true,
 		customClassName: true,
-		html: false,
+		html: false
 	},
 
 	/**
 	 * Attributes for the block
 	 */
 	attributes: {
-		displayString: {
-			type: 'string',
-			default: 'All Posts'
-		},
 		width: {
 			type: 'string',
 			default: '200'
@@ -65,17 +62,18 @@ registerBlockType( 'orc/partners', {
 		const {
 			className,
 			setAttributes
-		} = props;
+		} = props
 		const {
-			displayString,
 			width,
 			numPosts,
 			wantLink
-		} = props.attributes;
+		} = props.attributes
+		const [status, setStatus] = useState( '(' + width + 'px) (' + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
 	
 		// Render the block in the editor.
 		return (
 			<Fragment>
+
 				<InspectorControls style = { { marginBottom: '40px' } }>
 					<PanelBody title = { 'Front End Display Options' }>
 						<PanelRow>
@@ -87,28 +85,30 @@ registerBlockType( 'orc/partners', {
 								step  = '1'
 								value = { numPosts }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											numPosts: option,
-											displayString: '(' + width + 'px) (' + (0 == option ? 'All' : option) + ' Post' + ((0 == option || option > 1) ? 's)' : ')')
+											numPosts: value
 										} )
+										setStatus( '(' + width + 'px) (' + ( 0 == value ? 'All' : value ) + ' Post' + ( ( 0 == value || value > 1 ) ? 's)' : ')' ) )
 									}
 								}
 							/>
 						</PanelRow>
 						<PanelRow>
 							<TextControl
-									label = 'Image width (px)'
-									type = 'number'
-									min = '0'
-									max = '1920'
-									onChange = { ( value ) => {
+								label = 'Image width (px)'
+								type = 'number'
+								min = '0'
+								max = '1920'
+								value = { width }
+								onChange = {
+									( value ) => {
 										setAttributes( {
-											width: value,
-											displayString: '(' + value + 'px) (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
+											width: value
 										} )
-									} }
-									value = { width }
+										setStatus( '(' + value + 'px) (' + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
+									}
+								}
 							/>
 						</PanelRow>
 						<PanelRow>
@@ -116,9 +116,9 @@ registerBlockType( 'orc/partners', {
 								label = "Enable link to trusted partner?"
 								checked = { wantLink }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantLink: option
+											wantLink: value
 										} )
 									}
 								}
@@ -128,8 +128,9 @@ registerBlockType( 'orc/partners', {
 				</InspectorControls>
 
 				<div className={ className }>
-					<label>Display Trusted Partners {displayString}</label>
+					<label>Display Trusted Partners {status}</label>
 				</div>
+
 			</Fragment>
 		)
 	},

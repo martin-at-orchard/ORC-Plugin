@@ -3,20 +3,22 @@
  */
 
 //  Import CSS.
-import './editor.scss';
-import './style.scss';
+import './editor.scss'
+import './style.scss'
 
-const { __ }                = wp.i18n;
-const { registerBlockType } = wp.blocks;
-const { InspectorControls } = wp.editor;
-const { Fragment }          = wp.element;
+import {useState} from 'react'
+
+const { __ }                = wp.i18n
+const { registerBlockType } = wp.blocks
+const { InspectorControls } = wp.editor
+const { Fragment }          = wp.element
 const {
 	PanelRow,
 	PanelBody,
 	TextControl,
 	RadioControl,
 	CheckboxControl
-} = wp.components;
+} = wp.components
 
 registerBlockType( 'orc/testimonials', {
 	title: __( 'Testimonials' ),   // Block title.
@@ -25,7 +27,7 @@ registerBlockType( 'orc/testimonials', {
 	keywords: [
 		__( 'ORC' ),
 		__( 'Orchard Recovery Center' ),
-		__( 'Testimonials' ),
+		__( 'Testimonials' )
 	],
 
 	supports: {
@@ -33,7 +35,7 @@ registerBlockType( 'orc/testimonials', {
 		alignWide: true,
 		anchor: true,
 		customClassName: true,
-		html: false,
+		html: false
 	},
 
 	/**
@@ -47,10 +49,6 @@ registerBlockType( 'orc/testimonials', {
 		numPosts: {
 			type: 'string',
 			default: '0'
-		},
-		testimonialType: {
-			type: 'string',
-			default: '(Normal - All Posts)'
 		},
 		wantLink: {
 			type: 'boolean',
@@ -79,17 +77,17 @@ registerBlockType( 'orc/testimonials', {
 		const {
 			className,
 			setAttributes
-		} = props;
+		} = props
 		const {
 			christmas,
 			numPosts,
-			testimonialType,
 			wantLink,
 			wantExcerpt,
 			wantLocation,
 			wantButton,
 			buttonText
-		} = props.attributes;
+		} = props.attributes
+		const [status, setStatus] = useState( ( '1' === christmas ? '(Christmas - ' : '(Normal - ' ) + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
 
 		// Render the block in the editor.
 		return (
@@ -105,13 +103,11 @@ registerBlockType( 'orc/testimonials', {
 									{ label: 'Display Christmas Testimonials', value: '1' }
 								] }
 								onChange = {
-									( option ) => {
-										let displayString =
-											('1' === option ? '(Christmas - ' : '(Normal - ') + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
+									( value ) => {
 										setAttributes( {
-											christmas: option,
-											testimonialType: displayString
+											christmas: value
 										})
+										setStatus( ( '1' === value ? '(Christmas - ' : '(Normal - ' ) + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
 									}
 								}
 							/>
@@ -125,13 +121,11 @@ registerBlockType( 'orc/testimonials', {
 								step  = '1'
 								value = { numPosts }
 								onChange = {
-									( option ) => {
-										let displayString =
-											('1' === christmas ? '(Christmas - ' : '(Normal - ') + (0 == option ? 'All' : option) + ' Post' + ((0 == option || option > 1) ? 's)' : ')')
+									( value ) => {
 										setAttributes( {
-											numPosts: option,
-											testimonialType: displayString
+											numPosts: value
 										} )
+										setStatus( ( '1' === christmas ? '(Christmas - ' : '(Normal - ' ) + ( 0 == value ? 'All' : value ) + ' Post' + ( ( 0 == value || value > 1 ) ? 's)' : ')' ) )
 									}
 								}
 							/>
@@ -143,9 +137,9 @@ registerBlockType( 'orc/testimonials', {
 								label = "Enable link to entire post?"
 								checked = { wantLink }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantLink: option
+											wantLink: value
 										} )
 									}
 								}
@@ -156,9 +150,9 @@ registerBlockType( 'orc/testimonials', {
 								label = "Display excerpt?"
 								checked = { wantExcerpt }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantExcerpt: option
+											wantExcerpt: value
 										} )
 									}
 								}
@@ -169,9 +163,9 @@ registerBlockType( 'orc/testimonials', {
 								label = "Enable City/Province?"
 								checked = { wantLocation }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantLocation: option
+											wantLocation: value
 										} )
 									}
 								}
@@ -182,9 +176,9 @@ registerBlockType( 'orc/testimonials', {
 								label = "Enable View More button?"
 								checked = { wantButton }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantButton: option
+											wantButton: value
 										} )
 									}
 								}
@@ -195,9 +189,9 @@ registerBlockType( 'orc/testimonials', {
 								label = 'View More button text'
 								value = { buttonText }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											buttonText: option
+											buttonText: value
 										} )
 									}
 								}
@@ -208,7 +202,7 @@ registerBlockType( 'orc/testimonials', {
 
 				<div className={ className }>
 					<label>
-						Display Testimonials {testimonialType}
+						Display Testimonials {status}
 					</label>
 				</div>
 			</Fragment>

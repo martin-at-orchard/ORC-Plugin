@@ -5,20 +5,22 @@
  */
 
 //  Import CSS.
-import './editor.scss';
-import './style.scss';
+import './editor.scss'
+import './style.scss'
 
-const { __ }                = wp.i18n;
-const { registerBlockType } = wp.blocks;
-const { InspectorControls } = wp.editor;
-const { Fragment }          = wp.element;
+import {useState} from 'react'
+
+const { __ }                = wp.i18n
+const { registerBlockType } = wp.blocks
+const { InspectorControls } = wp.editor
+const { Fragment }          = wp.element
 const {
 	SelectControl,
 	PanelBody,
 	PanelRow,
 	TextControl,
 	CheckboxControl
-} = wp.components;
+} = wp.components
 
 registerBlockType( 'orc/staff', {
 	title:     __( 'ORC Staff' ),
@@ -27,7 +29,7 @@ registerBlockType( 'orc/staff', {
 	keywords: [
 		__( 'ORC' ),
 		__( 'Staff' ),
-		__( 'Orchard Recovery Center' ),
+		__( 'Orchard Recovery Center' )
 	],
 
 	supports: {
@@ -35,7 +37,7 @@ registerBlockType( 'orc/staff', {
 		alignWide: true,
 		anchor: true,
 		customClassName: true,
-		html: false,
+		html: false
 	},
 
 	/**
@@ -88,10 +90,9 @@ registerBlockType( 'orc/staff', {
 		const {
 			setAttributes,
 			className,
-		} = props;
+		} = props
 		const {
 			selectedDepartment,
-			displayString,
 			numPosts,
 			wantPosition,
 			wantQualifications,
@@ -99,9 +100,10 @@ registerBlockType( 'orc/staff', {
 			wantExcerpt,
 			wantButton,
 			buttonText
-		} = props.attributes;
+		} = props.attributes
 
 		// Create the select box for the staff departments.
+		// departments are passed in through wp_localize_script from the php code
 		let departmentNames = [];
 		let options = [{
 			key: 'all',
@@ -124,6 +126,8 @@ registerBlockType( 'orc/staff', {
 			departmentNames[D.value] = D.label;
 		}
 
+		const [status, setStatus] = useState( departmentNames[selectedDepartment] + ' (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')') )
+
 		// Render the block in the editor.
 		return (
 			<Fragment>
@@ -135,11 +139,11 @@ registerBlockType( 'orc/staff', {
 								value = { selectedDepartment }
 								options = { options }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											selectedDepartment: option,
-											displayString: departmentNames[option] + ' (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
+											selectedDepartment: value
 										})
+										setStatus( departmentNames[value] + ' (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')') )
 									}
 								}
 							/>
@@ -155,11 +159,11 @@ registerBlockType( 'orc/staff', {
 								step  = '1'
 								value = { numPosts }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											numPosts: option,
-											displayString: departmentNames[selectedDepartment] + '(' + (0 == option ? 'All' : option) + ' Post' + ((0 == option || option > 1) ? 's)' : ')')
+											numPosts: value
 										} )
+										setStatus( departmentNames[selectedDepartment] + ' (' + (0 == value ? 'All' : value) + ' Post' + ((0 == value || value > 1) ? 's)' : ')') )
 									}
 								}
 							/>
@@ -169,9 +173,9 @@ registerBlockType( 'orc/staff', {
 								label = "Enable position display?"
 								checked = { wantPosition }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantPosition: option
+											wantPosition: value
 										} )
 									}
 								}
@@ -182,9 +186,9 @@ registerBlockType( 'orc/staff', {
 								label = "Enable qualifications display?"
 								checked = { wantQualifications }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantQualifications: option
+											wantQualifications: value
 										} )
 									}
 								}
@@ -195,9 +199,9 @@ registerBlockType( 'orc/staff', {
 								label = "Enable link to entire post?"
 								checked = { wantLink }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantLink: option
+											wantLink: value
 										} )
 									}
 								}
@@ -208,9 +212,9 @@ registerBlockType( 'orc/staff', {
 								label = "Display excerpt?"
 								checked = { wantExcerpt }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantExcerpt: option
+											wantExcerpt: value
 										} )
 									}
 								}
@@ -221,9 +225,9 @@ registerBlockType( 'orc/staff', {
 								label = "Enable View More button?"
 								checked = { wantButton }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantButton: option
+											wantButton: value
 										} )
 									}
 								}
@@ -234,9 +238,9 @@ registerBlockType( 'orc/staff', {
 								label = 'View More button text'
 								value = { buttonText }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											buttonText: option
+											buttonText: value
 										} )
 									}
 								}
@@ -246,7 +250,7 @@ registerBlockType( 'orc/staff', {
 				</InspectorControls>
 
 				<div className={ className }>
-					<label>Display {displayString}</label>
+					<label>Display {status}</label>
 				</div>
 			</Fragment>
 		);

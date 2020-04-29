@@ -5,35 +5,36 @@
  */
 
 //  Import CSS.
-import './editor.scss';
-import './style.scss';
+import './editor.scss'
+import './style.scss'
 
-const { __ }                = wp.i18n;
-const { registerBlockType } = wp.blocks;
-const { InspectorControls } = wp.editor;
-const { Fragment }          = wp.element;
+import {useState} from 'react'
+
+const { __ }                = wp.i18n
+const { registerBlockType } = wp.blocks
+const { InspectorControls } = wp.editor
+const { Fragment }          = wp.element
 const {
 	PanelRow,
 	PanelBody,
 	TextControl,
-	CheckboxControl
-} = wp.components;
+} = wp.components
 
 registerBlockType( 'orc/videos', {
-	title:     __( 'ORC Videos' ),
+	title:     __( 'Videos' ),
 	icon:     'video-alt',
 	category: 'orc-blocks',
 	keywords: [
 		__( 'ORC' ),
 		__( 'Videos' ),
-		__( 'Orchard Recovery Center' ),
+		__( 'Orchard Recovery Center' )
 	],
 
 	supports: {
 		align: true,            // same as ['left', 'center', 'right', 'wide', 'full']
 		anchor: true,
 		customClassName: true,
-		html: false,
+		html: false
 	},
 
 	/**
@@ -43,10 +44,6 @@ registerBlockType( 'orc/videos', {
 	 * Height - Height of video
 	 */
 	attributes: {
-		displayString: {
-			type: 'string',
-			default: '(426 x 320) (All Posts)'
-		},
 		numPosts: {
 			type: 'string',
 			default: '0'
@@ -66,13 +63,13 @@ registerBlockType( 'orc/videos', {
 		const {
 			className,
 			setAttributes
-		} = props;
+		} = props
 		const {
 			width,
 			height,
-			displayString,
 			numPosts,
-		} = props.attributes;
+		} = props.attributes
+		const [status, setStatus] = useState( '(' + width + ' x ' + height + ') (' + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
 
 		// Render the block in the editor.
 		return (
@@ -86,13 +83,15 @@ registerBlockType( 'orc/videos', {
 								type = 'number'
 								min = '0'
 								max = '1920'
-								onChange = { ( value ) => {
-									setAttributes( {
-										width: value,
-										displayString: '(' + value + ' x ' + height + ') (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
-									} )
-								} }
 								value = { width }
+								onChange = { 
+									( value ) => {
+										setAttributes( {
+											width: value
+										} )
+										setStatus( '(' + value + ' x ' + height + ') (' + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
+									}
+								}
 							/>
 						</PanelRow>
 						<PanelRow>
@@ -101,13 +100,15 @@ registerBlockType( 'orc/videos', {
 								type = 'number'
 								min = '0'
 								max = '1920'
-								onChange = { ( value ) => {
-									setAttributes( {
-										height: value,
-										displayString: '(' + width + ' x ' + value + ') (' + (0 == numPosts ? 'All' : numPosts) + ' Post' + ((0 == numPosts || numPosts > 1) ? 's)' : ')')
-									} )
-								} }
 								value = { height }
+								onChange = {
+									( value ) => {
+										setAttributes( {
+											height: value
+										} )
+										setStatus( '(' + width + ' x ' + value + ') (' + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
+									}
+								}
 							/>
 						</PanelRow>
 					</PanelBody>
@@ -121,11 +122,11 @@ registerBlockType( 'orc/videos', {
 								step  = '1'
 								value = { numPosts }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											numPosts: option,
-											displayString: '(' + width + ' x ' + height + ') (' + (0 == option ? 'All' : option) + ' Post' + ((0 == option || option > 1) ? 's)' : ')')
+											numPosts: value
 										} )
+										setStatus( '(' + width + ' x ' + height + ') (' + ( 0 == value ? 'All' : value ) + ' Post' + ( ( 0 == value || value > 1 ) ? 's)' : ')' ) )
 									}
 								}
 							/>
@@ -134,7 +135,7 @@ registerBlockType( 'orc/videos', {
 				</InspectorControls>
 
 				<div className={ className }>
-					<label>Display Videos {displayString}</label>
+					<label>Display Videos {status}</label>
 				</div>
 
 			</Fragment>

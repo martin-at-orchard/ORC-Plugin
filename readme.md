@@ -71,6 +71,9 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-28 Version: 0.3.4
+* Use states rather than props to display information in the block editor
+
 ### 2020-04-28 Version: 0.3.3
 * Added trusted partners
 

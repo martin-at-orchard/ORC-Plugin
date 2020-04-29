@@ -5,28 +5,30 @@
  */
 
 //  Import CSS.
-import './editor.scss';
-import './style.scss';
+import './editor.scss'
+import './style.scss'
 
-const { __ }                = wp.i18n;
-const { registerBlockType } = wp.blocks;
-const { InspectorControls } = wp.editor;
-const { Fragment }          = wp.element;
+import {useState} from 'react'
+
+const { __ }                = wp.i18n
+const { registerBlockType } = wp.blocks
+const { InspectorControls } = wp.editor
+const { Fragment }          = wp.element
 const {
 	PanelRow,
 	PanelBody,
 	TextControl,
 	CheckboxControl
-} = wp.components;
+} = wp.components
 
 registerBlockType( 'orc/media-coverage', {
-	title:     __( 'ORC Media Coverage' ),
+	title:     __( 'Media Coverage' ),
 	icon:     'admin-media',
 	category: 'orc-blocks',
 	keywords: [
 		__( 'ORC' ),
 		__( 'Media Coverage' ),
-		__( 'Orchard Recovery Center' ),
+		__( 'Orchard Recovery Center' )
 	],
 
 	supports: {
@@ -34,17 +36,13 @@ registerBlockType( 'orc/media-coverage', {
 		alignWide: true,
 		anchor: true,
 		customClassName: true,
-		html: false,
+		html: false
 	},
 
 	/**
 	 * Attributes for the block
 	 */
 	attributes: {
-		displayString: {
-			type: 'string',
-			default: '(All Posts)'
-		},
 		numPosts: {
 			type: 'string',
 			default: '0'
@@ -72,15 +70,15 @@ registerBlockType( 'orc/media-coverage', {
 		const {
 			className,
 			setAttributes
-		} = props;
+		} = props
 		const {
-			displayString,
 			numPosts,
 			wantLink,
 			wantExcerpt,
 			wantButton,
 			buttonText
-		} = props.attributes;
+		} = props.attributes
+		const [status, setStatus] = useState( '(' + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
 
 		// Render the block in the editor.
 		return (
@@ -96,11 +94,11 @@ registerBlockType( 'orc/media-coverage', {
 								step  = '1'
 								value = { numPosts }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											numPosts: option,
-											displayString: '(' + (0 == option ? 'All' : option) + ' Post' + ((0 == option || option > 1) ? 's)' : ')')
+											numPosts: value
 										} )
+										setStatus( '(' + ( 0 == value ? 'All' : value ) + ' Post' + ( ( 0 == value || value > 1 ) ? 's)' : ')' ) )
 									}
 								}
 							/>
@@ -110,9 +108,9 @@ registerBlockType( 'orc/media-coverage', {
 								label = "Enable link to entire post?"
 								checked = { wantLink }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantLink: option
+											wantLink: value
 										} )
 									}
 								}
@@ -123,9 +121,9 @@ registerBlockType( 'orc/media-coverage', {
 								label = "Display excerpt?"
 								checked = { wantExcerpt }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantExcerpt: option
+											wantExcerpt: value
 										} )
 									}
 								}
@@ -136,9 +134,9 @@ registerBlockType( 'orc/media-coverage', {
 								label = "Enable View More button?"
 								checked = { wantButton }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											wantButton: option
+											wantButton: value
 										} )
 									}
 								}
@@ -149,9 +147,9 @@ registerBlockType( 'orc/media-coverage', {
 								label = 'View More button text'
 								value = { buttonText }
 								onChange = {
-									( option ) => {
+									( value ) => {
 										setAttributes( {
-											buttonText: option
+											buttonText: value
 										} )
 									}
 								}
@@ -161,7 +159,7 @@ registerBlockType( 'orc/media-coverage', {
 				</InspectorControls>
 
 				<div className={ className }>
-					<label>Display Media Coverage {displayString}</label>
+					<label>Display Media Coverage {status}</label>
 				</div>
 			</Fragment>
 		);
