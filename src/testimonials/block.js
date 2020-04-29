@@ -10,7 +10,7 @@ import {useState} from 'react'
 
 const { __ }                = wp.i18n
 const { registerBlockType } = wp.blocks
-const { InspectorControls } = wp.editor
+const { InspectorControls } = wp.blockEditor
 const { Fragment }          = wp.element
 const {
 	PanelRow,
