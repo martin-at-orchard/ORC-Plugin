@@ -71,6 +71,9 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-28 Version: 0.3.3
+* Added trusted partners
+
 ### 2020-04-27 Version: 0.3.2
 * Allow click for admissions and testimonials
 

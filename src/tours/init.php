@@ -58,7 +58,6 @@ class Tours {
 
 		$num_posts    = ( isset( $attributes['numPosts'] ) && $attributes['numPosts'] > 0 ) ? $attributes['numPosts'] : -1;
 		$want_link    = ( isset( $attributes['wantLink'] ) ) ? false : true;
-		$want_link    = ( isset( $attributes['wantLink'] ) ) ? false : true;
 		$want_excerpt = ( isset( $attributes['wantExcerpt'] ) ) ? false : true;
 		$want_button  = ( isset( $attributes['wantButton'] ) ) ? false : true;
 		$button_text  = ( isset( $attributes['buttonText'] ) ) ? $attributes['buttonText'] : 'View More';
