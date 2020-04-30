@@ -82,12 +82,7 @@ class Trusted_Partners {
 		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
 			if ( has_post_thumbnail( $post->ID ) ) {
-				$id     = get_post_thumbnail_id( $post->ID );
-				$src    = wp_get_attachment_image_src( $id, array( $width, 0 ) );
-				$srcset = wp_get_attachment_image_srcset( $id, array( $width, 0 ) );
-				$sizes  = wp_get_attachment_image_sizes( $id, array( $width, 0 ) );
-				$alt    = get_post_meta( $id, '_wp_attachment_image_alt', true );
-				echo '<div class="partner" style="min-width:' . $src[1] . '" id="post-' . $post->ID . '">';     // phpcs:ignore
+				echo '<div class="partner" id="post-' . $post->ID . '">';     // phpcs:ignore
 				$html = '';
 				if ( $want_link ) {
 					$link = get_post_meta( $post->ID, 'orc-partners-link', true );
@@ -96,7 +91,7 @@ class Trusted_Partners {
 						$html  = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '" target="_blank">';
 					}
 				}
-				$html .= '<img width="' . $src[1] . '" height="' . $src[2] . '" src="' . $src[0] . '" class="attachment-' . $id . ' wp-post-image" alt="' . $alt . '">';
+				$html .= get_the_post_thumbnail( $post->ID, array( $width, 0 ) );
 				if ( $want_link ) {
 					$html .= '</a>';
 				}

@@ -68,7 +68,7 @@ class Contact {
 	 */
 	public function render( $attributes ) {
 
-		$type      = ( isset( $attributes['type'] ) ) ? $attributes['type'] : '';
+		$type      = ( isset( $attributes['type'] ) ) ? $attributes['type'] : 'local';
 		$want_icon = ( isset( $attributes['wantIcon'] ) ) ? false : true;
 		$want_link = ( isset( $attributes['wantLink'] ) ) ? false : true;
 		$prefix    = ( isset( $attributes['prefix'] ) ) ? $attributes['prefix'] : '';

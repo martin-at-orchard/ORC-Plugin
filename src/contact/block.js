@@ -77,7 +77,6 @@ registerBlockType( 'orc/contact', {
 	edit: ( props ) => {
 
 		const {
-			className,
 			setAttributes
 		} = props
 		const {
