@@ -71,6 +71,10 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-04-30 Version: 0.3.8
+* Ability to display all the social links in one block
+* All backend blocks now black on white rather than black on transparent
+
 ### 2020-04-29 Version: 0.3.7
 * Use get_the_post_thumbnail instead of custom building the image tag
 * Formatting changes

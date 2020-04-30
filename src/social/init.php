@@ -22,9 +22,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Social {
 
 	/**
+	 * Social types array with all the possible social link.
+	 *
+	 * @var array $social_types Array of social links.
+	 */
+	private $social_types;
+
+	/**
 	 * Constructor for the staff class
 	 */
 	public function __construct() {
+
+		$this->social_types = array(
+			'facebook',
+			'instagram',
+			'twitter',
+			'youtube',
+		);
 
 		add_action( 'init', array( $this, 'register' ) );
 
@@ -64,17 +78,29 @@ class Social {
 	 */
 	public function render( $attributes ) {
 
-		$type      = ( isset( $attributes['type'] ) ) ? $attributes['type'] : 'facebook';
-		$class     = ( isset( $attributes['theClass'] ) ) ? $attributes['theClass'] : '';
-
-		$shortcode = '[orc_social type="' . $type . '"';
-		if ( '' !== $class ) {
-			$shortcode .= ' class="' . $class . '"';
-		}
-		$shortcode .= ']';
+		$type  = ( isset( $attributes['type'] ) ) ? $attributes['type'] : 'all';
+		$class = ( isset( $attributes['theClass'] ) ) ? $attributes['theClass'] : '';
 
 		\ob_start();
-		echo do_shortcode( $shortcode );
+
+		if ( 'all' === $type ) {
+			foreach ( $this->social_types as $social ) {
+				$shortcode = '[orc_social type="' . $social . '"';
+				if ( '' !== $class ) {
+					$shortcode .= ' class="' . $class . '-' . $social . '"';
+				}
+				$shortcode .= ']';
+				echo do_shortcode( $shortcode );
+			}
+		} else {
+			$shortcode = '[orc_social type="' . $type . '"';
+			if ( '' !== $class ) {
+				$shortcode .= ' class="' . $class . '"';
+			}
+			$shortcode .= ']';
+			echo do_shortcode( $shortcode );
+		}
+
 		return \ob_get_clean();
 
 	}

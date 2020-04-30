@@ -45,7 +45,7 @@ registerBlockType( 'orc/social', {
 	attributes: {
 		type: {
 			type: 'string',
-			default: 'local'
+			default: 'all'
 		},
 		theClass: {
 			type: 'string',
@@ -69,6 +69,7 @@ registerBlockType( 'orc/social', {
 
 		// Create the select object
 		let typesObject = {
+			'all' : 'All Social Links',
 			'facebook': 'Facebook',
 			'instagram': 'Instagram',
 			'twitter': 'Twitter',
