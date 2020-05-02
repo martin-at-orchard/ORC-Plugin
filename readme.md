@@ -71,6 +71,12 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
+### 2020-05-02 Version: 0.4.0
+* Added email addresses to the plugin
+* Add Contact form
+* Add sending of email
+* Add SMTP option
+
 ### 2020-04-30 Version: 0.3.8
 * Ability to display all the social links in one block
 * All backend blocks now black on white rather than black on transparent

@@ -162,6 +162,12 @@ class Settings {
 				'tollfree'       => '',
 				'text'           => '',
 				'fax'            => '',
+				'intake'         => '',
+				'communications' => '',
+				'hr'             => '',
+				'alumni'         => '',
+				'website'        => '',
+				'privacy'        => '',
 				'facebook'       => '',
 				'instagram'      => '',
 				'twitter'        => '',
@@ -254,6 +260,96 @@ class Settings {
 			)
 		);
 
+		$id = 'intake';
+		add_settings_field(
+			$id,
+			esc_html__( 'Intake Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes' => 'widefat',
+				'value'   => $options[ $id ],
+				'name'    => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'      => $id,
+			)
+		);
+
+		$id = 'communications';
+		add_settings_field(
+			$id,
+			esc_html__( 'Communications Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes' => 'widefat',
+				'value'   => $options[ $id ],
+				'name'    => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'      => $id,
+			)
+		);
+
+		$id = 'hr';
+		add_settings_field(
+			$id,
+			esc_html__( 'HR Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes' => 'widefat',
+				'value'   => $options[ $id ],
+				'name'    => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'      => $id,
+			)
+		);
+
+		$id = 'alumni';
+		add_settings_field(
+			$id,
+			esc_html__( 'Alumni Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes' => 'widefat',
+				'value'   => $options[ $id ],
+				'name'    => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'      => $id,
+			)
+		);
+
+		$id = 'website';
+		add_settings_field(
+			$id,
+			esc_html__( 'Website Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes' => 'widefat',
+				'value'   => $options[ $id ],
+				'name'    => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'      => $id,
+			)
+		);
+
+		$id = 'privacy';
+		add_settings_field(
+			$id,
+			esc_html__( 'Privacy Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'contacts',
+			array(
+				'classes' => 'widefat',
+				'value'   => $options[ $id ],
+				'name'    => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'      => $id,
+			)
+		);
+
 		$id = 'facebook';
 		add_settings_field(
 			$id,
@@ -267,22 +363,6 @@ class Settings {
 				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
 				'id'          => $id,
 				'description' => 'ID is after https://facebook.com/',
-			)
-		);
-
-		$id = 'instagram';
-		add_settings_field(
-			$id,
-			esc_html__( 'Instagram Link ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
-			array( $this, 'text_field' ),
-			Plugin::NAME,
-			'contacts',
-			array(
-				'classes'     => '',
-				'value'       => $options[ $id ],
-				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
-				'id'          => $id,
-				'description' => 'ID is after https://www.instagram.com/',
 			)
 		);
 
@@ -502,6 +582,14 @@ class Settings {
 				case 'twitter_tag':
 					$output[ $id ] = sanitize_text_field( $value );
 					break;
+				case 'intake':
+				case 'communications':
+				case 'hr':
+				case 'alumni':
+				case 'website':
+				case 'privacy':
+					$output[$id] = sanitize_email( $value );
+					break;
 				default:
 			}
 		}
@@ -528,13 +616,16 @@ class Settings {
 			$args
 		);
 
+		$classes     = ( '' === $args['classes'] ) ? '' : 'class="' . esc_attr( $args['classes'] ) . '"';
+		$description = ( '' === $args['description'] ) ? '' : '<span class="description"> ' . esc_attr( $args['description'] ) . '</span>';
+
 		printf(
-			'<input type="text" class="%s" name="%s" id="%s" value="%s" /><span class="description"> %s</span>',
-			esc_attr( $args['classes'] ),
+			'<input type="text" %s name="%s" id="%s" value="%s" />%s',
+			$classes,                       // phpcs:ignore
 			esc_attr( $args['name'] ),
 			esc_attr( $args['id'] ),
 			esc_attr( $args['value'] ),
-			esc_attr( $args['description'] )
+			$description                    // phpcs:ignore
 		);
 
 	}
@@ -560,21 +651,24 @@ class Settings {
 			$args
 		);
 
+		$classes     = ( '' === $args['classes'] ) ? '' : 'class="' . esc_attr( $args['classes'] ) . '"';
+		$description = ( '' === $args['description'] ) ? '' : '<span class="description"> ' . esc_attr( $args['description'] ) . '</span>';
+
 		$val = str_replace(
 			'\n',
 			'',
 			$args['value']
 		);
 		printf(
-			'<textarea class="%s" name="%s" id="%s" rows="%s" cols="%s" %s>%s</textarea><span class="description"> %s</span>',
-			esc_attr( $args['classes'] ),
+			'<textarea %s name="%s" id="%s" rows="%s" cols="%s" %s>%s</textarea>%s',
+			classes,                        // phpcs:ignore
 			esc_attr( $args['name'] ),
 			esc_attr( $args['id'] ),
 			esc_attr( $args['rows'] ),
 			esc_attr( $args['cols'] ),
 			esc_attr( $args['style'] ),
 			esc_attr( $val ),
-			esc_attr( $args['description'] )
+			$description                    // phpcs:ignore
 		);
 
 	}
@@ -599,15 +693,18 @@ class Settings {
 			$args
 		);
 
+		$classes     = ( '' === $args['classes'] ) ? '' : 'class="' . esc_attr( $args['classes'] ) . '"';
+		$description = ( '' === $args['description'] ) ? '' : '<span class="description"> ' . esc_attr( $args['description'] ) . '</span>';
+
 		printf(
-			'<input type="number" min="%s" max="%s" class="%s" name="%s" id="%s" value="%s" /><span class="description"> %s</span>',
+			'<input type="number" min="%s" max="%s" %s name="%s" id="%s" value="%s" />%s',
 			esc_attr( $args['min'] ),
 			esc_attr( $args['max'] ),
-			esc_attr( $args['classes'] ),
+			$classes,                       // phpcs:ignore
 			esc_attr( $args['name'] ),
 			esc_attr( $args['id'] ),
 			esc_attr( $args['value'] ),
-			esc_attr( $args['description'] )
+			$description                    // phpcs:ignore
 		);
 
 	}

@@ -21,12 +21,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Contact {
 
+	const NONCE = 'orc-contact-nonce';
+
 	/**
 	 * Constructor for the staff class
 	 */
 	public function __construct() {
 
 		add_action( 'init', array( $this, 'register' ) );
+		add_action( 'template_redirect', array( $this, 'add_contact_page' ) );
+		add_action( 'admin_post_nopriv_contact_form', array( $this, 'send_contact_form' ) );
+		add_action( 'admin_post_contact_form', array( $this, 'send_contact_form' ) );
+
+		if ( Plugin::USE_SMTP ) {
+			add_action( 'phpmailer_init', array( $this, 'mailer_config' ), 10, 1 );
+		}
 
 	}
 
@@ -48,6 +57,225 @@ class Contact {
 				'render_callback' => array( $this, 'render' ),
 			)
 		);
+
+	}
+
+	/**
+	 * Load the template for the custom contact page.
+	 *
+	 * Order of checking for the template
+	 *
+	 * 1) wp-content/themes/CHILD-THEME/plugin/orc/templates/FILENAME
+	 * 2) wp-content/themes/PARENT-THEME/plugin/orc/templates/FILENAME
+	 * 3) wp-content/plugins/orc/templates/FILENAME
+	 *
+	 * @return mixed The template if loaded, false if not
+	 */
+	public function add_contact_page() {
+
+		global $wp;
+
+		if ( 'contact' !== $wp->query_vars['pagename'] ) {
+			return false;
+		}
+
+		$located         = false;
+		$template_name   = 'orc_contact.php';
+		$child_template  = trailingslashit( get_stylesheet_directory() ) . 'plugins/orc/templates/' . $template_name;
+		$parent_template = trailingslashit( get_template_directory() ) . 'plugins/orc/templates/' . $template_name;
+		$plugin_template = trailingslashit( plugin_dir_path( __FILE__ ) ) . '../../templates/' . $template_name;
+
+		if ( file_exists( $child_template ) ) {
+			// Check child theme first to see if the template is being overridden.
+			$located = $child_template;
+		} elseif ( file_exists( $parent_template ) ) {
+			// Check parent theme next to see if the template is being overridden.
+			$located = $parent_template;
+		} elseif ( file_exists( $plugin_template ) ) {
+			// Check plugin for template.
+			$located = $plugin_template;
+		}
+
+		if ( ! empty( $located ) ) {
+			load_template( $located, true );
+		}
+
+		return $located;
+
+	}
+
+	/**
+	 * Set the emailer to use SMTP authentication.
+	 */
+	public function mailer_config( \PHPMailer $mailer ) {
+
+		$mailer->IsSMTP();
+		$mailer->Host       = 'mail.orchardrecovery.com';     // phpcs:ignore
+		$mailer->Port       = 465;                            // phpcs:ignore
+		$mailer->SMTPAuth   = true;                           // phpcs:ignore
+		$mailer->Sender     = 'martin@orchardrecovery.com';   // phpcs:ignore
+		$mailer->Username   = 'martin@orchardrecovery.com';   // phpcs:ignore
+		$mailer->Password   = ORC_SMTP_PASS;                  // phpcs:ignore
+		$mailer->FromName   = 'Orchard Website';              // phpcs:ignore
+		$mailer->From       = 'martin@orchardrecovery.com';   // phpcs:ignore
+		$mailer->SMTPSecure = 'ssl';                          // phpcs:ignore
+
+	}
+
+	/**
+	 * Send the contact form.
+	 * 
+	 * Validate all the data including the nonce
+	 */
+	public function send_contact_form() {
+
+		$is_valid_nonce = ( isset( $_POST[ Contact::NONCE ] ) && wp_verify_nonce( $_POST[ Contact::NONCE ], 'Contact::orc-contact.php' ) ) ? true : false; // phpcs:ignore
+
+		if ( ! $is_valid_nonce ) {
+			$_SESSION['post-data']          = $_POST;
+			$_SESSION['post-data']['error'] = 'Nonce Error';
+
+			$url = get_bloginfo( 'url' ) . '/contact/';
+			header( "Location: $url" );
+
+			exit();
+		}
+
+		// Trim the inputs and filter the input.
+		$inputs             = array();
+		$inputs['name']     = isset( $_POST['name'] )     ? filter_var( trim( $_POST['name'] ),     FILTER_SANITIZE_STRING ) : '';     // phpcs:ignore
+		$inputs['email']    = isset( $_POST['email'] )    ? filter_var( trim( $_POST['email'] ),    FILTER_SANITIZE_EMAIL )  : '';     // phpcs:ignore
+		$inputs['subject']  = isset( $_POST['subject'] )  ? filter_var( trim( $_POST['subject'] ),  FILTER_SANITIZE_STRING ) : '';     // phpcs:ignore
+		$inputs['message']  = isset( $_POST['message'] )  ? filter_var( trim( $_POST['message'] ),  FILTER_SANITIZE_STRING ) : '';     // phpcs:ignore
+		$inputs['privacy']  = isset( $_POST['privacy'] )  ? filter_var(       $_POST['privacy'],    FILTER_VALIDATE_INT )    : 0;      // phpcs:ignore
+		$inputs['email-to'] = isset( $_POST['email-to'] ) ? filter_var( trim( $_POST['email-to'] ), FILTER_SANITIZE_STRING ) : '';     // phpcs:ignore
+
+		// Escape the inputs using WordPress functions.
+		$inputs['name']    = esc_attr( $inputs['name'] );
+		$inputs['email']   = sanitize_email( $inputs['email'] );
+		$inputs['subject'] = esc_attr( $inputs['subject'] );
+		$inputs['message'] = esc_textarea( $inputs['message'] );
+
+		/**
+		 * Validate the input.
+		 *
+		 * Require:
+		 *   privacy = 1
+		 *   name, subject
+		 *   valid email
+		 */
+
+		$valid         = true;
+		$privacy_error = '';
+		$name_error    = '';
+		$email_error   = '';
+		$subject_error = '';
+		$message_error = '';
+
+		// Require the acknowledge privacy checkbox to be checked.
+		if ( isset( $inputs['privacy'] ) ) {
+			if ( 1 !== $inputs['privacy'] ) {
+				$valid         = false;
+				$privacy_error = 'Acceptance of the privacy policy is required';
+			}
+		} else {
+			$valid         = false;
+			$privacy_error = 'Acceptance of the privacy policy is required';
+		}
+
+		// Require a name with only text characters.
+		if ( isset( $inputs['name'] ) ) {
+			if ( '' === $inputs['name'] ) {
+				$valid      = false;
+				$name_error = 'Your name is required';
+			} elseif ( $inputs['name'] !== trim( $_POST['name'] ) ) {     // phpcs:ignore
+				$valid      = false;
+				$name_error = 'Invalid characters in your name';
+			}
+		} else {
+			$valid      = false;
+			$name_error = 'Your name is required';
+		}
+
+		// Require a valid email address.
+		if ( isset( $inputs['email'] ) ) {
+			$inputs['email'] = filter_var( $inputs['email'], FILTER_VALIDATE_EMAIL );
+			if ( false === $inputs['email'] ) {
+				$valid       = false;
+				$email_error = 'Your email address is not valid';
+			} elseif ( '' === $inputs['email'] ) {
+				$valid       = false;
+				$email_error = 'The email address is required';
+			} elseif ( $inputs['email'] !== trim( $_POST['email'] ) ) {     // phpcs:ignore
+				$valid       = false;
+				$email_error = 'Invalid characters in your email address';
+			}
+		} else {
+			$valid       = false;
+			$email_error = 'Your email address is required';
+		}
+
+		// Require a subject with only text characters.
+		if ( isset( $inputs['subject'] ) ) {
+			if ( '' === $inputs['subject'] ) {
+				$valid         = false;
+				$subject_error = 'The subject is required';
+			} elseif ( $inputs['subject'] !== trim( $_POST['subject'] ) ) {     // phpcs:ignore
+				$valid         = false;
+				$subject_error = 'Invalid characters in the subject';
+			}
+		} else {
+			$valid         = false;
+			$subject_error = 'The subject is required';
+		}
+
+		// Only text characters allowed in the message.
+		if ( isset( $inputs['message'] ) ) {
+			if ( $inputs['message'] !== trim( $_POST['message'] ) ) {     // phpcs:ignore
+				$valid         = false;
+				$message_error = 'Invalid characters in the message';
+			}
+		}
+
+		// Errors are returned in the session variable.
+		session_start();
+
+		if ( $valid ) {
+			$headers = array(
+				"Reply-To: {$inputs['name']} <{$inputs['email']}>",
+				"Return-Path: {$inputs['name']} <{$inputs['email']}>",
+			);
+
+			// Find who to send the email to.
+			$options = get_option( Plugin::SETTINGS_KEY );
+			if ( isset( $options[ $inputs['email-to'] ] ) ) {
+				$to = $options[ $inputs['email-to'] ];
+			} else {
+				$to = 'intake@orchardrecovery.com';
+			}
+$to = 'martin@orchardrecovery.com';
+			$email_sent = wp_mail( $to, $inputs['subject'], $inputs['message'], $headers );
+
+			if ( $email_sent ) {
+				$_SESSION['post-data']['success'] = 'Email successfuly sent';
+			} else {
+				$_SESSION['post-data']['error'] = 'Error sending email';
+			}
+		} else {
+			$_SESSION['post-data']                  = $_POST;
+			$_SESSION['post-data']['error']         = 'Please fix the errors in the submission form';
+			$_SESSION['post-data']['privacy-error'] = $privacy_error;
+			$_SESSION['post-data']['name-error']    = $name_error;
+			$_SESSION['post-data']['email-error']   = $email_error;
+			$_SESSION['post-data']['subject-error'] = $subject_error;
+			$_SESSION['post-data']['message-error'] = $message_error;
+		}
+
+		// Return to the contact page.
+		$url = get_bloginfo( 'url' ) . '/contact/';
+		header( "Location: $url" );
+
+		exit();
 
 	}
 
