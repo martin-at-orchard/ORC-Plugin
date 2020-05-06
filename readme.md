@@ -4,9 +4,9 @@
 Contributors: martin-wedepohl
 Tags: ORC
 Requires at least: 4.7
-Tested up to: 5.4
+Tested up to: 5.4.1
 Requires PHP: 5.6
-Stable tag: 0.4.1
+Stable tag: 0.5.0
 ```
 
 ## Description
@@ -71,7 +71,11 @@ If you get stuck, or have questions you can email Martin Wedepohl martin@wedepoh
 
 ## Changelog
 
-### 2020-05-02 Version: 0.4.1
+### 2020-05-06 Version: 0.5.0
+* Move settings to it's own directory
+* Move fields to it's own class
+
+### 2020-05-06 Version: 0.4.1
 * Set SMTP configuration in Plugin Options
 
 ### 2020-05-02 Version: 0.4.0
