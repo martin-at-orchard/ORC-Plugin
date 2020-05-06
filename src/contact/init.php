@@ -32,10 +32,7 @@ class Contact {
 		add_action( 'template_redirect', array( $this, 'add_contact_page' ) );
 		add_action( 'admin_post_nopriv_contact_form', array( $this, 'send_contact_form' ) );
 		add_action( 'admin_post_contact_form', array( $this, 'send_contact_form' ) );
-
-		if ( Plugin::USE_SMTP ) {
-			add_action( 'phpmailer_init', array( $this, 'mailer_config' ), 10, 1 );
-		}
+		add_action( 'phpmailer_init', array( $this, 'mailer_config' ), 10, 1 );
 
 	}
 
@@ -109,16 +106,20 @@ class Contact {
 	 */
 	public function mailer_config( \PHPMailer $mailer ) {
 
-		$mailer->IsSMTP();
-		$mailer->Host       = 'mail.orchardrecovery.com';     // phpcs:ignore
-		$mailer->Port       = 465;                            // phpcs:ignore
-		$mailer->SMTPAuth   = true;                           // phpcs:ignore
-		$mailer->Sender     = 'martin@orchardrecovery.com';   // phpcs:ignore
-		$mailer->Username   = 'martin@orchardrecovery.com';   // phpcs:ignore
-		$mailer->Password   = ORC_SMTP_PASS;                  // phpcs:ignore
-		$mailer->FromName   = 'Orchard Website';              // phpcs:ignore
-		$mailer->From       = 'martin@orchardrecovery.com';   // phpcs:ignore
-		$mailer->SMTPSecure = 'ssl';                          // phpcs:ignore
+		$options = get_option( Plugin::SETTINGS_KEY );
+
+		if ( '1' === $options['use_smtp'] ) {
+			$mailer->IsSMTP();
+			$mailer->Host       = esc_attr( $options['smtp_host'] );
+			$mailer->Port       = esc_attr( $options['smtp_port'] );
+			$mailer->SMTPAuth   = esc_attr( $options['smtp_auth'] );
+			$mailer->SMTPSecure = esc_attr( $options['smtp_secure'] );
+			$mailer->Sender     = esc_attr( $options['smtp_user'] );
+			$mailer->Username   = esc_attr( $options['smtp_user'] );
+			$mailer->From       = esc_attr( $options['smtp_user'] );
+			$mailer->FromName   = esc_attr( $options['smtp_name'] );
+			$mailer->Password   = esc_attr( ORC_SMTP_PASS );
+		}
 
 	}
 

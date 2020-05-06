@@ -180,6 +180,14 @@ class Settings {
 				'bing'           => '',
 				'linkedin'       => '',
 				'twitter_tag'    => '',
+				'use_smtp'       => '',
+				'smtp_host'      => '',
+				'smtp_port'      => '',
+				'smtp_auth'      => '',
+				'smtp_user'      => '',
+				'smtp_name'      => '',
+				'smtp_secure'    => '',
+
 			),
 			$options,
 			'register_settings_page'
@@ -548,6 +556,131 @@ class Settings {
 			)
 		);
 
+		add_settings_section(
+			'smtp',
+			'SMTP Options',
+			null,
+			Plugin::NAME
+		);
+
+		$id      = 'use_smtp';
+		$checked = ( '1' === $options[ $id ] ) ? 'checked' : '';
+		add_settings_field(
+			$id,
+			esc_html__( 'Use SMTP:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'checkbox_field' ),
+			Plugin::NAME,
+			'smtp',
+			array(
+				'classes'     => '',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'checked'     => $checked,
+				'description' => 'Use SMTP rather than mail (requires host/user/password/etc)',
+			)
+		);
+
+		$id = 'smtp_host';
+		add_settings_field(
+			$id,
+			esc_html__( 'SMTP Host:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'smtp',
+			array(
+				'classes' => 'widefat',
+				'value'   => $options[ $id ],
+				'name'    => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'      => $id,
+			)
+		);
+
+		$id = 'smtp_port';
+		add_settings_field(
+			$id,
+			esc_html__( 'SMTP Port:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'number_field' ),
+			Plugin::NAME,
+			'smtp',
+			array(
+				'classes'     => '',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'max'         => 65535,
+				'description' => 'Usually 25, 465 or 567',
+			)
+		);
+
+		$id      = 'smtp_auth';
+		$checked = ( '1' === $options[ $id ] ) ? 'checked' : '';
+		add_settings_field(
+			$id,
+			esc_html__( 'SMTP Authentication:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'checkbox_field' ),
+			Plugin::NAME,
+			'smtp',
+			array(
+				'classes'     => '',
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'checked'     => $checked,
+				'description' => 'SMTP authentication through user/password',
+			)
+		);
+
+		$id = 'smtp_user';
+		add_settings_field(
+			$id,
+			esc_html__( 'SMTP Username:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'smtp',
+			array(
+				'classes'     => 'widefat',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'description' => 'Password must be set in wp-config.php with name ORC_SMTP_PASS',
+			)
+		);
+
+		$id = 'smtp_name';
+		add_settings_field(
+			$id,
+			esc_html__( 'SMTP From Name:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'text_field' ),
+			Plugin::NAME,
+			'smtp',
+			array(
+				'classes'     => 'widefat',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'id'          => $id,
+				'description' => 'SMTP From Name in email header',
+			)
+		);
+
+		$id = 'smtp_secure';
+		add_settings_field(
+			$id,
+			esc_html__( 'SMTP Secure:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			array( $this, 'radio_field' ),
+			Plugin::NAME,
+			'smtp',
+			array(
+				'classes'     => '',
+				'value'       => $options[ $id ],
+				'name'        => Plugin::SETTINGS_KEY . '[' . $id . ']',
+				'options'     => array(
+					'ssl'      => 'SSL',
+					'tls'      => 'TLS',
+					'starttls' => 'STARTTLS',
+				),
+			)
+		);
+
 	}
 
 	/**
@@ -564,33 +697,29 @@ class Settings {
 
 		foreach ( $input as $id => $value ) {
 			switch ( $id ) {
-				case 'local':
-				case 'tollfree':
-				case 'text':
-				case 'fax':
-				case 'facebook':
-				case 'instagram':
-				case 'twitter':
-				case 'youtube':
-				case 'main':
-				case 'xmas':
-				case 'google':
-				case 'facebook_app':
-				case 'facebook_pixel':
-				case 'bing':
-				case 'linkedin':
-				case 'twitter_tag':
-					$output[ $id ] = sanitize_text_field( $value );
-					break;
 				case 'intake':
 				case 'communications':
 				case 'hr':
 				case 'alumni':
 				case 'website':
 				case 'privacy':
-					$output[$id] = sanitize_email( $value );
+				case 'smtp_user':
+					$output[ $id ] = sanitize_email( $value );
 					break;
 				default:
+					$output[ $id ] = sanitize_text_field( $value );
+			}
+		}
+
+		if ( ! empty( $input['use_smtp'] ) && '1' === $input['use_smtp'] ) {
+			$all_requirements_set = ( ! empty( $input['smtp_host'] ) ) &&
+									( ! empty( $input['smtp_port'] ) ) &&
+									( ! empty( $input['smtp_auth'] ) ) &&
+									( ! empty( $input['smtp_user'] ) ) &&
+									( ! empty( $input['smtp_name'] ) ) &&
+									( ! empty( $input['smtp_secure'] ) );
+			if ( ! $all_requirements_set ) {
+				$output['use_smtp'] = '';
 			}
 		}
 
@@ -736,6 +865,45 @@ class Settings {
 			esc_attr( $args['description'] )
 		);
 
+	}
+
+	/**
+	 * Display a radio button field in the form.
+	 *
+	 * @param array $args The arguments passed to the function.
+	 */
+	public function radio_field( $args ) {
+
+		$args = shortcode_atts(
+			array(
+				'classes'     => '',
+				'name'        => '',
+				'description' => '',
+				'value'       => '',
+				'options'     => array(),
+			),
+			$args
+		);
+
+		if ( count( $args['options'] ) > 0 ) {
+			foreach ( $args['options'] as $id => $value ) {
+				$checked = ( $id === $args['value'] ) ? 'checked' : '';
+				printf(
+					'<input type="radio" class="%s" name="%s" id="%s" value="%s" %s /><label for="%s">%s</label><br>',
+					esc_attr( $args['classes'] ),
+					esc_attr( $args['name'] ),
+					esc_attr( $id ),
+					esc_attr( $id ),
+					esc_attr( $checked ),
+					esc_attr( $id ),
+					esc_attr( $value ),
+				);
+			}
+			printf( 
+				'<span class="description"> %s</span>',
+				esc_attr( $args['description'] )
+			);
+		}
 	}
 
 	/**
