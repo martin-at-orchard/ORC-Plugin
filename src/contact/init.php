@@ -23,14 +23,58 @@ class Contact {
 
 	const NONCE = 'orc-contact-nonce';
 
+	/**
+	 * Array of keys and names for the emailing functions.
+	 *
+	 * @var array $email_to Emailing array.
+	 */
 	public static $email_to = array(
-		'intake'         => 'Email Orchard Recovery',
-		'communications' => 'Email Orchard Communications',
-		'hr'             => 'Email Orchard Human Resources',
-		'alumni'         => 'Email Orchard Alumni Coordinator',
-		'website'        => 'Email Orchard Website Administrator',
-		'privacy'        => 'Email Orchard Privacy Officer',
+		'intake'         => 'Orchard Recovery',
+		'communications' => 'Orchard Communications',
+		'hr'             => 'Orchard Human Resources',
+		'alumni'         => 'Orchard Alumni Coordinator',
+		'website'        => 'Orchard Website Administrator',
+		'privacy'        => 'Orchard Privacy Officer',
 	);
+
+	/**
+	 * Load the template
+	 *
+	 * Order of checking for the template
+	 *
+	 * 1) wp-content/themes/CHILD-THEME/plugin/orc/templates/FILENAME
+	 * 2) wp-content/themes/PARENT-THEME/plugin/orc/templates/FILENAME
+	 * 3) wp-content/plugins/orc/templates/FILENAME
+	 *
+	 * @param string $template_name The name of the template to look for.
+	 *
+	 * @return mixed The template if loaded, false if not
+	 */
+	private function get_template_page( $template_name ) {
+
+		$located         = false;
+		$child_template  = trailingslashit( get_stylesheet_directory() ) . 'plugins/orc/templates/' . $template_name;
+		$parent_template = trailingslashit( get_template_directory() ) . 'plugins/orc/templates/' . $template_name;
+		$plugin_template = trailingslashit( plugin_dir_path( __FILE__ ) ) . '../../templates/' . $template_name;
+
+		if ( file_exists( $child_template ) ) {
+			// Check child theme first to see if the template is being overridden.
+			$located = $child_template;
+		} elseif ( file_exists( $parent_template ) ) {
+			// Check parent theme next to see if the template is being overridden.
+			$located = $parent_template;
+		} elseif ( file_exists( $plugin_template ) ) {
+			// Check plugin for template.
+			$located = $plugin_template;
+		}
+
+		if ( ! empty( $located ) ) {
+			load_template( $located, true );
+		}
+
+		return $located;
+
+	}
 
 	/**
 	 * Constructor for the staff class
@@ -38,7 +82,7 @@ class Contact {
 	public function __construct() {
 
 		add_action( 'init', array( $this, 'register' ) );
-		add_action( 'template_redirect', array( $this, 'add_contact_page' ) );
+		add_action( 'template_redirect', array( $this, 'load_template' ) );
 		add_action( 'admin_post_nopriv_contact_form', array( $this, 'send_contact_form' ) );
 		add_action( 'admin_post_contact_form', array( $this, 'send_contact_form' ) );
 		add_action( 'phpmailer_init', array( $this, 'mailer_config' ), 10, 1 );
@@ -85,51 +129,34 @@ class Contact {
 	}
 
 	/**
-	 * Load the template for the custom contact page.
-	 *
-	 * Order of checking for the template
-	 *
-	 * 1) wp-content/themes/CHILD-THEME/plugin/orc/templates/FILENAME
-	 * 2) wp-content/themes/PARENT-THEME/plugin/orc/templates/FILENAME
-	 * 3) wp-content/plugins/orc/templates/FILENAME
+	 * Load the templates for the custom contact/status page.
 	 *
 	 * @return mixed The template if loaded, false if not
 	 */
-	public function add_contact_page() {
+	public function load_template() {
 
 		global $wp;
 
-		if ( 'contact' !== $wp->query_vars['pagename'] ) {
-			return false;
+		if ( isset( $wp->query_vars['pagename'] ) ) {
+
+			if ( 'contact' === $wp->query_vars['pagename'] ) {
+				return $this->get_template_page( 'orc_contact.php' );
+			}
+
+			if ( 'email-status' === $wp->query_vars['pagename'] ) {
+				return $this->get_template_page( 'orc_status.php' );
+			}
+
 		}
 
-		$located         = false;
-		$template_name   = 'orc_contact.php';
-		$child_template  = trailingslashit( get_stylesheet_directory() ) . 'plugins/orc/templates/' . $template_name;
-		$parent_template = trailingslashit( get_template_directory() ) . 'plugins/orc/templates/' . $template_name;
-		$plugin_template = trailingslashit( plugin_dir_path( __FILE__ ) ) . '../../templates/' . $template_name;
-
-		if ( file_exists( $child_template ) ) {
-			// Check child theme first to see if the template is being overridden.
-			$located = $child_template;
-		} elseif ( file_exists( $parent_template ) ) {
-			// Check parent theme next to see if the template is being overridden.
-			$located = $parent_template;
-		} elseif ( file_exists( $plugin_template ) ) {
-			// Check plugin for template.
-			$located = $plugin_template;
-		}
-
-		if ( ! empty( $located ) ) {
-			load_template( $located, true );
-		}
-
-		return $located;
+		return false;
 
 	}
 
 	/**
 	 * Set the emailer to use SMTP authentication.
+	 *
+	 * @param \PHPMailer $mailer The PHP mailer.
 	 */
 	public function mailer_config( \PHPMailer $mailer ) {
 
@@ -300,9 +327,16 @@ class Contact {
 			$email_sent = wp_mail( $to, $inputs['subject'], $inputs['message'], $headers );
 
 			if ( $email_sent ) {
-				$_SESSION['post-data']['success'] = 'Email successfuly sent';
+				$_SESSION['post-data']['email-to'] = $inputs['email-to'];
+				$_SESSION['post-data']['success']  = 'Email successfuly sent';
+
+				// Go to the success page.
+				$url = get_bloginfo( 'url' ) . '/email-status/';
 			} else {
 				$_SESSION['post-data']['error'] = 'Error sending email';
+
+				// Return to the contact page.
+				$url = get_bloginfo( 'url' ) . '/contact/';
 			}
 		} else {
 			$_SESSION['post-data']                  = $_POST;
@@ -312,10 +346,11 @@ class Contact {
 			$_SESSION['post-data']['email-error']   = $email_error;
 			$_SESSION['post-data']['subject-error'] = $subject_error;
 			$_SESSION['post-data']['message-error'] = $message_error;
+
+			// Return to the contact page.
+			$url = get_bloginfo( 'url' ) . '/contact/';
 		}
 
-		// Return to the contact page.
-		$url = get_bloginfo( 'url' ) . '/contact/';
 		header( "Location: $url" );
 
 		exit();

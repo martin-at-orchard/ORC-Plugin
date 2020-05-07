@@ -86,6 +86,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</li>
 
 		<li class="tab">
+			<input type="radio" name="tabs" id="tab99" />
+			<label for="tab99"><?php _e( 'Templates', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></label>
+			<div id="tab-content99" class="content">
+				<h2><?php _e( 'Templates', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></h2>
+				<p><?php _e( 'Templates are used to display the contact page and the success page after emailing.', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
+				<p><?php _e( 'The templates in the plugin can be overridden by templates in the theme. The search order is shown below.', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
+				<ol>
+					<li>wp-content/themes/CHILD-THEME/plugin/orc/templates/FILENAME</li>
+					<li>wp-content/themes/PARENT-THEME/plugin/orc/templates/FILENAME</li>
+					<li>wp-content/plugins/orc/templates/FILENAME</li>
+				</ol>
+				<p><?php _e( 'The filenames used to override the templates are show below.', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
+				<ul class="info">
+					<li>orc_contact.php - <?php _e( 'Contact Page with slug ', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>'contact'</li>
+					<li>orc_status.php - <?php _e( 'Email status page with slug ', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?>'email-status'</li>
+				</ul>
+			</div>
+		</li>
+
+		<li class="tab">
 			<input type="radio" name="tabs" id="tab100" />
 			<label for="tab100"><?php _e( 'Shortcodes', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></label>
 			<div id="tab-content100" class="content">

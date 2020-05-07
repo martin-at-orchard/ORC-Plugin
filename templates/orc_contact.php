@@ -63,7 +63,7 @@ if ( have_posts() ) {
 		echo '<div class="error" id="error">' . esc_attr( $data['error'] ) . '</div>';
 	}
 
-	echo '<h2 class="email-to-title">' . esc_attr( Contact::get_email_to( $data['email-to'] ) ) . '</h2>';
+	echo '<h2 class="email-to-title">Email ' . esc_attr( Contact::get_email_to( $data['email-to'] ) ) . '</h2>';
 	echo '<form action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" method="post" id="contact-form">';
 
 	echo '<label for="name">Name:</label>';

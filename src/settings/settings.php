@@ -99,9 +99,11 @@ class Settings {
 		);
 
 		// Create a new submenu.
-		$newmenu   = array();
-		$newmenu[] = $menu[ $key1 ];
+		$newmenu      = array();
+		$newmenu[]    = $menu[ $key1 ];
+		$instructions = $menu[ $key2 ];
 		unset( $menu[ $key1 ] );
+		unset( $menu[ $key2 ] );
 
 		// Add in the other menu items.
 		foreach ( $menu as $key => $menu ) {
@@ -109,8 +111,7 @@ class Settings {
 		}
 
 		// Add the instructions
-		$newmenu[] = $menu[ $key2 ];
-		unset( $menu[ $key2 ] );
+		$newmenu[] = $instructions;
 
 		// Update the main menu.
 		$submenu[ Plugin::NAME ] = $newmenu;     // phpcs:ignore
