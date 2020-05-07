@@ -9,13 +9,15 @@ namespace ORC;
 
 // TODO: Add captcha
 
+$to = filter_input( INPUT_GET, 'send-to', FILTER_SANITIZE_STRING );
+
 $data = array(
 	'name'          => '',
 	'email'         => '',
 	'subject'       => '',
 	'message'       => '',
 	'privacy'       => '',
-	'email-to'      => '',
+	'email-to'      => ( empty( $to ) ? '' : $to ),
 	'privacy-error' => '',
 	'name-error'    => '',
 	'email-error'   => '',
@@ -55,41 +57,42 @@ if ( have_posts() ) {
 
 	echo '<div class="entry-content">';
 
+	if ( '' !== $data['success'] ) {
+		echo '<div class="success" id="success">' . esc_attr( $data['success'] ) . '</div>';
+	} elseif ( '' !== $data['error'] ) {
+		echo '<div class="error" id="error">' . esc_attr( $data['error'] ) . '</div>';
+	}
+
+	echo '<h2 class="email-to-title">' . esc_attr( Contact::get_email_to( $data['email-to'] ) ) . '</h2>';
 	echo '<form action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" method="post" id="contact-form">';
 
 	echo '<label for="name">Name:</label>';
 	echo '<input type="text" name="name" id="name" required aria-required="true" aria-invalid="' . ( '' === $data['name-error'] ? 'false' : 'true' ) . '" value="' . $data['name'] . '">';     // phpcs:ignore
-	echo '<div class="input-error">' . $data['name-error'] . '</div>';     // phpcs:ignore
+	echo '<div class="input-error">' . esc_attr( $data['name-error'] ) . '</div>';
 
 	echo '<label for="email">Email:</label>';
 	echo '<input type="text" name="email" id="email" required aria-required="true" aria-invalid="' . ( '' === $data['email-error'] ? 'false' : 'true' ) . '" value="' . $data['email'] . '">';     // phpcs:ignore
-	echo '<div class="input-error">' . $data['email-error'] . '</div>';     // phpcs:ignore
+	echo '<div class="input-error">' . esc_attr( $data['email-error'] ) . '</div>';
 
 	echo '<label for="subject">Subject:</label>';
 	echo '<input type="text" name="subject" id="subject" required aria-required="true" aria-invalid="' . ( '' === $data['subject-error'] ? 'false' : 'true' ) . '" value="' . $data['subject'] . '">';     // phpcs:ignore
-	echo '<div class="input-error">' . $data['subject-error'] . '</div>';     // phpcs:ignore
+	echo '<div class="input-error">' . esc_attr( $data['subject-error'] ) . '</div>';
 
 	echo '<label for="message">Message</label>';
 	echo '<textarea cols="40" rows="10" name="message" id="message" aria-invalid="' . ( '' === $data['message-error'] ? 'false' : 'true' ) . '">' . $data['message'] . '</textarea>';     // phpcs:ignore
-	echo '<div class="input-error">' . $data['message-error'] . '</div>';     // phpcs:ignore
+	echo '<div class="input-error">' . esc_attr( $data['message-error'] ) . '</div>';
 
 	echo '<label for="privacy">Privacy</label>';
 	echo '<input type="checkbox" name="privacy" id="privacy" value="1" required aria-required="true" aria-invalid="' . ( '' === $data['privacy-error'] ? 'false' : 'true' ) . '">';      // phpcs:ignore
 	echo '<span class="privacy-message">I have read and agree to the privacy policy outlined on the privacy page <a href="http://blocks.local/privacy" target="_blank" title="View Privacy Page">Privacy Page</a></span>';
-	echo '<div class="input-error">' . $data['privacy-error'] . '</div>';     // phpcs:ignore
+	echo '<div class="input-error">' . esc_attr( $data['privacy-error'] ) . '</div>';
 
 	wp_nonce_field( 'Contact::orc-contact.php', Contact::NONCE );
 	echo '<input type="hidden" name="action" value="contact_form">';
-	echo '<input type="hidden" name="email-to" value="website">';
+	echo '<input type="hidden" name="email-to" value="' . $data['email-to'] . '">';
 	echo '<input type="submit" name="submit" id="submit" value="submit">';
 
 	echo '</form>';
-
-	if ( '' !== $data['success'] ) {
-		echo '<div class="success" id="success">' . $data['success'] . '</div>';     // phpcs:ignore
-	} elseif ( '' !== $data['error'] ) {
-		echo '<div class="error" id="error">' . $data['error'] . '</div>';     // phpcs:ignore
-	}
 
 	echo '</div> <!-- ./entry-content -->';
 

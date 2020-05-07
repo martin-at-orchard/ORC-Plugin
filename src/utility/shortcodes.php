@@ -17,23 +17,28 @@ class Shortcodes {
 	/**
 	 * Create a href link for a phone number
 	 *
-	 * @param string $contact The contact number.
-	 * @param string $type    The type of number (phone, sms, fax).
+	 * @param string $contact  The contact number.
+	 * @param string $type     The type of number (phone, text, fax, email).
+	 * @param bool   $is_email If this is an email contact.
 	 *
 	 * @return string HTML link string
 	 */
-	private function create_link( $contact, $type ) {
+	private function create_link( $contact, $type, $is_email = false ) {
 
-		$num = preg_replace( '/[^0-9]/', '', $contact );
-
-		if ( '' === $num ) {
-			return '';
-		}
-
-		if ( '1' === substr( $num, 0, 1 ) ) {
-			$link = '+' . $num;
+		if ( $is_email ) {
+			$link = $type;
 		} else {
-			$link = '+1' . $num;
+			$num = preg_replace( '/[^0-9]/', '', $contact );
+
+			if ( '' === $num ) {
+				return '';
+			}
+
+			if ( '1' === substr( $num, 0, 1 ) ) {
+				$link = '+' . $num;
+			} else {
+				$link = '+1' . $num;
+			}
 		}
 
 		switch ( $type ) {
@@ -48,7 +53,7 @@ class Shortcodes {
 				$href = '<a href="fax:' . $link . '">';
 				break;
 			default:
-				$href = '';
+				$href = '<a href="/contact?send-to=' . $link . '">';
 		}
 
 		return $href;
@@ -138,17 +143,30 @@ class Shortcodes {
 		} else {
 			$settings = get_option( Plugin::SETTINGS_KEY );
 			if ( isset( $settings[ $atts['type'] ] ) ) {
-				$contact = $settings[ $atts['type'] ];
+				$is_email = false;
 				switch ( $atts['type'] ) {
 					case 'local':
 					case 'tollfree':
-						$icon = 'phone';
+						$contact = $settings[ $atts['type'] ];
+						$icon    = 'phone';
 						break;
 					case 'text':
-						$icon = 'mobile';
+						$contact = $settings[ $atts['type'] ];
+						$icon    = 'mobile';
 						break;
 					case 'fax':
-						$icon = 'fax';
+						$contact = $settings[ $atts['type'] ];
+						$icon    = 'fax';
+						break;
+					case 'intake':
+					case 'communications':
+					case 'hr':
+					case 'alumni':
+					case 'website':
+					case 'privacy':
+						$contact  = Contact::get_email_to( $atts['type'] );
+						$icon     = 'paper-plane';
+						$is_email = true;
 						break;
 					default:
 						$html  = '<p>';
@@ -170,7 +188,7 @@ class Shortcodes {
 			$html  = '';
 			$html .= $contact;
 			if ( 'true' === $atts['link'] ) {
-				$link = $this->create_link( $contact, $atts['type'] );
+				$link = $this->create_link( $contact, $atts['type'], $is_email );
 				if ( '' !== $link ) {
 					$html = $link . $html . '</a>';
 				}

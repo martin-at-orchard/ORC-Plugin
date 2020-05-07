@@ -93,7 +93,27 @@ registerBlockType( 'orc/contact', {
 			'local': 'Local Phone Number',
 			'tollfree': 'Toll Free Phone Number',
 			'text': 'Text Number',
-			'fax': 'Fax Number'
+			'fax': 'Fax Number',
+			'intake': 'Email Orchard Recovery',
+			'communications': 'Email Orchard Communications',
+			'hr': 'Email Orchard Human Resources',
+			'alumni': 'Email Orchard Alumni Coordinator',
+			'website': 'Email Orchard Website Administrator',
+			'privacy': 'Email Privacy Officer'
+		}
+
+		// Create the icon object
+		let iconObject = {
+			'local': <Dashicon icon="phone" />,
+			'tollfree': <Dashicon icon="phone" />,
+			'text': <Dashicon icon="smartphone" />,
+			'fax': <Dashicon icon="phone" />,
+			'intake': <Dashicon icon="email-alt2" />,
+			'communications': <Dashicon icon="email-alt2" />,
+			'hr': <Dashicon icon="email-alt2" />,
+			'alumni': <Dashicon icon="email-alt2" />,
+			'website': <Dashicon icon="email-alt2" />,
+			'privacy': <Dashicon icon="email-alt2" />
 		}
 		
 		// Create the select box for the contact types.
@@ -106,7 +126,7 @@ registerBlockType( 'orc/contact', {
 			} );
 		}
 
-		const phone = <Dashicon icon="phone" />
+		const [icon, setIcon ] = useState( iconObject[type] )
 		const [underline, setUnderline] = useState( ( wantLink ) ? 'wp-block-orc-contact underline' : 'wp-block-orc-contact' )
 		const [status, setStatus] = useState( prefix + ' ' + contactsObject[type] + ' ' + suffix )
 
@@ -125,6 +145,7 @@ registerBlockType( 'orc/contact', {
 										setAttributes( {
 											type: value
 										})
+										setIcon( iconObject[value] )
 										setStatus( prefix + ' ' + contactsObject[value] + ' ' + suffix )
 									}
 								}
@@ -202,7 +223,7 @@ registerBlockType( 'orc/contact', {
 				</InspectorControls>
 
 				<div className={ underline }>
-					<label>{(wantIcon) ? phone : ''} {status}</label>
+					<label>{(wantIcon) ? icon : ''} {status}</label>
 				</div>
 			</Fragment>
 		);

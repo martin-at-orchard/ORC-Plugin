@@ -23,6 +23,15 @@ class Contact {
 
 	const NONCE = 'orc-contact-nonce';
 
+	public static $email_to = array(
+		'intake'         => 'Email Orchard Recovery',
+		'communications' => 'Email Orchard Communications',
+		'hr'             => 'Email Orchard Human Resources',
+		'alumni'         => 'Email Orchard Alumni Coordinator',
+		'website'        => 'Email Orchard Website Administrator',
+		'privacy'        => 'Email Orchard Privacy Officer',
+	);
+
 	/**
 	 * Constructor for the staff class
 	 */
@@ -33,6 +42,24 @@ class Contact {
 		add_action( 'admin_post_nopriv_contact_form', array( $this, 'send_contact_form' ) );
 		add_action( 'admin_post_contact_form', array( $this, 'send_contact_form' ) );
 		add_action( 'phpmailer_init', array( $this, 'mailer_config' ), 10, 1 );
+
+	}
+
+	/**
+	 * Return the email to message for a particular email
+	 * 
+	 * @param string $to The email to string.
+	 * 
+	 * @return string The email to string.
+	 */
+	public static function get_email_to( $to ) {
+		if ( isset( self::$email_to[ $to ] ) ) {
+
+			return self::$email_to[ $to ];
+
+		}
+
+		return self::$email_to['intake'];
 
 	}
 
@@ -108,7 +135,7 @@ class Contact {
 
 		$options = get_option( Plugin::SETTINGS_KEY );
 
-		if ( '1' === $options['use_smtp'] ) {
+		if ( isset( $options['use_smtp'] ) && '1' === $options['use_smtp'] ) {
 			$mailer->IsSMTP();
 			$mailer->Host       = esc_attr( $options['smtp_host'] );
 			$mailer->Port       = esc_attr( $options['smtp_port'] );
@@ -238,6 +265,22 @@ class Contact {
 			}
 		}
 
+		// Ensure the send to email address is valid. No address will default to intake.
+		if ( isset( $inputs['email-to'] ) && '' !== $inputs['email-to'] ) {
+			switch ( $inputs['email-to'] ) {
+				case 'intake':
+				case 'communications':
+				case 'hr':
+				case 'alumni':
+				case 'website':
+				case 'privacy':
+					break;
+				default:
+					$valid         = false;
+					$message_error = 'Invalid email to address';
+			}
+		}
+
 		// Errors are returned in the session variable.
 		session_start();
 
@@ -254,7 +297,6 @@ class Contact {
 			} else {
 				$to = 'intake@orchardrecovery.com';
 			}
-$to = 'martin@orchardrecovery.com';
 			$email_sent = wp_mail( $to, $inputs['subject'], $inputs['message'], $headers );
 
 			if ( $email_sent ) {

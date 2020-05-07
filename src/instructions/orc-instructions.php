@@ -17,12 +17,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<label for="tab1"><?php _e( 'Contact', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></label>
 			<div id="tab-content1" class="content">
 				<h2><?php _e( 'ORC Contact Options', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></h2>
-				<p><?php _e( 'This section contains the contact phone numbers for the Orchard Recovery Center', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></p>
+				<p><?php _e( 'This section contains the contact phone numbers, email addresses and social media accounts for the Orchard Recovery Center', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></p>
 				<ul class="info">
 					<li><?php _e('Local Phone Number', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
 					<li><?php _e('Toll Free Phone Number', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
 					<li><?php _e('Text Number', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
 					<li><?php _e('Fax Number', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('Intake Email Address - Where the intake emails are sent', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('Communications Email Address - Where the communications emails are sent', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('HR Email Address - Where the human resources emails are sent', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('Alumni Email Address - Where the alumni emails are sent', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('Website Email Address - Where the website emails are sent', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('Privacy Email Address - Where the privacy policy emails are sent', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('Facebook Link ID', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('Instagram Link ID', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('Twitter Link ID', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('YouTube Channel ID', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
 				</ul>
 			</div>
 		</li>
@@ -53,6 +63,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<li><?php _e('Bing Tracking', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
 					<li><?php _e('LinkedIn Partner Code', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
 					<li><?php _e('Twitter Universal Website Tag', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+				</ul>
+			</div>
+		</li>
+
+		<li class="tab">
+			<input type="radio" name="tabs" id="tab4" />
+			<label for="tab4"><?php _e( 'SMTP Options', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></label>
+			<div id="tab-content4" class="content">
+				<h2><?php _e( 'Simple Mail Transer Protocol Options', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></h2>
+				<p><?php _e( 'This options for configuring mail to use SMTP rather than just the plain mailer program. This requires valid credentials to send the email.', Plugin::TEXT_DOMAIN ); // phpcs:ignore ?></p>
+				<ul class="info">
+					<li><?php _e('Use SMTP - Requires ALL other fields to be filled in', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('SMTP Host - Server handling sending mail', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('SMTP Port - The port that is used to connect to the mail server', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('SMTP Authentication', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('SMTP Username - User sending the emails', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('SMTP From Name - Name displayed in the email headers', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
+					<li><?php _e('SMTP Secure - Email encryption protocol', Plugin::TEXT_DOMAIN); // phpcs:ignore ?></li>
 				</ul>
 			</div>
 		</li>

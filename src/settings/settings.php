@@ -101,16 +101,16 @@ class Settings {
 		// Create a new submenu.
 		$newmenu   = array();
 		$newmenu[] = $menu[ $key1 ];
-		$newmenu[] = $menu[ $key2 ];
-
-		// Remove the settings/instructions.
 		unset( $menu[ $key1 ] );
-		unset( $menu[ $key2 ] );
 
 		// Add in the other menu items.
 		foreach ( $menu as $key => $menu ) {
 			$newmenu[] = $menu;
 		}
+
+		// Add the instructions
+		$newmenu[] = $menu[ $key2 ];
+		unset( $menu[ $key2 ] );
 
 		// Update the main menu.
 		$submenu[ Plugin::NAME ] = $newmenu;     // phpcs:ignore
@@ -145,7 +145,7 @@ class Settings {
 	 */
 	public function display_info() {
 
-		require_once plugin_dir_path( __FILE__ ) . 'orc-instructions.php';
+		require_once plugin_dir_path( __FILE__ ) . '../instructions/orc-instructions.php';
 
 	}
 
