@@ -94,12 +94,12 @@ registerBlockType( 'orc/contact', {
 			'tollfree': 'Toll Free Phone Number',
 			'text': 'Text Number',
 			'fax': 'Fax Number',
-			'intake': 'Email Orchard Recovery',
-			'communications': 'Email Orchard Communications',
-			'hr': 'Email Orchard Human Resources',
-			'alumni': 'Email Orchard Alumni Coordinator',
-			'website': 'Email Orchard Website Administrator',
-			'privacy': 'Email Privacy Officer'
+			'intake': 'Orchard Recovery',
+			'communications': 'Orchard Communications',
+			'hr': 'Orchard Human Resources',
+			'alumni': 'Orchard Alumni Coordinator',
+			'website': 'Orchard Website Administrator',
+			'privacy': 'Privacy Officer'
 		}
 
 		// Create the icon object
