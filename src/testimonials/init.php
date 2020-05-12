@@ -64,6 +64,7 @@ class Testimonials {
 	public function render( $attributes ) {
 
 		$christmas     = ( isset( $attributes['christmas'] ) && '1' === $attributes['christmas'] ) ? true : false;
+		$front_page    = ( isset( $attributes['frontPage'] ) ) ? true : false;
 		$num_posts     = ( isset( $attributes['numPosts'] ) && $attributes['numPosts'] > 0 ) ? $attributes['numPosts'] : -1;
 		$want_link     = ( isset( $attributes['wantLink'] ) ) ? false : true;
 		$want_excerpt  = ( isset( $attributes['wantExcerpt'] ) ) ? false : true;
@@ -79,14 +80,34 @@ class Testimonials {
 			'posts_per_page' => $num_posts,
 		);
 
-		if ( $christmas ) {
-			$args['meta_key']   = 'orc-testimonials-christmas'; // phpcs:ignore
-			$args['meta_value'] = 1; // phpcs:ignore
+		if ( $christmas && $front_page ) {
+			// Both meta queries.
+			$args['meta_query'] = array( // phpcs:ignore
+				'relation' => 'AND',
+				array(
+					'key'   => 'orc-testimonial-christmas',
+					'value' => 1,
+				),
+				array(
+					'key'   => 'orc-testimonial-front-page',
+					'value' => 1,
+				),
+			);
+		} else {
+			if ( $christmas ) {
+				// Only christmas meta query.
+				$args['meta_key']   = 'orc-testimonial-christmas'; // phpcs:ignore
+				$args['meta_value'] = 1; // phpcs:ignore
+
+			} elseif ( $front_page ) {
+				// Only front page meta query.
+				$args['meta_key']   = 'orc-testimonial-front-page'; // phpcs:ignore
+				$args['meta_value'] = 1; // phpcs:ignore
+			}
 		}
 
 		$posts = get_posts( $args );
-
-		$div = '<div class="wp-block-orc-testimonials';
+		$div   = '<div class="wp-block-orc-testimonials';
 		if ( isset( $attributes['align'] ) ) {
 			$div .= ' ' . $attributes['align'] . '-align';
 		}
@@ -95,14 +116,14 @@ class Testimonials {
 		\ob_start();
 		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
-			echo '<div class="testimonial" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<div class="testimonial" id="post-' . esc_attr( $post->ID ) . '">';
 			if ( $want_link ) {
 				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			}
 			if ( $want_excerpt ) {
 				echo '<blockquote class="excerpt">' . esc_attr( $post->post_excerpt );
 			} else {
-				$post = get_post( $post->ID );
+				$post    = get_post( $post->ID );
 				$content = $post->post_content;
 				$content = apply_filters( 'the_content', $content );
 				$content = str_replace( ']]>', ']]>', $content );
@@ -116,7 +137,7 @@ class Testimonials {
 			echo '</cite>';
 			echo '</blockquote>';
 			if ( $want_button && $want_link ) {
-				echo '<input type="button" value="' . esc_attr( $button_text ) . '" />';
+				echo '<input type="button" value="' . esc_attr( $button_text ) . '" aria-label="Read more about testimonial from ' . esc_attr( $post->post_title ) . '" />';
 			}
 			echo '</div> <!-- /.testimonial -->';
 		}
@@ -131,30 +152,30 @@ class Testimonials {
 	public function create_posttype() {
 
 		$labels = array(
-			'name'                     => __( 'Testimonials', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'            => __( 'Testimonial', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new'                  => __( 'Add New Testimonial', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'             => __( 'Add New Testimonial', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'                => __( 'Edit Testimonial', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item'                 => __( 'New Testimonial', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_item'                => __( 'View Testimonial', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_items'               => __( 'View Testimonials', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'             => __( 'Search Testimonials', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found'                => __( 'No Testimonials found', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found_in_trash'       => __( 'No Testimonials found in trash', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'                => __( 'All Testimonials', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'attributes'               => __( 'Testimonial attributes', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'insert_into_item'         => __( 'Insert into Testimonial', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'uploaded_to_this_item'    => __( 'Uploaded to Testimonial', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'featured_image'           => __( 'Testimonial image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'set_featured_image'       => __( 'Set Testimonial image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'remove_featured_image'    => __( 'Remove Testimonial image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'used_featured_image'      => __( 'Use as Testimonial image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published'           => __( 'Testimonial published', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published_privately' => __( 'Testimonial published privately', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_reverted_to_draft'   => __( 'Testimonial reverted to draft', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_scheduled'           => __( 'Testimonial scheduled', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_updated'             => __( 'Testimonial updated', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'                     => __( 'Testimonials', 'orc-plugin' ),
+			'singular_name'            => __( 'Testimonial', 'orc-plugin' ),
+			'add_new'                  => __( 'Add New Testimonial', 'orc-plugin' ),
+			'add_new_item'             => __( 'Add New Testimonial', 'orc-plugin' ),
+			'edit_item'                => __( 'Edit Testimonial', 'orc-plugin' ),
+			'new_item'                 => __( 'New Testimonial', 'orc-plugin' ),
+			'view_item'                => __( 'View Testimonial', 'orc-plugin' ),
+			'view_items'               => __( 'View Testimonials', 'orc-plugin' ),
+			'search_items'             => __( 'Search Testimonials', 'orc-plugin' ),
+			'not_found'                => __( 'No Testimonials found', 'orc-plugin' ),
+			'not_found_in_trash'       => __( 'No Testimonials found in trash', 'orc-plugin' ),
+			'all_items'                => __( 'All Testimonials', 'orc-plugin' ),
+			'attributes'               => __( 'Testimonial attributes', 'orc-plugin' ),
+			'insert_into_item'         => __( 'Insert into Testimonial', 'orc-plugin' ),
+			'uploaded_to_this_item'    => __( 'Uploaded to Testimonial', 'orc-plugin' ),
+			'featured_image'           => __( 'Testimonial image', 'orc-plugin' ),
+			'set_featured_image'       => __( 'Set Testimonial image', 'orc-plugin' ),
+			'remove_featured_image'    => __( 'Remove Testimonial image', 'orc-plugin' ),
+			'used_featured_image'      => __( 'Use as Testimonial image', 'orc-plugin' ),
+			'item_published'           => __( 'Testimonial published', 'orc-plugin' ),
+			'item_published_privately' => __( 'Testimonial published privately', 'orc-plugin' ),
+			'item_reverted_to_draft'   => __( 'Testimonial reverted to draft', 'orc-plugin' ),
+			'item_scheduled'           => __( 'Testimonial scheduled', 'orc-plugin' ),
+			'item_updated'             => __( 'Testimonial updated', 'orc-plugin' ),
 		);
 
 		$supports = array(
@@ -194,7 +215,7 @@ class Testimonials {
 
 		add_meta_box(
 			'testimonial-meta-box',
-			__( 'Testimonial Information', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			__( 'Testimonial Information', 'orc-plugin' ),
 			array( $this, 'render_meta_box' ),
 			self::POST_TYPE,
 			'side',
@@ -210,15 +231,20 @@ class Testimonials {
 	 */
 	public function render_meta_box( $post ) {
 
-		$location  = esc_attr( get_post_meta( $post->ID, 'orc-testimonial-location', true ) );
-		$christmas = esc_attr( get_post_meta( $post->ID, 'orc-testimonial-christmas', true ) );
-		$checked   = ( '' === $christmas ) ? '' : 'checked';
+		$location   = esc_attr( get_post_meta( $post->ID, 'orc-testimonial-location', true ) );
+		$christmas  = esc_attr( get_post_meta( $post->ID, 'orc-testimonial-christmas', true ) );
+		$front_page = esc_attr( get_post_meta( $post->ID, 'orc-testimonial-front-page', true ) );
 		?>
 		<?php wp_nonce_field( basename( __FILE__ ), self::POST_NONCE ); ?>
-		<label for="orc-testimonial-location"><?php esc_attr_e( 'City/Province', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat" type="text" name="orc-testimonial-location" id="orc-testimonial-location" value="<?php echo $location; ?>" /> <?php // phpcs:ignore ?>
-		<input type="checkbox" name="orc-testimonial-christmas" id="orc-testimonial-christmas" value="1" <?php echo $checked; ?>/> <?php // phpcs:ignore ?>
-		<label for="orc-testimonial-christmas"><?php esc_attr_e( 'Christmas Testimonial?', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
+		<label for="orc-testimonial-location"><?php _e( 'City/Province', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat" type="text" name="orc-testimonial-location" id="orc-testimonial-location" value="<?php echo $location; // phpcs:ignore ?>" />
+		<?php $checked = ( '' === $christmas ) ? '' : 'checked'; ?>
+		<input type="checkbox" name="orc-testimonial-christmas" id="orc-testimonial-christmas" value="1" <?php echo $checked; // phpcs:ignore ?>/>
+		<label for="orc-testimonial-christmas"><?php _e( 'Christmas Testimonial?', 'orc-plugin' ); // phpcs:ignore ?>
+		<br>
+		<?php $checked = ( '' === $front_page ) ? '' : 'checked'; ?>
+		<input type="checkbox" name="orc-testimonial-front-page" id="orc-testimonial-front-page" value="1" <?php echo $checked; // phpcs:ignore ?>/>
+		<label for="orc-testimonial-front-page"><?php _e( 'Allow to be displayed on the Front Page?', 'orc-plugin' ); // phpcs:ignore ?></label>
 		<?php
 
 	}
@@ -268,6 +294,16 @@ class Testimonials {
 		} elseif ( '' === $new_christmas && '' !== $christmas ) {
 			delete_post_meta( $post_id, $meta_id, $christmas );
 		}
+
+		// Handle the front page testimonial.
+		$meta_id        = 'orc-testimonial-front-page';
+		$front_page     = get_post_meta( $post_id, $meta_id, true );
+		$new_front_page = ( isset( $_POST[ $meta_id ] ) ? sanitize_text_field( wp_unslash( $_POST[ $meta_id ] ) ) : '' );
+		if ( '' !== $new_front_page && '' === $front_page ) {
+			add_post_meta( $post_id, $meta_id, $new_front_page, true );
+		} elseif ( '' === $new_front_page && '' !== $front_page ) {
+			delete_post_meta( $post_id, $meta_id, $front_page );
+		}
 	}
 
 	/**
@@ -288,8 +324,9 @@ class Testimonials {
 		unset( $columns['title'] );
 
 		// Our custom meta data columns.
-		$newcols['orc-testimonial-location']  = __( 'City/Province', Plugin::TEXT_DOMAIN ); // phpcs:ignore
-		$newcols['orc-testimonial-christmas'] = __( 'Christmas Testimonial', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+		$newcols['orc-testimonial-location']   = __( 'City/Province', 'orc-plugin' ); // phpcs:ignore
+		$newcols['orc-testimonial-christmas']  = __( 'Christmas Testimonial', 'orc-plugin' ); // phpcs:ignore
+		$newcols['orc-testimonial-front-page'] = __( 'Display on Front Page', 'orc-plugin' ); // phpcs:ignore
 
 		// Want date last.
 		unset( $columns['date'] );
@@ -319,6 +356,10 @@ class Testimonials {
 		} elseif ( 'orc-testimonial-christmas' === $column_name ) {
 			$christmas = esc_attr( get_post_meta( $post_id, 'orc-testimonial-christmas', true ) );
 			$checked   = ( '' === $christmas ) ? '' : 'TRUE';
+			echo $checked; // phpcs:ignore
+		} elseif ( 'orc-testimonial-front-page' === $column_name ) {
+			$front_page = esc_attr( get_post_meta( $post_id, 'orc-testimonial-front-page', true ) );
+			$checked    = ( '' === $front_page ) ? '' : 'TRUE';
 			echo $checked; // phpcs:ignore
 		}
 	}

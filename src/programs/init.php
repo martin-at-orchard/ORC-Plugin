@@ -80,7 +80,7 @@ class Programs {
 
 		$div = '<div class="wp-block-orc-programs';
 		if ( isset( $attributes['align'] ) ) {
-			$div .= ' ' . $attributes['align'] . '-align';
+			$div .= ' ' . esc_attr( $attributes['align'] ) . '-align';
 		}
 		$div .= '">';
 
@@ -89,7 +89,7 @@ class Programs {
 		foreach ( $posts as $post ) {
 			$color = get_post_meta( $post->ID, 'orc-program-color', true );
 			$style = 'style="border-color: ' . $color . ';"';
-			echo '<div class="program" id="program-' . $post->ID . '" ' . $style . '>';     // phpcs:ignore
+			echo '<div class="program" id="program-' . esc_attr( $post->ID ) . '" ' . esc_attr( $style ) . '>';
 			if ( $want_link ) {
 				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			}
@@ -101,7 +101,7 @@ class Programs {
 				echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
 			}
 			if ( $want_button && $want_link ) {
-				echo '<input type="button" value="' . esc_attr( $button_text ) . '" />';
+				echo '<input type="button" value="' . esc_attr( $button_text ) . '" aria-label="Learn more about our ' . esc_attr( $post->post_title ) . ' program" />';
 			}
 			echo '</div> <!-- /.program -->';
 		}
@@ -116,30 +116,30 @@ class Programs {
 	public function create_posttype() {
 
 		$labels = array(
-			'name'                     => __( 'Programs', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'            => __( 'Program', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new'                  => __( 'Add New Program', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'             => __( 'Add New Program', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'                => __( 'Edit Program', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item'                 => __( 'New Program', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_item'                => __( 'View Program', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_items'               => __( 'View Programs', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'             => __( 'Search Programs', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found'                => __( 'No Programs found', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found_in_trash'       => __( 'No Programs found in trash', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'                => __( 'All Programs', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'attributes'               => __( 'Program attributes', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'insert_into_item'         => __( 'Insert into Program', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'uploaded_to_this_item'    => __( 'Uploaded to Program', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'featured_image'           => __( 'Program image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'set_featured_image'       => __( 'Set Program image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'remove_featured_image'    => __( 'Remove Program image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'used_featured_image'      => __( 'Use as Program image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published'           => __( 'Program published', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published_privately' => __( 'Program published privately', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_reverted_to_draft'   => __( 'Program reverted to draft', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_scheduled'           => __( 'Program scheduled', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_updated'             => __( 'Program updated', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'                     => __( 'Programs', 'orc-plugin' ),
+			'singular_name'            => __( 'Program', 'orc-plugin' ),
+			'add_new'                  => __( 'Add New Program', 'orc-plugin' ),
+			'add_new_item'             => __( 'Add New Program', 'orc-plugin' ),
+			'edit_item'                => __( 'Edit Program', 'orc-plugin' ),
+			'new_item'                 => __( 'New Program', 'orc-plugin' ),
+			'view_item'                => __( 'View Program', 'orc-plugin' ),
+			'view_items'               => __( 'View Programs', 'orc-plugin' ),
+			'search_items'             => __( 'Search Programs', 'orc-plugin' ),
+			'not_found'                => __( 'No Programs found', 'orc-plugin' ),
+			'not_found_in_trash'       => __( 'No Programs found in trash', 'orc-plugin' ),
+			'all_items'                => __( 'All Programs', 'orc-plugin' ),
+			'attributes'               => __( 'Program attributes', 'orc-plugin' ),
+			'insert_into_item'         => __( 'Insert into Program', 'orc-plugin' ),
+			'uploaded_to_this_item'    => __( 'Uploaded to Program', 'orc-plugin' ),
+			'featured_image'           => __( 'Program image', 'orc-plugin' ),
+			'set_featured_image'       => __( 'Set Program image', 'orc-plugin' ),
+			'remove_featured_image'    => __( 'Remove Program image', 'orc-plugin' ),
+			'used_featured_image'      => __( 'Use as Program image', 'orc-plugin' ),
+			'item_published'           => __( 'Program published', 'orc-plugin' ),
+			'item_published_privately' => __( 'Program published privately', 'orc-plugin' ),
+			'item_reverted_to_draft'   => __( 'Program reverted to draft', 'orc-plugin' ),
+			'item_scheduled'           => __( 'Program scheduled', 'orc-plugin' ),
+			'item_updated'             => __( 'Program updated', 'orc-plugin' ),
 		);
 
 		$supports = array(
@@ -180,7 +180,7 @@ class Programs {
 
 		add_meta_box(
 			'program-meta-box',
-			__( 'Program Information', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			__( 'Program Information', 'orc-plugin' ),
 			array( $this, 'render_meta_box' ),
 			self::POST_TYPE,
 			'side',
@@ -200,10 +200,10 @@ class Programs {
 		$color = esc_attr( get_post_meta( $post->ID, 'orc-program-color', true ) );
 		?>
 		<?php wp_nonce_field( basename( __FILE__ ), self::POST_NONCE ); ?>
-		<label for="orc-program-width"><?php esc_attr_e( 'Width of border', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat" type="number" name="orc-program-width" id="orc-program-width" min="0" max="100" step="1" value="<?php echo $width; ?>" /> <?php // phpcs:ignore ?>
-		<label for="orc-program-color"><?php esc_attr_e( 'Color of border', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat color-field" type="text" name="orc-program-color" id="orc-program-color" value="<?php echo $color; ?>" /> <?php // phpcs:ignore ?>
+		<label for="orc-program-width"><?php _e( 'Width of border', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat" type="number" name="orc-program-width" id="orc-program-width" min="0" max="100" step="1" value="<?php echo $width; // phpcs:ignore ?>" />
+		<label for="orc-program-color"><?php _e( 'Color of border', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat color-field" type="text" name="orc-program-color" id="orc-program-color" value="<?php echo $color; // phpcs:ignore ?>" />
 		<?php
 
 	}
@@ -276,8 +276,8 @@ class Programs {
 		unset( $columns['title'] );
 
 		// Our custom meta data columns.
-		$newcols['orc-program-width'] = __( 'Border Width (px)', Plugin::TEXT_DOMAIN ); // phpcs:ignore
-		$newcols['orc-program-color'] = __( 'Border Color', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+		$newcols['orc-program-width'] = __( 'Border Width (px)', 'orc-plugin' );
+		$newcols['orc-program-color'] = __( 'Border Color', 'orc-plugin' );
 
 		// Want date last.
 		unset( $columns['date'] );
@@ -305,7 +305,7 @@ class Programs {
 			echo esc_attr( get_post_meta( $post_id, 'orc-program-width', true ) );
 		} elseif ( 'orc-program-color' === $column_name ) {
 			$color = esc_attr( get_post_meta( $post_id, 'orc-program-color', true ) );
-			echo '<div style="width:20px;height:20px;border-radius:10px;background-color:' . $color . '"></div>';   // phpcs:ignore
+			echo '<div style="width:20px;height:20px;border-radius:10px;background-color:' . $color . '"></div>';      // phpcs:ignore
 		}
 	}
 

@@ -35,8 +35,8 @@ class Settings {
 	public function add_menu() {
 
 		$this->options_page = add_menu_page(
-			esc_html__( 'ORC Plugin Settings', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
-			esc_html__( 'ORC Plugin', Plugin::TEXT_DOMAIN ),            // phpcs:ignore
+			__( 'ORC Plugin Settings', 'orc-plugin' ), // phpcs:igmore
+			__( 'ORC Plugin', 'orc-plugin' ), // phpcs:ignore
 			'edit_posts',
 			Plugin::NAME,
 			array( $this, 'create_menu_page' ),
@@ -46,8 +46,8 @@ class Settings {
 
 		add_submenu_page(
 			Plugin::NAME,
-			esc_html__( 'ORC Plugin Settings', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
-			esc_html__( 'Settings', Plugin::TEXT_DOMAIN ),                // phpcs:ignore
+			__( 'ORC Plugin Settings', 'orc-plugin' ), // phpcs:ignore
+			__( 'Settings', 'orc-plugin' ), // phpcs:ignore
 			'edit_posts',
 			Plugin::NAME,
 			array( $this, 'create_menu_page' ),
@@ -55,8 +55,8 @@ class Settings {
 
 		add_submenu_page(
 			Plugin::NAME,
-			esc_html__( 'ORC Plugin Instructions', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
-			esc_html__( 'Instructions', Plugin::TEXT_DOMAIN ),                // phpcs:ignore
+			__( 'ORC Plugin Instructions', 'orc-plugin' ), // phpcs:ignore
+			__( 'Instructions', 'orc-plugin' ), // phpcs:ignore
 			'edit_posts',
 			Plugin::NAME . '-info',
 			array( $this, 'display_info' ),
@@ -126,10 +126,10 @@ class Settings {
 	public function create_menu_page() {
 
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page', Plugin::TEXT_DOMAIN ) );     // phpcs:ignore
+			wp_die( __( 'You do not have sufficient permissions to access this page', 'orc-plugin' ) ); // phpcs:ignore
 		}
 
-		printf( '<div class="wrap"><h2>%s</h2><form action="options.php" method="post">', esc_html__( 'ORC Plugin Settings', Plugin::TEXT_DOMAIN ) );     // phpcs:ignore
+		printf( '<div class="wrap"><h2>%s</h2><form action="options.php" method="post">', __( 'ORC Plugin Settings', 'orc-plugin' ) ); // phpcs:ignore
 
 		settings_fields( Plugin::SETTINGS );
 		do_settings_sections( Plugin::NAME );
@@ -137,7 +137,7 @@ class Settings {
 		settings_errors();
 
 		printf( '</form></div> <!-- /.wrap -->' );
-		printf( '<div class="wrap"><p>%s %s</p></div> <!-- /.wrap -->', esc_html__( 'Plugin Version:', Plugin::TEXT_DOMAIN ), Plugin::VERSION );     // phpcs:ignore
+		printf( '<div class="wrap"><p>%s %s</p></div> <!-- /.wrap -->', __( 'Plugin Version:', 'orc-plugin' ), Plugin::VERSION );     // phpcs:ignore
 
 	}
 
@@ -214,7 +214,7 @@ class Settings {
 		$id = 'local';
 		add_settings_field(
 			$id,
-			esc_html__( 'Local Phone Number:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Local Phone Number:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -229,7 +229,7 @@ class Settings {
 		$id = 'tollfree';
 		add_settings_field(
 			$id,
-			esc_html__( 'Toll Free Phone Number:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Toll Free Phone Number:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -244,7 +244,7 @@ class Settings {
 		$id = 'text';
 		add_settings_field(
 			$id,
-			esc_html__( 'Text Number:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Text Number:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -259,7 +259,7 @@ class Settings {
 		$id = 'fax';
 		add_settings_field(
 			$id,
-			esc_html__( 'Fax Number:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Fax Number:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -274,7 +274,7 @@ class Settings {
 		$id = 'intake';
 		add_settings_field(
 			$id,
-			esc_html__( 'Intake Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Intake Email Address:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -289,7 +289,7 @@ class Settings {
 		$id = 'communications';
 		add_settings_field(
 			$id,
-			esc_html__( 'Communications Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Communications Email Address:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -304,7 +304,7 @@ class Settings {
 		$id = 'hr';
 		add_settings_field(
 			$id,
-			esc_html__( 'HR Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'HR Email Address:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -319,7 +319,7 @@ class Settings {
 		$id = 'alumni';
 		add_settings_field(
 			$id,
-			esc_html__( 'Alumni Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Alumni Email Address:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -334,7 +334,7 @@ class Settings {
 		$id = 'website';
 		add_settings_field(
 			$id,
-			esc_html__( 'Website Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Website Email Address:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -349,7 +349,7 @@ class Settings {
 		$id = 'privacy';
 		add_settings_field(
 			$id,
-			esc_html__( 'Privacy Email Address:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Privacy Email Address:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -364,7 +364,7 @@ class Settings {
 		$id = 'facebook';
 		add_settings_field(
 			$id,
-			esc_html__( 'Facebook Link ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Facebook Link ID:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -380,7 +380,7 @@ class Settings {
 		$id = 'instagram';
 		add_settings_field(
 			$id,
-			esc_html__( 'Instagram Link ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Instagram Link ID:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -396,7 +396,7 @@ class Settings {
 		$id = 'twitter';
 		add_settings_field(
 			$id,
-			esc_html__( 'Twitter Link ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Twitter Link ID:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -412,7 +412,7 @@ class Settings {
 		$id = 'youtube';
 		add_settings_field(
 			$id,
-			esc_html__( 'YouTube Channel ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'YouTube Channel ID:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'contacts',
@@ -435,7 +435,7 @@ class Settings {
 		$id = 'main';
 		add_settings_field(
 			$id,
-			esc_html__( 'Main Video ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Main Video ID:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'videos',
@@ -450,7 +450,7 @@ class Settings {
 		$id = 'xmas';
 		add_settings_field(
 			$id,
-			esc_html__( 'Christmas Video ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Christmas Video ID:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'videos',
@@ -472,7 +472,7 @@ class Settings {
 		$id = 'google';
 		add_settings_field(
 			$id,
-			esc_html__( 'Google Analytics Code:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Google Analytics Code:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'analytics',
@@ -487,7 +487,7 @@ class Settings {
 		$id = 'facebook_app';
 		add_settings_field(
 			$id,
-			esc_html__( 'Facebook App ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Facebook App ID:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'analytics',
@@ -502,7 +502,7 @@ class Settings {
 		$id = 'facebook_pixel';
 		add_settings_field(
 			$id,
-			esc_html__( 'Facebook Pixel ID:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Facebook Pixel ID:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'analytics',
@@ -517,7 +517,7 @@ class Settings {
 		$id = 'bing';
 		add_settings_field(
 			$id,
-			esc_html__( 'Bing Tracking:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Bing Tracking:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'analytics',
@@ -532,7 +532,7 @@ class Settings {
 		$id = 'linkedin';
 		add_settings_field(
 			$id,
-			esc_html__( 'LinkedIn Partner Code:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'LinkedIn Partner Code:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'analytics',
@@ -547,7 +547,7 @@ class Settings {
 		$id = 'twitter_tag';
 		add_settings_field(
 			$id,
-			esc_html__( 'Twitter Universal Website Tag:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Twitter Universal Website Tag:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'analytics',
@@ -570,7 +570,7 @@ class Settings {
 		$checked = ( '1' === $options[ $id ] ) ? 'checked' : '';
 		add_settings_field(
 			$id,
-			esc_html__( 'Use SMTP:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'Use SMTP:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'checkbox' ),
 			Plugin::NAME,
 			'smtp',
@@ -587,7 +587,7 @@ class Settings {
 		$id = 'smtp_host';
 		add_settings_field(
 			$id,
-			esc_html__( 'SMTP Host:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'SMTP Host:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'smtp',
@@ -602,7 +602,7 @@ class Settings {
 		$id = 'smtp_port';
 		add_settings_field(
 			$id,
-			esc_html__( 'SMTP Port:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'SMTP Port:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'number' ),
 			Plugin::NAME,
 			'smtp',
@@ -620,7 +620,7 @@ class Settings {
 		$checked = ( '1' === $options[ $id ] ) ? 'checked' : '';
 		add_settings_field(
 			$id,
-			esc_html__( 'SMTP Authentication:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'SMTP Authentication:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'checkbox' ),
 			Plugin::NAME,
 			'smtp',
@@ -636,7 +636,7 @@ class Settings {
 		$id = 'smtp_user';
 		add_settings_field(
 			$id,
-			esc_html__( 'SMTP Username:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'SMTP Username:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'smtp',
@@ -652,7 +652,7 @@ class Settings {
 		$id = 'smtp_name';
 		add_settings_field(
 			$id,
-			esc_html__( 'SMTP From Name:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'SMTP From Name:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'text' ),
 			Plugin::NAME,
 			'smtp',
@@ -668,7 +668,7 @@ class Settings {
 		$id = 'smtp_secure';
 		add_settings_field(
 			$id,
-			esc_html__( 'SMTP Secure:', Plugin::TEXT_DOMAIN ),     // phpcs:ignore
+			__( 'SMTP Secure:', 'orc-plugin' ),     // phpcs:ignore
 			array( $fields, 'radio' ),
 			Plugin::NAME,
 			'smtp',

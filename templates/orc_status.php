@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore
 /**
  * Template Name: Success
  *
@@ -36,7 +36,7 @@ if ( have_posts() ) {
 	echo '<article class="post-<?php get_the_ID(); ?> page type-page status-publish hentry" id="post-' . get_the_ID() . '">';
 	echo '<header class="entry-header has-text-align-center header-footer-group">';
 	echo '<div class="entry-header-inner section-inner medium">';
-	echo '<h1 class="entry-title">Email successfully sent</h1>';     // phpcs:ignore
+	echo '<h1 class="entry-title">Email successfully sent</h1>';
 	echo '</div>';
 	echo '</header>';
 

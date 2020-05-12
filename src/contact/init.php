@@ -91,9 +91,9 @@ class Contact {
 
 	/**
 	 * Return the email to message for a particular email
-	 * 
+	 *
 	 * @param string $to The email to string.
-	 * 
+	 *
 	 * @return string The email to string.
 	 */
 	public static function get_email_to( $to ) {
@@ -138,7 +138,6 @@ class Contact {
 		global $wp;
 
 		if ( isset( $wp->query_vars['pagename'] ) ) {
-
 			if ( 'contact' === $wp->query_vars['pagename'] ) {
 				return $this->get_template_page( 'orc_contact.php' );
 			}
@@ -146,7 +145,6 @@ class Contact {
 			if ( 'email-status' === $wp->query_vars['pagename'] ) {
 				return $this->get_template_page( 'orc_status.php' );
 			}
-
 		}
 
 		return false;
@@ -164,22 +162,22 @@ class Contact {
 
 		if ( isset( $options['use_smtp'] ) && '1' === $options['use_smtp'] ) {
 			$mailer->IsSMTP();
-			$mailer->Host       = esc_attr( $options['smtp_host'] );
-			$mailer->Port       = esc_attr( $options['smtp_port'] );
-			$mailer->SMTPAuth   = esc_attr( $options['smtp_auth'] );
-			$mailer->SMTPSecure = esc_attr( $options['smtp_secure'] );
-			$mailer->Sender     = esc_attr( $options['smtp_user'] );
-			$mailer->Username   = esc_attr( $options['smtp_user'] );
-			$mailer->From       = esc_attr( $options['smtp_user'] );
-			$mailer->FromName   = esc_attr( $options['smtp_name'] );
-			$mailer->Password   = esc_attr( ORC_SMTP_PASS );
+			$mailer->Host       = esc_attr( $options['smtp_host'] ); // phpcs:ignore
+			$mailer->Port       = esc_attr( $options['smtp_port'] ); // phpcs:ignore
+			$mailer->SMTPAuth   = esc_attr( $options['smtp_auth'] ); // phpcs:ignore
+			$mailer->SMTPSecure = esc_attr( $options['smtp_secure'] ); // phpcs:ignore
+			$mailer->Sender     = esc_attr( $options['smtp_user'] ); // phpcs:ignore
+			$mailer->Username   = esc_attr( $options['smtp_user'] ); // phpcs:ignore
+			$mailer->From       = esc_attr( $options['smtp_user'] ); // phpcs:ignore
+			$mailer->FromName   = esc_attr( $options['smtp_name'] ); // phpcs:ignore
+			$mailer->Password   = esc_attr( ORC_SMTP_PASS ); // phpcs:ignore
 		}
 
 	}
 
 	/**
 	 * Send the contact form.
-	 * 
+	 *
 	 * Validate all the data including the nonce
 	 */
 	public function send_contact_form() {
@@ -198,12 +196,12 @@ class Contact {
 
 		// Trim the inputs and filter the input.
 		$inputs             = array();
-		$inputs['name']     = isset( $_POST['name'] )     ? filter_var( trim( $_POST['name'] ),     FILTER_SANITIZE_STRING ) : '';     // phpcs:ignore
-		$inputs['email']    = isset( $_POST['email'] )    ? filter_var( trim( $_POST['email'] ),    FILTER_SANITIZE_EMAIL )  : '';     // phpcs:ignore
-		$inputs['subject']  = isset( $_POST['subject'] )  ? filter_var( trim( $_POST['subject'] ),  FILTER_SANITIZE_STRING ) : '';     // phpcs:ignore
-		$inputs['message']  = isset( $_POST['message'] )  ? filter_var( trim( $_POST['message'] ),  FILTER_SANITIZE_STRING ) : '';     // phpcs:ignore
-		$inputs['privacy']  = isset( $_POST['privacy'] )  ? filter_var(       $_POST['privacy'],    FILTER_VALIDATE_INT )    : 0;      // phpcs:ignore
-		$inputs['email-to'] = isset( $_POST['email-to'] ) ? filter_var( trim( $_POST['email-to'] ), FILTER_SANITIZE_STRING ) : '';     // phpcs:ignore
+		$inputs['name']     = isset( $_POST['name'] )     ? filter_var( trim( $_POST['name'] ),     FILTER_SANITIZE_STRING ) : ''; // phpcs:ignore
+		$inputs['email']    = isset( $_POST['email'] )    ? filter_var( trim( $_POST['email'] ),    FILTER_SANITIZE_EMAIL )  : ''; // phpcs:ignore
+		$inputs['subject']  = isset( $_POST['subject'] )  ? filter_var( trim( $_POST['subject'] ),  FILTER_SANITIZE_STRING ) : ''; // phpcs:ignore
+		$inputs['message']  = isset( $_POST['message'] )  ? filter_var( trim( $_POST['message'] ),  FILTER_SANITIZE_STRING ) : ''; // phpcs:ignore
+		$inputs['privacy']  = isset( $_POST['privacy'] )  ? filter_var(       $_POST['privacy'],    FILTER_VALIDATE_INT )    : 0; // phpcs:ignore
+		$inputs['email-to'] = isset( $_POST['email-to'] ) ? filter_var( trim( $_POST['email-to'] ), FILTER_SANITIZE_STRING ) : ''; // phpcs:ignore
 
 		// Escape the inputs using WordPress functions.
 		$inputs['name']    = esc_attr( $inputs['name'] );
@@ -243,7 +241,7 @@ class Contact {
 			if ( '' === $inputs['name'] ) {
 				$valid      = false;
 				$name_error = 'Your name is required';
-			} elseif ( $inputs['name'] !== trim( $_POST['name'] ) ) {     // phpcs:ignore
+			} elseif ( $inputs['name'] !== trim( $_POST['name'] ) ) { // phpcs:ignore
 				$valid      = false;
 				$name_error = 'Invalid characters in your name';
 			}
@@ -261,7 +259,7 @@ class Contact {
 			} elseif ( '' === $inputs['email'] ) {
 				$valid       = false;
 				$email_error = 'The email address is required';
-			} elseif ( $inputs['email'] !== trim( $_POST['email'] ) ) {     // phpcs:ignore
+			} elseif ( $inputs['email'] !== trim( $_POST['email'] ) ) { // phpcs:ignore
 				$valid       = false;
 				$email_error = 'Invalid characters in your email address';
 			}
@@ -275,7 +273,7 @@ class Contact {
 			if ( '' === $inputs['subject'] ) {
 				$valid         = false;
 				$subject_error = 'The subject is required';
-			} elseif ( $inputs['subject'] !== trim( $_POST['subject'] ) ) {     // phpcs:ignore
+			} elseif ( $inputs['subject'] !== trim( $_POST['subject'] ) ) { // phpcs:ignore
 				$valid         = false;
 				$subject_error = 'Invalid characters in the subject';
 			}
@@ -286,7 +284,7 @@ class Contact {
 
 		// Only text characters allowed in the message.
 		if ( isset( $inputs['message'] ) ) {
-			if ( $inputs['message'] !== trim( $_POST['message'] ) ) {     // phpcs:ignore
+			if ( $inputs['message'] !== trim( $_POST['message'] ) ) { // phpcs:ignore
 				$valid         = false;
 				$message_error = 'Invalid characters in the message';
 			}

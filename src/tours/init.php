@@ -79,9 +79,9 @@ class Tours {
 		$div .= '">';
 
 		\ob_start();
-		echo $div;      // phpcs:ignore
+		echo $div;     // phpcs:ignore
 		foreach ( $posts as $post ) {
-			echo '<div class="tour" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<div class="tour" id="post-' . esc_attr( $post->ID ) . '">';
 			if ( $want_link ) {
 				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			}
@@ -93,7 +93,7 @@ class Tours {
 				echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
 			}
 			if ( $want_button && $want_link ) {
-				echo '<input type="button" value="' . esc_attr( $button_text ) . '" />';
+				echo '<input type="button" value="' . esc_attr( $button_text ) . '" aria-label="Read more about our ' . esc_attr( $post->post_title ) . '" />';
 			}
 			echo '</div> <!-- /.tour -->';
 		}
@@ -108,30 +108,30 @@ class Tours {
 	public function create_posttype() {
 
 		$labels = array(
-			'name'                     => __( 'Tours', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'            => __( 'Tour', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new'                  => __( 'Add New Tour', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'             => __( 'Add New Tour', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'                => __( 'Edit Tour', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item'                 => __( 'New Tour', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_item'                => __( 'View Tour', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_items'               => __( 'View Tours', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'             => __( 'Search Tours', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found'                => __( 'No Tours found', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found_in_trash'       => __( 'No Tours found in trash', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'                => __( 'All Tours', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'attributes'               => __( 'Tour attributes', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'insert_into_item'         => __( 'Insert into Tour', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'uploaded_to_this_item'    => __( 'Uploaded to Tour', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'featured_image'           => __( 'Tour image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'set_featured_image'       => __( 'Set Tour image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'remove_featured_image'    => __( 'Remove Tour image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'used_featured_image'      => __( 'Use as Tour image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published'           => __( 'Tour published', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published_privately' => __( 'Tour published privately', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_reverted_to_draft'   => __( 'Tour reverted to draft', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_scheduled'           => __( 'Tour scheduled', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_updated'             => __( 'Tour updated', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'                     => __( 'Tours', 'orc-plugin' ),
+			'singular_name'            => __( 'Tour', 'orc-plugin' ),
+			'add_new'                  => __( 'Add New Tour', 'orc-plugin' ),
+			'add_new_item'             => __( 'Add New Tour', 'orc-plugin' ),
+			'edit_item'                => __( 'Edit Tour', 'orc-plugin' ),
+			'new_item'                 => __( 'New Tour', 'orc-plugin' ),
+			'view_item'                => __( 'View Tour', 'orc-plugin' ),
+			'view_items'               => __( 'View Tours', 'orc-plugin' ),
+			'search_items'             => __( 'Search Tours', 'orc-plugin' ),
+			'not_found'                => __( 'No Tours found', 'orc-plugin' ),
+			'not_found_in_trash'       => __( 'No Tours found in trash', 'orc-plugin' ),
+			'all_items'                => __( 'All Tours', 'orc-plugin' ),
+			'attributes'               => __( 'Tour attributes', 'orc-plugin' ),
+			'insert_into_item'         => __( 'Insert into Tour', 'orc-plugin' ),
+			'uploaded_to_this_item'    => __( 'Uploaded to Tour', 'orc-plugin' ),
+			'featured_image'           => __( 'Tour image', 'orc-plugin' ),
+			'set_featured_image'       => __( 'Set Tour image', 'orc-plugin' ),
+			'remove_featured_image'    => __( 'Remove Tour image', 'orc-plugin' ),
+			'used_featured_image'      => __( 'Use as Tour image', 'orc-plugin' ),
+			'item_published'           => __( 'Tour published', 'orc-plugin' ),
+			'item_published_privately' => __( 'Tour published privately', 'orc-plugin' ),
+			'item_reverted_to_draft'   => __( 'Tour reverted to draft', 'orc-plugin' ),
+			'item_scheduled'           => __( 'Tour scheduled', 'orc-plugin' ),
+			'item_updated'             => __( 'Tour updated', 'orc-plugin' ),
 		);
 
 		$supports = array(

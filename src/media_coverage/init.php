@@ -91,7 +91,7 @@ class Media_Coverage {
 
 		$div = '<div class="wp-block-orc-media-coverage';
 		if ( isset( $attributes['align'] ) ) {
-			$div .= ' ' . $attributes['align'] . '-align';
+			$div .= ' ' . esc_attr( $attributes['align'] ) . '-align';
 		}
 		$div .= '">';
 
@@ -100,7 +100,7 @@ class Media_Coverage {
 		foreach ( $posts as $post ) {
 			$featured = esc_attr( get_post_meta( $post->ID, 'orc-media-coverage-featured', true ) );
 			$url      = esc_attr( get_post_meta( $post->ID, 'orc-media-coverage-url', true ) );
-			echo '<div class="media-coverage" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<div class="media-coverage" id="post-' . esc_attr( $post->ID ) . '">';
 			if ( $want_link ) {
 				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			}
@@ -114,7 +114,7 @@ class Media_Coverage {
 			echo '<div class="featured">' . esc_attr( $featured ) . '</div>';
 			echo '<div class="url">' . esc_attr( $url ) . '</div>';
 			if ( $want_button && $want_link ) {
-				echo '<input type="button" value="View More" />';
+				echo '<input type="button" value="View More" aria-label="Read more about ' . esc_attr( $post->post_title ) . '" />';
 			}
 			echo '</div> <!-- /.media-coverage -->';
 		}
@@ -129,30 +129,30 @@ class Media_Coverage {
 	public function create_posttype() {
 
 		$labels = array(
-			'name'                     => __( 'Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'            => __( 'Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new'                  => __( 'Add New Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'             => __( 'Add New Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'                => __( 'Edit Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item'                 => __( 'New Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_item'                => __( 'View Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_items'               => __( 'View Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'             => __( 'Search Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found'                => __( 'No Media Coverage found', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found_in_trash'       => __( 'No Media Coverage found in trash', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'                => __( 'All Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'attributes'               => __( 'Media Coverage attributes', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'insert_into_item'         => __( 'Insert into Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'uploaded_to_this_item'    => __( 'Uploaded to Media Coverage', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'featured_image'           => __( 'Media Coverage image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'set_featured_image'       => __( 'Set Media Coverage image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'remove_featured_image'    => __( 'Remove Media Coverage image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'used_featured_image'      => __( 'Use as Media Coverage image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published'           => __( 'Media Coverage published', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published_privately' => __( 'Media Coverage published privately', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_reverted_to_draft'   => __( 'Media Coverage reverted to draft', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_scheduled'           => __( 'Media Coverage scheduled', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_updated'             => __( 'Media Coverage updated', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'                     => __( 'Media Coverage', 'orc-plugin' ),
+			'singular_name'            => __( 'Media Coverage', 'orc-plugin' ),
+			'add_new'                  => __( 'Add New Media Coverage', 'orc-plugin' ),
+			'add_new_item'             => __( 'Add New Media Coverage', 'orc-plugin' ),
+			'edit_item'                => __( 'Edit Media Coverage', 'orc-plugin' ),
+			'new_item'                 => __( 'New Media Coverage', 'orc-plugin' ),
+			'view_item'                => __( 'View Media Coverage', 'orc-plugin' ),
+			'view_items'               => __( 'View Media Coverage', 'orc-plugin' ),
+			'search_items'             => __( 'Search Media Coverage', 'orc-plugin' ),
+			'not_found'                => __( 'No Media Coverage found', 'orc-plugin' ),
+			'not_found_in_trash'       => __( 'No Media Coverage found in trash', 'orc-plugin' ),
+			'all_items'                => __( 'All Media Coverage', 'orc-plugin' ),
+			'attributes'               => __( 'Media Coverage attributes', 'orc-plugin' ),
+			'insert_into_item'         => __( 'Insert into Media Coverage', 'orc-plugin' ),
+			'uploaded_to_this_item'    => __( 'Uploaded to Media Coverage', 'orc-plugin' ),
+			'featured_image'           => __( 'Media Coverage image', 'orc-plugin' ),
+			'set_featured_image'       => __( 'Set Media Coverage image', 'orc-plugin' ),
+			'remove_featured_image'    => __( 'Remove Media Coverage image', 'orc-plugin' ),
+			'used_featured_image'      => __( 'Use as Media Coverage image', 'orc-plugin' ),
+			'item_published'           => __( 'Media Coverage published', 'orc-plugin' ),
+			'item_published_privately' => __( 'Media Coverage published privately', 'orc-plugin' ),
+			'item_reverted_to_draft'   => __( 'Media Coverage reverted to draft', 'orc-plugin' ),
+			'item_scheduled'           => __( 'Media Coverage scheduled', 'orc-plugin' ),
+			'item_updated'             => __( 'Media Coverage updated', 'orc-plugin' ),
 		);
 
 		$supports = array(
@@ -193,7 +193,7 @@ class Media_Coverage {
 
 		add_meta_box(
 			'media-coverage-meta-box',
-			__( 'Media Coverage Information', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			__( 'Media Coverage Information', 'orc-plugin' ),
 			array( $this, 'render_meta_box' ),
 			self::POST_TYPE,
 			'side',
@@ -213,10 +213,10 @@ class Media_Coverage {
 		$url      = esc_url( get_post_meta( $post->ID, 'orc-media-coverage-url', true ) );
 		?>
 		<?php wp_nonce_field( basename( __FILE__ ), self::POST_NONCE ); ?>
-		<label for="orc-media-coverage-featured"><?php _e( 'Featured On', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat" type="text" name="orc-media-coverage-featured" id="orc-media-coverage-featured" value="<?php echo $featured; ?>" /> <?php // phpcs:ignore ?>
-		<label for="orc-media-coverage-url"><?php _e( 'Original URL', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat" type="text" name="orc-media-coverage-url" id="orc-media-coverage-url" value="<?php echo $url; ?>" /> <?php // phpcs:ignore ?>
+		<label for="orc-media-coverage-featured"><?php _e( 'Featured On', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat" type="text" name="orc-media-coverage-featured" id="orc-media-coverage-featured" value="<?php echo $featured; // phpcs:ignore ?>" />
+		<label for="orc-media-coverage-url"><?php _e( 'Original URL', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat" type="text" name="orc-media-coverage-url" id="orc-media-coverage-url" value="<?php echo $url;// phpcs:ignore ?>" />
 		<?php
 
 	}
@@ -288,8 +288,8 @@ class Media_Coverage {
 		unset( $columns['title'] );
 
 		// Our custom meta data columns.
-		$newcols['orc-media-coverage-position']       = __( 'Position', Plugin::TEXT_DOMAIN ); // phpcs:ignore
-		$newcols['orc-media-coverage-qualifications'] = __( 'Qualifications', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+		$newcols['orc-media-coverage-position']       = __( 'Position', 'orc-plugin' );
+		$newcols['orc-media-coverage-qualifications'] = __( 'Qualifications', 'orc-plugin' );
 
 		// Want date last.
 		unset( $columns['date'] );
@@ -314,11 +314,9 @@ class Media_Coverage {
 	public function table_content( $column_name, $post_id ) {
 
 		if ( 'orc-media-coverage-position' === $column_name ) {
-			$position = esc_attr( get_post_meta( $post_id, 'orc-media-coverage-position', true ) );
-			echo $position; // phpcs:ignore
+			echo esc_attr( get_post_meta( $post_id, 'orc-media-coverage-position', true ) );
 		} elseif ( 'orc-media-coverage-qualifications' === $column_name ) {
-			$qualifications = esc_attr( get_post_meta( $post_id, 'orc-media-coverage-qualifications', true ) );
-			echo $qualifications; // phpcs:ignore
+			echo esc_attr( get_post_meta( $post_id, 'orc-media-coverage-qualifications', true ) );
 		}
 	}
 

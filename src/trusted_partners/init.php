@@ -82,13 +82,13 @@ class Trusted_Partners {
 		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
 			if ( has_post_thumbnail( $post->ID ) ) {
-				echo '<div class="partner" id="post-' . $post->ID . '">';     // phpcs:ignore
+				echo '<div class="partner" id="post-' . esc_attr( $post->ID ) . '">';
 				$html = '';
 				if ( $want_link ) {
 					$link = get_post_meta( $post->ID, 'orc-partners-link', true );
 					if ( '' !== $link ) {
 						$title = 'Click to visit ' . $post->post_title;
-						$html  = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '" target="_blank">';
+						$html  = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '" target="_blank" aira-label="Visit our trusted partner ' . esc_attr( $post->post_title ) .'">';
 					}
 				}
 				$html .= get_the_post_thumbnail( $post->ID, array( $width, 0 ) );
@@ -110,30 +110,30 @@ class Trusted_Partners {
 	public function create_posttype() {
 
 		$labels = array(
-			'name'                     => __( 'Trusted Partners', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'            => __( 'Trusted Partner', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new'                  => __( 'Add New Trusted Partner', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'             => __( 'Add New Trusted Partner', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'                => __( 'Edit Trusted Partner', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item'                 => __( 'New Trusted Partner', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_item'                => __( 'View Trusted Partner', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_items'               => __( 'View Trusted Partners', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'             => __( 'Search Trusted Partners', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found'                => __( 'No Trusted Partners found', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found_in_trash'       => __( 'No Trusted Partners found in trash', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'                => __( 'All Trusted Partners', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'attributes'               => __( 'Trusted Partner attributes', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'insert_into_item'         => __( 'Insert into Trusted Partner', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'uploaded_to_this_item'    => __( 'Uploaded to Trusted Partner', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'featured_image'           => __( 'Trusted Partner image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'set_featured_image'       => __( 'Set Trusted Partner image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'remove_featured_image'    => __( 'Remove Trusted Partner image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'used_featured_image'      => __( 'Use as Trusted Partner image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published'           => __( 'Trusted Partner published', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published_privately' => __( 'Trusted Partner published privately', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_reverted_to_draft'   => __( 'Trusted Partner reverted to draft', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_scheduled'           => __( 'Trusted Partner scheduled', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_updated'             => __( 'Trusted Partner updated', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'                     => __( 'Trusted Partners', 'orc-plugin' ),
+			'singular_name'            => __( 'Trusted Partner', 'orc-plugin' ),
+			'add_new'                  => __( 'Add New Trusted Partner', 'orc-plugin' ),
+			'add_new_item'             => __( 'Add New Trusted Partner', 'orc-plugin' ),
+			'edit_item'                => __( 'Edit Trusted Partner', 'orc-plugin' ),
+			'new_item'                 => __( 'New Trusted Partner', 'orc-plugin' ),
+			'view_item'                => __( 'View Trusted Partner', 'orc-plugin' ),
+			'view_items'               => __( 'View Trusted Partners', 'orc-plugin' ),
+			'search_items'             => __( 'Search Trusted Partners', 'orc-plugin' ),
+			'not_found'                => __( 'No Trusted Partners found', 'orc-plugin' ),
+			'not_found_in_trash'       => __( 'No Trusted Partners found in trash', 'orc-plugin' ),
+			'all_items'                => __( 'All Trusted Partners', 'orc-plugin' ),
+			'attributes'               => __( 'Trusted Partner attributes', 'orc-plugin' ),
+			'insert_into_item'         => __( 'Insert into Trusted Partner', 'orc-plugin' ),
+			'uploaded_to_this_item'    => __( 'Uploaded to Trusted Partner', 'orc-plugin' ),
+			'featured_image'           => __( 'Trusted Partner image', 'orc-plugin' ),
+			'set_featured_image'       => __( 'Set Trusted Partner image', 'orc-plugin' ),
+			'remove_featured_image'    => __( 'Remove Trusted Partner image', 'orc-plugin' ),
+			'used_featured_image'      => __( 'Use as Trusted Partner image', 'orc-plugin' ),
+			'item_published'           => __( 'Trusted Partner published', 'orc-plugin' ),
+			'item_published_privately' => __( 'Trusted Partner published privately', 'orc-plugin' ),
+			'item_reverted_to_draft'   => __( 'Trusted Partner reverted to draft', 'orc-plugin' ),
+			'item_scheduled'           => __( 'Trusted Partner scheduled', 'orc-plugin' ),
+			'item_updated'             => __( 'Trusted Partner updated', 'orc-plugin' ),
 		);
 
 		$supports = array(
@@ -172,7 +172,7 @@ class Trusted_Partners {
 
 		add_meta_box(
 			'partners-meta-box',
-			__( 'Trusted Partners Information', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			__( 'Trusted Partners Information', 'orc-plugin' ),
 			array( $this, 'render_meta_box' ),
 			self::POST_TYPE,
 			'side',
@@ -191,8 +191,8 @@ class Trusted_Partners {
 		$link = esc_attr( get_post_meta( $post->ID, 'orc-partners-link', true ) );
 		?>
 		<?php wp_nonce_field( basename( __FILE__ ), self::POST_NONCE ); ?>
-		<label for="orc-partners-link"><?php esc_attr_e( 'Link to Trusted Partner', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat" type="text" name="orc-partners-link" id="orc-partners-link" value="<?php echo $link; ?>" /> <?php // phpcs:ignore ?>
+		<label for="orc-partners-link"><?php _e( 'Link to Trusted Partner', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat" type="text" name="orc-partners-link" id="orc-partners-link" value="<?php echo $link; // phpcs:ignore ?>" />
 		<?php
 
 	}
@@ -252,7 +252,7 @@ class Trusted_Partners {
 		unset( $columns['title'] );
 
 		// Our custom meta data columns.
-		$newcols['orc-partners-link']       = __( 'Link', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+		$newcols['orc-partners-link'] = __( 'Link', 'orc-plugin' );
 
 		// Want date last.
 		unset( $columns['date'] );

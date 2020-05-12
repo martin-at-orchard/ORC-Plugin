@@ -75,14 +75,14 @@ class Admissions {
 
 		$div = '<div class="wp-block-orc-admissions';
 		if ( isset( $attributes['align'] ) ) {
-			$div .= ' ' . $attributes['align'] . '-align';
+			$div .= ' ' . esc_attr( $attributes['align'] ) . '-align';
 		}
 		$div .= '">';
 
 		\ob_start();
 		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
-			echo '<div class="admission" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<div class="admission" id="post-' . esc_attr( $post->ID ) . '">';
 			if ( $want_link ) {
 				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			}
@@ -94,7 +94,7 @@ class Admissions {
 				echo '<div class="excerpt">' . esc_attr( $post->post_excerpt ) . '</div> <!-- /.excerpt -->';
 			}
 			if ( $want_button && $want_link ) {
-				echo '<input type="button" value="' . esc_attr( $button_text ) . '" />';
+				echo '<input type="button" value="' . esc_attr( $button_text ) . '" aria-label="Learn more about ' . esc_attr( $post->post_title ) . '" />';
 			}
 			echo '</div> <!-- /.admission -->';
 		}
@@ -109,30 +109,30 @@ class Admissions {
 	public function create_posttype() {
 
 		$labels = array(
-			'name'                     => __( 'Admissions', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'            => __( 'Admission', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new'                  => __( 'Add New Admission', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'             => __( 'Add New Admission', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'                => __( 'Edit Admission', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item'                 => __( 'New Admission', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_item'                => __( 'View Admission', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_items'               => __( 'View Admissions', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'             => __( 'Search Admissions', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found'                => __( 'No Admissions found', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found_in_trash'       => __( 'No Admissions found in trash', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'                => __( 'All Admissions', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'attributes'               => __( 'Admission attributes', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'insert_into_item'         => __( 'Insert into Admission', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'uploaded_to_this_item'    => __( 'Uploaded to Admission', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'featured_image'           => __( 'Admission image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'set_featured_image'       => __( 'Set Admission image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'remove_featured_image'    => __( 'Remove Admission image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'used_featured_image'      => __( 'Use as Admission image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published'           => __( 'Admission published', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published_privately' => __( 'Admission published privately', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_reverted_to_draft'   => __( 'Admission reverted to draft', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_scheduled'           => __( 'Admission scheduled', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_updated'             => __( 'Admission updated', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'                     => __( 'Admissions', 'orc-plugin' ),
+			'singular_name'            => __( 'Admission', 'orc-plugin' ),
+			'add_new'                  => __( 'Add New Admission', 'orc-plugin' ),
+			'add_new_item'             => __( 'Add New Admission', 'orc-plugin' ),
+			'edit_item'                => __( 'Edit Admission', 'orc-plugin' ),
+			'new_item'                 => __( 'New Admission', 'orc-plugin' ),
+			'view_item'                => __( 'View Admission', 'orc-plugin' ),
+			'view_items'               => __( 'View Admissions', 'orc-plugin' ),
+			'search_items'             => __( 'Search Admissions', 'orc-plugin' ),
+			'not_found'                => __( 'No Admissions found', 'orc-plugin' ),
+			'not_found_in_trash'       => __( 'No Admissions found in trash', 'orc-plugin' ),
+			'all_items'                => __( 'All Admissions', 'orc-plugin' ),
+			'attributes'               => __( 'Admission attributes', 'orc-plugin' ),
+			'insert_into_item'         => __( 'Insert into Admission', 'orc-plugin' ),
+			'uploaded_to_this_item'    => __( 'Uploaded to Admission', 'orc-plugin' ),
+			'featured_image'           => __( 'Admission image', 'orc-plugin' ),
+			'set_featured_image'       => __( 'Set Admission image', 'orc-plugin' ),
+			'remove_featured_image'    => __( 'Remove Admission image', 'orc-plugin' ),
+			'used_featured_image'      => __( 'Use as Admission image', 'orc-plugin' ),
+			'item_published'           => __( 'Admission published', 'orc-plugin' ),
+			'item_published_privately' => __( 'Admission published privately', 'orc-plugin' ),
+			'item_reverted_to_draft'   => __( 'Admission reverted to draft', 'orc-plugin' ),
+			'item_scheduled'           => __( 'Admission scheduled', 'orc-plugin' ),
+			'item_updated'             => __( 'Admission updated', 'orc-plugin' ),
 		);
 
 		$supports = array(

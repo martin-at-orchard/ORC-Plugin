@@ -50,6 +50,10 @@ registerBlockType( 'orc/testimonials', {
 			type: 'string',
 			default: '0'
 		},
+		frontPage: {
+			type: 'boolean',
+			default: false
+		},
 		wantLink: {
 			type: 'boolean',
 			default: true
@@ -81,13 +85,14 @@ registerBlockType( 'orc/testimonials', {
 		const {
 			christmas,
 			numPosts,
+			frontPage,
 			wantLink,
 			wantExcerpt,
 			wantLocation,
 			wantButton,
 			buttonText
 		} = props.attributes
-		const [status, setStatus] = useState( ( '1' === christmas ? '(Christmas - ' : '(Normal - ' ) + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
+		const [status, setStatus] = useState( ( '1' === christmas ? '(Christmas - ' : '(Normal - ' ) + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's ' : ' ' )  + ( true === frontPage ? ' - Display on Front Page)' : ')' ) )
 
 		// Render the block in the editor.
 		return (
@@ -107,7 +112,7 @@ registerBlockType( 'orc/testimonials', {
 										setAttributes( {
 											christmas: value
 										})
-										setStatus( ( '1' === value ? '(Christmas - ' : '(Normal - ' ) + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's)' : ')' ) )
+										setStatus( ( '1' === value ? '(Christmas - ' : '(Normal - ' ) + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's ' : ' ' ) + ( true === frontPage ? ' - Display on Front Page)' : ')' ) )
 									}
 								}
 							/>
@@ -125,13 +130,27 @@ registerBlockType( 'orc/testimonials', {
 										setAttributes( {
 											numPosts: value
 										} )
-										setStatus( ( '1' === christmas ? '(Christmas - ' : '(Normal - ' ) + ( 0 == value ? 'All' : value ) + ' Post' + ( ( 0 == value || value > 1 ) ? 's)' : ')' ) )
+										setStatus( ( '1' === christmas ? '(Christmas - ' : '(Normal - ' ) + ( 0 == value ? 'All' : value ) + ' Post' + ( ( 0 == value || value > 1 ) ? 's ' : ' ' ) + ( true === frontPage ? ' - Display on Front Page)' : ')' ) )
 									}
 								}
 							/>
 						</PanelRow>
 					</PanelBody>
 					<PanelBody title = { 'Front End Display Options' }>
+						<PanelRow>
+							<CheckboxControl
+								label = "Display on Front Page?"
+								checked = { frontPage }
+								onChange = {
+									( value ) => {
+										setAttributes( {
+											frontPage: value
+										} )
+										setStatus( ( '1' === christmas ? '(Christmas - ' : '(Normal - ' ) + ( 0 == numPosts ? 'All' : numPosts ) + ' Post' + ( ( 0 == numPosts || numPosts > 1 ) ? 's ' : ' ' ) + ( true === value ? ' - Display on Front Page)' : ')' ) )
+									}
+								}
+							/>
+						</PanelRow>
 						<PanelRow>
 							<CheckboxControl
 								label = "Enable link to entire post?"

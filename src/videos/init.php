@@ -65,8 +65,6 @@ class Videos {
 	 *   numPosts    (isset - number of posts else all)
 	 *   wantExcerpt (isset - false else true)
 	 *   wantLink    (isset - false else true)
-	 *   wantButton  (isset - false else true)
-	 *   buttonText  (isset - text string else null string)
 	 *
 	 * @param array $attributes Attributes from the block editor.
 	 */
@@ -79,8 +77,8 @@ class Videos {
 		// Set defaults if not set.
 
 		$iframe_style  = 'style="';
-		$iframe_style .= 'max-width: ' . $width . 'px; width: ' . $width . 'px;';
-		$iframe_style .= 'max-height: ' . $height . 'px; height: ' . $height . 'px;';
+		$iframe_style .= 'max-width: ' . esc_attr( $width ) . 'px; width: ' . esc_attr( $width ) . 'px;';
+		$iframe_style .= 'max-height: ' . esc_attr( $height ) . 'px; height: ' . esc_attr( $height ) . 'px;';
 		$iframe_style .= '"';
 
 		$args = array(
@@ -103,7 +101,7 @@ class Videos {
 		echo $div;      // phpcs:ignore
 		foreach ( $posts as $post ) {
 			$link = esc_attr( get_post_meta( $post->ID, 'orc-video-link', true ) );
-			echo '<div class="video" id="post-' . $post->ID . '">';     // phpcs:ignore
+			echo '<div class="video" id="post-' . esc_attr( $post->ID ) . '">';
 			echo '<h3>' . esc_attr( $post->post_title ) . '</h3>';
 			echo '<iframe ' . $iframe_style . ' src="https://youtube.com/embed/' . $link . '" frameborder="0"></iframe>'; // phpcs:ignore
 			echo '</div> <!-- /.admission -->';
@@ -119,30 +117,30 @@ class Videos {
 	public function create_posttype() {
 
 		$labels = array(
-			'name'                     => __( 'Videos', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'            => __( 'Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new'                  => __( 'Add New Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'             => __( 'Add New Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'                => __( 'Edit Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item'                 => __( 'New Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_item'                => __( 'View Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_items'               => __( 'View Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'             => __( 'Search Videos', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found'                => __( 'No Videos found', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found_in_trash'       => __( 'No Videos found in trash', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'                => __( 'All Videos', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'attributes'               => __( 'Video attributes', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'insert_into_item'         => __( 'Insert into Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'uploaded_to_this_item'    => __( 'Uploaded to Video', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'featured_image'           => __( 'Video image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'set_featured_image'       => __( 'Set Video image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'remove_featured_image'    => __( 'Remove Video image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'used_featured_image'      => __( 'Use as Video image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published'           => __( 'Video published', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published_privately' => __( 'Video published privately', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_reverted_to_draft'   => __( 'Video reverted to draft', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_scheduled'           => __( 'Video scheduled', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_updated'             => __( 'Video updated', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'                     => __( 'Videos', 'orc-plugin' ),
+			'singular_name'            => __( 'Video', 'orc-plugin' ),
+			'add_new'                  => __( 'Add New Video', 'orc-plugin' ),
+			'add_new_item'             => __( 'Add New Video', 'orc-plugin' ),
+			'edit_item'                => __( 'Edit Video', 'orc-plugin' ),
+			'new_item'                 => __( 'New Video', 'orc-plugin' ),
+			'view_item'                => __( 'View Video', 'orc-plugin' ),
+			'view_items'               => __( 'View Video', 'orc-plugin' ),
+			'search_items'             => __( 'Search Videos', 'orc-plugin' ),
+			'not_found'                => __( 'No Videos found', 'orc-plugin' ),
+			'not_found_in_trash'       => __( 'No Videos found in trash', 'orc-plugin' ),
+			'all_items'                => __( 'All Videos', 'orc-plugin' ),
+			'attributes'               => __( 'Video attributes', 'orc-plugin' ),
+			'insert_into_item'         => __( 'Insert into Video', 'orc-plugin' ),
+			'uploaded_to_this_item'    => __( 'Uploaded to Video', 'orc-plugin' ),
+			'featured_image'           => __( 'Video image', 'orc-plugin' ),
+			'set_featured_image'       => __( 'Set Video image', 'orc-plugin' ),
+			'remove_featured_image'    => __( 'Remove Video image', 'orc-plugin' ),
+			'used_featured_image'      => __( 'Use as Video image', 'orc-plugin' ),
+			'item_published'           => __( 'Video published', 'orc-plugin' ),
+			'item_published_privately' => __( 'Video published privately', 'orc-plugin' ),
+			'item_reverted_to_draft'   => __( 'Video reverted to draft', 'orc-plugin' ),
+			'item_scheduled'           => __( 'Video scheduled', 'orc-plugin' ),
+			'item_updated'             => __( 'Video updated', 'orc-plugin' ),
 		);
 
 		$supports = array(
@@ -180,7 +178,7 @@ class Videos {
 
 		add_meta_box(
 			'video-meta-box',
-			__( 'Video Information', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			__( 'Video Information', 'orc-plugin' ),
 			array( $this, 'render_meta_box' ),
 			self::POST_TYPE,
 			'side',
@@ -199,8 +197,8 @@ class Videos {
 		$link = esc_attr( get_post_meta( $post->ID, 'orc-video-link', true ) );
 		?>
 		<?php wp_nonce_field( basename( __FILE__ ), self::POST_NONCE ); ?>
-		<label for="orc-video-link"><?php _e( 'YouTube Link', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat" type="text" name="orc-video-link" id="orc-video-link" value="<?php echo $link; ?>" /> <?php // phpcs:ignore ?>
+		<label for="orc-video-link"><?php _e( 'YouTube Link', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat" type="text" name="orc-video-link" id="orc-video-link" value="<?php echo $link; // phpcs:ignore ?>" />
 		<?php
 
 	}
@@ -261,7 +259,7 @@ class Videos {
 		unset( $columns['title'] );
 
 		// Our custom meta data columns.
-		$newcols['orc-video-link'] = __( 'Link', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+		$newcols['orc-video-link'] = __( 'Link', 'orc-plugin' );
 
 		// Want date last.
 		unset( $columns['date'] );
@@ -286,8 +284,7 @@ class Videos {
 	public function table_content( $column_name, $post_id ) {
 
 		if ( 'orc-video-link' === $column_name ) {
-			$link = esc_attr( get_post_meta( $post_id, 'orc-video-link', true ) );
-			echo $link; // phpcs:ignore
+			echo esc_attr( get_post_meta( $post_id, 'orc-video-link', true ) );
 		}
 	}
 

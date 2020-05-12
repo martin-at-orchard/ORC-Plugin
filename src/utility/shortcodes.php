@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package ORC
  */
 class Shortcodes {
-
+	
 	/**
 	 * Create a href link for a phone number
 	 *
@@ -44,16 +44,16 @@ class Shortcodes {
 		switch ( $type ) {
 			case 'local':
 			case 'tollfree':
-				$href = '<a href="tel:' . $link . '">';
+				$href = '<a href="tel:' . $link . '" aria-label="Call ' . $link . '">';
 				break;
 			case 'text':
-				$href = '<a href="sms:' . $link . '">';
+				$href = '<a href="sms:' . $link . '" aria-label="Text ' . $link . '">';
 				break;
 			case 'fax':
-				$href = '<a href="fax:' . $link . '">';
+				$href = '<a href="fax:' . $link . '" arial-label="Fax ' . $link . '">';
 				break;
 			default:
-				$href = '<a href="/contact?send-to=' . $link . '">';
+				$href = '<a href="/contact?send-to=' . $link . '" arial-label="Email ' . $contact . '">';
 		}
 
 		return $href;
@@ -72,16 +72,16 @@ class Shortcodes {
 
 		switch ( $type ) {
 			case 'facebook':
-				$href = '<a href="https://www.facebook.com/' . $link . '" target="_blank" title="Visit Orchard Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>';
+				$href = '<a href="https://www.facebook.com/' . $link . '" target="_blank" title="Visit Orchard Facebook" aria-label="Visit Orchard Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>';
 				break;
 			case 'instagram':
-				$href = '<a href="https://www.instagram.com/' . $link . '" target="_blank" title="Visit Orchard Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>';
+				$href = '<a href="https://www.instagram.com/' . $link . '" target="_blank" title="Visit Orchard Instagram" aria-label="Visit Orchard Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>';
 				break;
 			case 'twitter':
-				$href = '<a href="https://twitter.com/' . $link . '" target="_blank" title="Visit Orchard Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>';
+				$href = '<a href="https://twitter.com/' . $link . '" target="_blank" title="Visit Orchard Twitter" aria-label="Visit Orchard Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>';
 				break;
 			case 'youtube':
-				$href = '<a href="https://www.youtube.com/channel/' . $link . '" target="_blank" title="Visit Orchard YouTube"><i class="fa fa-youtube" aria-hidden="true"></i></a>';
+				$href = '<a href="https://www.youtube.com/channel/' . $link . '" target="_blank" title="Visit Orchard YouTube" aria-label="Visit Orchard YouTube"><i class="fa fa-youtube" aria-hidden="true"></i></a>';
 				break;
 			default:
 				$href = '';
@@ -137,7 +137,7 @@ class Shortcodes {
 		$valid = true;
 		if ( '' === $atts['type'] ) {
 			$html  = '<p>';
-			$html  = __( 'ERROR: A contact type is required', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+			$html  = __( 'ERROR: A contact type is required', 'orc-plugin' );
 			$html  = '</p>';
 			$valid = false;
 		} else {
@@ -170,14 +170,14 @@ class Shortcodes {
 						break;
 					default:
 						$html  = '<p>';
-						$html .= __( 'ERROR: Invalid contact type: ', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+						$html .= __( 'ERROR: Invalid contact type: ', 'orc-plugin' );
 						$html .= $atts['type'];
 						$html .= '</p>';
 						$valid = false;
 				}
 			} else {
 				$html  = '<p>';
-				$html .= __( 'ERROR: Invalid contact type: ', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+				$html .= __( 'ERROR: Invalid contact type: ', 'orc-plugin' );
 				$html .= $atts['type'];
 				$html .= '</p>';
 				$valid = false;
@@ -242,7 +242,7 @@ class Shortcodes {
 		$valid = true;
 		if ( '' === $atts['type'] ) {
 			$html  = '<p>';
-			$html  = __( 'ERROR: A contact type is required', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+			$html  = __( 'ERROR: A contact type is required', 'orc-plugin' );
 			$html  = '</p>';
 			$valid = false;
 		} else {
@@ -252,7 +252,7 @@ class Shortcodes {
 				$link    = $this->create_social_link( $contact, $atts['type'] );
 			} else {
 				$html  = '<p>';
-				$html .= __( 'ERROR: Invalid social contact type: ', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+				$html .= __( 'ERROR: Invalid social contact type: ', 'orc-plugin' );
 				$html .= $atts['type'];
 				$html .= '</p>';
 				$valid = false;
@@ -300,11 +300,11 @@ class Shortcodes {
 		);
 
 		if ( $atts['year'] <= 0 ) {
-			$html = __( 'ERROR: A year is required', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+			$html = __( 'ERROR: A year is required', 'orc-plugin' );
 		} elseif ( $atts['month'] < 1 || $atts['month'] > 12 ) {
-			$html = __( 'ERROR: Month must be in the range (1-12) found: ', Plugin::TEXT_DOMAIN ) . $atts['month']; // phpcs:ignore
+			$html = __( 'ERROR: Month must be in the range (1-12) found: ', 'orc-plugin' ) . esc_attr( $atts['month'] );
 		} elseif ( $atts['day'] < 1 || $atts['day'] > 31 ) {
-			$html = __( 'ERROR: Day must be in the range (1-31) found: ', Plugin::TEXT_DOMAIN ) . $atts['day']; // phpcs:ignore
+			$html = __( 'ERROR: Day must be in the range (1-31) found: ', 'orc-plugin' ) . esc_attr( $atts['day'] );
 		} else {
 			$now      = current_time( 'Y-m-d H:i:s' );
 			$now_date = new \DateTime( $now );

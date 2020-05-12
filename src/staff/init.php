@@ -123,7 +123,7 @@ class Staff {
 		$div .= '">';
 
 		\ob_start();
-		echo $div;      // phpcs:ignore
+		echo $div;    // phpcs:ignore
 		foreach ( $posts as $post ) {
 			$department_terms = get_the_terms( $post->ID, 'orc-departments' );
 			$staff_classes    = '';
@@ -132,10 +132,10 @@ class Staff {
 					$staff_classes .= $term->slug . ' ';
 				}
 			}
-			$staff_classes = trim( $staff_classes ); 
+			$staff_classes = trim( $staff_classes );
 			$staff_classes = 'class="staff ' . $staff_classes . '"';
 			$staff_id      = 'id="staff-' . $post->ID . '"';
-			echo '<div ' . $staff_classes . ' ' . $staff_id . '>';  // phpcs:ignore
+			echo '<div ' . esc_attr( $staff_classes ) . ' ' . esc_attr( $staff_id ) . '>';
 			if ( $want_link ) {
 				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			}
@@ -155,7 +155,7 @@ class Staff {
 				echo '<div class="qualifications">' . esc_attr( $qualifications ) . '</div>';
 			}
 			if ( $want_button && $want_link ) {
-				echo '<input type="button" value="' . esc_attr( $button_text ) . '" />';
+				echo '<input type="button" value="' . esc_attr( $button_text ) . '" aria-label="Learn more about staff member ' . esc_attr( $post->post_title ) . '" />';
 			}
 			echo '</div> <!-- /.orc-staff -->';
 		}
@@ -170,30 +170,30 @@ class Staff {
 	public function create_posttype() {
 
 		$labels = array(
-			'name'                     => __( 'Staff Members', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'            => __( 'Staff Member', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new'                  => __( 'Add New Staff Member', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'             => __( 'Add New Staff Member', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'                => __( 'Edit Staff Member', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item'                 => __( 'New Staff Member', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_item'                => __( 'View Staff Member', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'view_items'               => __( 'View Staff Members', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'             => __( 'Search Staff Members', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found'                => __( 'No Staff Members found', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'not_found_in_trash'       => __( 'No Staff Members found in trash', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'                => __( 'All Staff Members', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'attributes'               => __( 'Staff Member attributes', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'insert_into_item'         => __( 'Insert into Staff Member', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'uploaded_to_this_item'    => __( 'Uploaded to Staff Member', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'featured_image'           => __( 'Staff Member image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'set_featured_image'       => __( 'Set Staff Member image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'remove_featured_image'    => __( 'Remove Staff Member image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'used_featured_image'      => __( 'Use as Staff Member image', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published'           => __( 'Staff Member published', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_published_privately' => __( 'Staff Member published privately', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_reverted_to_draft'   => __( 'Staff Member reverted to draft', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_scheduled'           => __( 'Staff Member scheduled', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'item_updated'             => __( 'Staff Member updated', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'                     => __( 'Staff Members', 'orc-plugin' ),
+			'singular_name'            => __( 'Staff Member', 'orc-plugin' ),
+			'add_new'                  => __( 'Add New Staff Member', 'orc-plugin' ),
+			'add_new_item'             => __( 'Add New Staff Member', 'orc-plugin' ),
+			'edit_item'                => __( 'Edit Staff Member', 'orc-plugin' ),
+			'new_item'                 => __( 'New Staff Member', 'orc-plugin' ),
+			'view_item'                => __( 'View Staff Member', 'orc-plugin' ),
+			'view_items'               => __( 'View Staff Members', 'orc-plugin' ),
+			'search_items'             => __( 'Search Staff Members', 'orc-plugin' ),
+			'not_found'                => __( 'No Staff Members found', 'orc-plugin' ),
+			'not_found_in_trash'       => __( 'No Staff Members found in trash', 'orc-plugin' ),
+			'all_items'                => __( 'All Staff Members', 'orc-plugin' ),
+			'attributes'               => __( 'Staff Member attributes', 'orc-plugin' ),
+			'insert_into_item'         => __( 'Insert into Staff Member', 'orc-plugin' ),
+			'uploaded_to_this_item'    => __( 'Uploaded to Staff Member', 'orc-plugin' ),
+			'featured_image'           => __( 'Staff Member image', 'orc-plugin' ),
+			'set_featured_image'       => __( 'Set Staff Member image', 'orc-plugin' ),
+			'remove_featured_image'    => __( 'Remove Staff Member image', 'orc-plugin' ),
+			'used_featured_image'      => __( 'Use as Staff Member image', 'orc-plugin' ),
+			'item_published'           => __( 'Staff Member published', 'orc-plugin' ),
+			'item_published_privately' => __( 'Staff Member published privately', 'orc-plugin' ),
+			'item_reverted_to_draft'   => __( 'Staff Member reverted to draft', 'orc-plugin' ),
+			'item_scheduled'           => __( 'Staff Member scheduled', 'orc-plugin' ),
+			'item_updated'             => __( 'Staff Member updated', 'orc-plugin' ),
 		);
 
 		$supports = array(
@@ -234,7 +234,7 @@ class Staff {
 
 		add_meta_box(
 			'staff-meta-box',
-			__( 'Staff Information', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			__( 'Staff Information', 'orc-plugin' ),
 			array( $this, 'render_meta_box' ),
 			self::POST_TYPE,
 			'side',
@@ -256,12 +256,12 @@ class Staff {
 		$checked        = ( '' === $homepage ) ? '' : 'checked';
 		?>
 		<?php wp_nonce_field( basename( __FILE__ ), self::POST_NONCE ); ?>
-		<label for="orc-staff-position"><?php esc_attr_e( 'Job/Position', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat" type="text" name="orc-staff-position" id="orc-staff-position" value="<?php echo $position; ?>" /> <?php // phpcs:ignore ?>
-		<label for="orc-staff-qualifications"><?php esc_attr_e( 'Qualifications', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
-		<input class="widefat" type="text" name="orc-staff-qualifications" id="orc-staff-qualifications" value="<?php echo $qualifications; ?>" /> <?php // phpcs:ignore ?>
-		<input type="checkbox" name="orc-staff-homepage" id="orc-staff-homepage" value="1" <?php echo $checked; ?>/> <?php // phpcs:ignore ?>
-		<label for="orc-staff-homepage"><?php esc_attr_e( 'On Home Page?', Plugin::TEXT_DOMAIN ); ?></label> <?php // phpcs:ignore ?>
+		<label for="orc-staff-position"><?php _e( 'Job/Position', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat" type="text" name="orc-staff-position" id="orc-staff-position" value="<?php echo $position;// phpcs:ignore ?>" />
+		<label for="orc-staff-qualifications"><?php _e( 'Qualifications', 'orc-plugin' ); // phpcs:ignore ?></label>
+		<input class="widefat" type="text" name="orc-staff-qualifications" id="orc-staff-qualifications" value="<?php echo $qualifications;// phpcs:ignore ?>" />
+		<input type="checkbox" name="orc-staff-homepage" id="orc-staff-homepage" value="1" <?php echo $checked;// phpcs:ignore ?>/>
+		<label for="orc-staff-homepage"><?php _e( 'On Home Page?', 'orc-plugin' ); // phpcs:ignore ?></label>
 		<?php
 
 	}
@@ -343,9 +343,9 @@ class Staff {
 		unset( $columns['title'] );
 
 		// Our custom meta data columns.
-		$newcols['orc-staff-position']       = __( 'Position', Plugin::TEXT_DOMAIN ); // phpcs:ignore
-		$newcols['orc-staff-qualifications'] = __( 'Qualifications', Plugin::TEXT_DOMAIN ); // phpcs:ignore
-		$newcols['orc-staff-homepage']       = __( 'On Homepage', Plugin::TEXT_DOMAIN ); // phpcs:ignore
+		$newcols['orc-staff-position']       = __( 'Position', 'orc-plugin' );
+		$newcols['orc-staff-qualifications'] = __( 'Qualifications', 'orc-plugin' );
+		$newcols['orc-staff-homepage']       = __( 'On Homepage', 'orc-plugin' );
 
 		// Want date last.
 		unset( $columns['date'] );
@@ -370,11 +370,9 @@ class Staff {
 	public function table_content( $column_name, $post_id ) {
 
 		if ( 'orc-staff-position' === $column_name ) {
-			$position = esc_attr( get_post_meta( $post_id, 'orc-staff-position', true ) );
-			echo $position; // phpcs:ignore
+			echo esc_attr( get_post_meta( $post_id, 'orc-staff-position', true ) );
 		} elseif ( 'orc-staff-qualifications' === $column_name ) {
-			$qualifications = esc_attr( get_post_meta( $post_id, 'orc-staff-qualifications', true ) );
-			echo $qualifications; // phpcs:ignore
+			echo esc_attr( get_post_meta( $post_id, 'orc-staff-qualifications', true ) );
 		} elseif ( 'orc-staff-homepage' === $column_name ) {
 			$homepage = esc_attr( get_post_meta( $post_id, 'orc-staff-homepage', true ) );
 			$checked  = ( '' === $homepage ) ? '' : 'TRUE';
@@ -388,17 +386,17 @@ class Staff {
 	public function staff_taxonomies() {
 
 		$labels = array(
-			'name'              => __( 'Staff Departments', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'singular_name'     => __( 'Staff Department', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'search_items'      => __( 'Search Staff Departments', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'all_items'         => __( 'All Staff Departments', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'parent_item'       => __( 'Parent Staff Department', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'parent_item_colon' => __( 'Parent Staff Department:', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'edit_item'         => __( 'Edit Staff Department', Plugin::TEXT_DOMAIN ),  // phpcs:ignore
-			'update_item'       => __( 'Update Staff Department', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'add_new_item'      => __( 'Add Staff Department', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'new_item_name'     => __( 'New Staff Department', Plugin::TEXT_DOMAIN ), // phpcs:ignore
-			'menu_name'         => __( 'Staff Departments', Plugin::TEXT_DOMAIN ), // phpcs:ignore
+			'name'              => __( 'Staff Departments', 'orc-plugin' ),
+			'singular_name'     => __( 'Staff Department', 'orc-plugin' ),
+			'search_items'      => __( 'Search Staff Departments', 'orc-plugin' ),
+			'all_items'         => __( 'All Staff Departments', 'orc-plugin' ),
+			'parent_item'       => __( 'Parent Staff Department', 'orc-plugin' ),
+			'parent_item_colon' => __( 'Parent Staff Department:', 'orc-plugin' ),
+			'edit_item'         => __( 'Edit Staff Department', 'orc-plugin' ),
+			'update_item'       => __( 'Update Staff Department', 'orc-plugin' ),
+			'add_new_item'      => __( 'Add Staff Department', 'orc-plugin' ),
+			'new_item_name'     => __( 'New Staff Department', 'orc-plugin' ),
+			'menu_name'         => __( 'Staff Departments', 'orc-plugin' ),
 		);
 
 		$args = array(
