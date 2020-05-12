@@ -72,16 +72,16 @@ class Shortcodes {
 
 		switch ( $type ) {
 			case 'facebook':
-				$href = '<a href="https://www.facebook.com/' . $link . '" target="_blank" title="Visit Orchard Facebook" aria-label="Visit Orchard Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>';
+				$href = '<a href="https://www.facebook.com/' . $link . '" target="_blank" title="Visit Orchard Facebook" aria-label="Visit Orchard Facebook Page"><i class="fa fa-facebook" aria-hidden="true"></i></a>';
 				break;
 			case 'instagram':
-				$href = '<a href="https://www.instagram.com/' . $link . '" target="_blank" title="Visit Orchard Instagram" aria-label="Visit Orchard Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>';
+				$href = '<a href="https://www.instagram.com/' . $link . '" target="_blank" title="Visit Orchard Instagram" aria-label="Visit Orchard Instagram Page"><i class="fa fa-instagram" aria-hidden="true"></i></a>';
 				break;
 			case 'twitter':
-				$href = '<a href="https://twitter.com/' . $link . '" target="_blank" title="Visit Orchard Twitter" aria-label="Visit Orchard Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>';
+				$href = '<a href="https://twitter.com/' . $link . '" target="_blank" title="Visit Orchard Twitter" aria-label="Visit Orchard Twitter Page"><i class="fa fa-twitter" aria-hidden="true"></i></a>';
 				break;
 			case 'youtube':
-				$href = '<a href="https://www.youtube.com/channel/' . $link . '" target="_blank" title="Visit Orchard YouTube" aria-label="Visit Orchard YouTube"><i class="fa fa-youtube" aria-hidden="true"></i></a>';
+				$href = '<a href="https://www.youtube.com/channel/' . $link . '" target="_blank" title="Visit Orchard YouTube" aria-label="Visit Orchard YouTube Channel"><i class="fa fa-youtube" aria-hidden="true"></i></a>';
 				break;
 			default:
 				$href = '';
