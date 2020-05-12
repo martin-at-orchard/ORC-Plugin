@@ -148,11 +148,15 @@ class Staff {
 			}
 			if ( $want_position ) {
 				$position = esc_attr( get_post_meta( $post->ID, 'orc-staff-position', true ) );
-				echo '<div class="position">' . esc_attr( $position ) . ' aria-label="Staff member position ' . esc_attr( $position ) . '"</div>';
+				if ( '' !== $position ) {
+					echo '<div class="position" aria-label="Staff member position">' . esc_attr( $position ) . '</div>';
+				}
 			}
 			if ( $want_qualifications ) {
 				$qualifications = esc_attr( get_post_meta( $post->ID, 'orc-staff-qualifications', true ) );
-				echo '<div class="qualifications">' . esc_attr( $qualifications ) . ' aria-label="Staff member position ' . esc_attr( $qualifications ) . '"</div>';
+				if ( '' !== $qualifications ) {
+					echo '<div class="qualifications" aria-label="Staff member qualifications">' . esc_attr( $qualifications ) . '</div>';
+				}
 			}
 			if ( $want_button && $want_link ) {
 				echo '<input type="button" value="' . esc_attr( $button_text ) . '" aria-label="Learn more about staff member ' . esc_attr( $post->post_title ) . '" />';

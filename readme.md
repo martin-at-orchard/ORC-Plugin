@@ -6,7 +6,7 @@ Tags: ORC
 Requires at least: 4.7
 Tested up to: 5.4.1
 Requires PHP: 5.6
-Stable tag: 0.5.6
+Stable tag: 0.5.7
 ```
 
 ## Description
@@ -70,6 +70,9 @@ npm run build
 If you get stuck, or have questions you can email Martin Wedepohl martin@wedepohlengineering.com or go to https://github.com/martin-at-orchard/ORC-Plugin and open a new Issue.
 
 ## Changelog
+
+### 2020-05-11 Version: 0.5.7
+* FIX: aria-label in wrong place
 
 ### 2020-05-11 Version: 0.5.6
 * aria-label additions
