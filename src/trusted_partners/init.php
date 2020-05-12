@@ -88,7 +88,7 @@ class Trusted_Partners {
 					$link = get_post_meta( $post->ID, 'orc-partners-link', true );
 					if ( '' !== $link ) {
 						$title = 'Click to visit ' . $post->post_title;
-						$html  = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '" target="_blank" aira-label="Visit our trusted partner ' . esc_attr( $post->post_title ) .'">';
+						$html  = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '" target="_blank" aira-label="Visit our trusted partner ' . esc_attr( $post->post_title ) . '">';
 					}
 				}
 				$html .= get_the_post_thumbnail( $post->ID, array( $width, 0 ) );

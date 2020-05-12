@@ -129,13 +129,13 @@ class Staff {
 			$staff_classes    = '';
 			if ( count( $department_terms ) > 0 ) {
 				foreach ( $department_terms as $term ) {
-					$staff_classes .= $term->slug . ' ';
+					$staff_classes .= esc_attr( $term->slug ) . ' ';
 				}
 			}
 			$staff_classes = trim( $staff_classes );
 			$staff_classes = 'class="staff ' . $staff_classes . '"';
-			$staff_id      = 'id="staff-' . $post->ID . '"';
-			echo '<div ' . esc_attr( $staff_classes ) . ' ' . esc_attr( $staff_id ) . '>';
+			$staff_id      = 'id="staff-' . esc_attr( $post->ID ) . '"';
+			echo '<div ' . $staff_classes . ' ' . $staff_id . '>'; // phpcs:ignore
 			if ( $want_link ) {
 				echo '<span data-link="' . esc_url( get_post_permalink( $post->ID ) ) . '"></span>';
 			}
